@@ -1,0 +1,15 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Categories=KDE;Qt;Network;InstantMessaging;
+Encoding=UTF-8
+Name=Sweetfish for Linux
+GenericName=Mastodon Client for Linux.
+GenericName[ja_JP]=Linux/X11を対象としたMastodon Client
+Comment=Mastodon Client for Linux
+Comment[ja_JP]=Linux/X11を対象としたMastodon Client
+Exec=/usr/bin/sweetfish
+Icon=/usr/share/pixmaps/sweetfish.png
+Terminal=false
+StartupNotify=true
+Type=Application
+
