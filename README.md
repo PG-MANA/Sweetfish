@@ -21,7 +21,6 @@ openSUSE Tumbleweed で開発してます。
 ## 動作環境
 * Qt 5.9
 * Phonon4qt5
-* Twitterができる程度の通信環境
 * CPU:各デスクトップ環境の推奨する性能以上のもの、2コア以上はほしい。
 * メモリ:起動時間が長いほどメモリ使用量は増加していく傾向にあります。たくさん積んでおきましょう。
 
@@ -58,8 +57,8 @@ https://repo.taprix.org/pg_mana/linux/rpm/x86_64/ はx86_64用のrpmリポジト
 * 動作確認は netstat.app で行っています。
 
 ## リンク
-### SalmonについてのWebページ
-  https://soft.taprix.org/product/salmon.html
+### SweetfishについてのWebページ
+  https://soft.taprix.org/product/sweetfish.html
 ### Qtのドキュメントページ
   https://doc.qt.io/
 ### 開発者のマストドンアカウント
