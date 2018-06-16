@@ -52,7 +52,7 @@ make
 ## ビルド済みバイナリ
 * RPM(x86_64) https://repo.taprix.org/pg_mana/linux/rpm/x86_64/Sweetfish/
 
-https://repo.taprix.org/pg_mana/linux/rpm/x86_64/ はx86_64用のrpmリポジトリになっています。
+https://repo.taprix.org/pg_mana/linux/rpm/ はx86_64用のrpmリポジトリになっています。
 ## 備考
 * 動作確認は netstat.app で行っています。
 
