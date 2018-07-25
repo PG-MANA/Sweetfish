@@ -12,7 +12,7 @@ class QUrl;
 class QByteArray;
 
 class Network {
- public:
+public:
   Network();
   ~Network();
   QNetworkReply *get(const QUrl &url);
@@ -25,7 +25,7 @@ class Network {
   QNetworkReply *del(const QUrl &url);
   QNetworkReply *del(QNetworkRequest &req);
 
- private:
+private:
   QNetworkAccessManager qnet;
   inline QByteArray getUserAgent() const;
 };

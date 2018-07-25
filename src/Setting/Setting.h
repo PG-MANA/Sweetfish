@@ -7,11 +7,11 @@
  */
 #pragma once
 
-#include <QSettings>
 #include "../Sweetfish.h"
+#include <QSettings>
 
 class Setting {
- public:
+public:
   Setting(const QString &ini_file_name);
   ~Setting();
 
@@ -41,7 +41,7 @@ class Setting {
   QString getUserName() const;
   void setUserName(const QString &name);
 
- private:
+private:
   QString getFilePath(const QString &ini_file_name) const;
   QSettings setting;
 };

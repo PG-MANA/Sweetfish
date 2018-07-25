@@ -5,10 +5,10 @@
  * VideoPlayer クラス
  * 動画をを再生する。Phonon依存している
  */
-#include <QWidget>
 #include "../Mastodon/Mastodon.h"
 #include "../Mastodon/TootData.h"
 #include "../Network/Network.h"
+#include <QWidget>
 
 #if __has_include("phonon/VideoPlayer")
 namespace Phonon {
@@ -24,14 +24,14 @@ class QPushButton;
 
 class VideoPlayer : public QWidget {
   Q_OBJECT
- public:
+public:
   explicit VideoPlayer(TootData *twdata, QWidget *parent = Q_NULLPTR,
                        Qt::WindowFlags f = Qt::WindowFlags());
 
- public slots:
+public slots:
   void show();
-  void save(){};  //未実装
- private:
+  void save(){}; //未実装
+private:
   void createButtons(QVBoxLayout *main_layout);
   TootMediaData media_data;
 #ifdef NO_PHONON

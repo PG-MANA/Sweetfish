@@ -9,8 +9,8 @@
  */
 #pragma once
 
-#include <QWidget>
 #include "ImageLabel.h"
+#include <QWidget>
 
 class QHBoxLayout;
 class QVBoxLayout;
@@ -19,7 +19,7 @@ class TootData;
 
 class TootInfo : public QWidget {
   Q_OBJECT
- public:
+public:
   explicit TootInfo(MainWindow *parent_window, QWidget *parent = Q_NULLPTR,
                     Qt::WindowFlags f = Qt::WindowFlags());
   virtual ~TootInfo();
@@ -34,12 +34,12 @@ class TootInfo : public QWidget {
   unsigned int countImage() const;
   bool isEmpty();
 
- public slots:
+public slots:
   void deleteQuoteToot();
   void deleteReplyToot();
   void ImageMenu(TootData *tdata, unsigned int index);
 
- private:
+private:
   void closeWhenEmpty();
   MainWindow *win;
   QVBoxLayout *main_layout;

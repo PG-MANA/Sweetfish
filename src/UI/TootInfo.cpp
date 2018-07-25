@@ -5,12 +5,12 @@
  * TootInfo クラス
  * MainWindowのしたにある画像添付したりリプライしたりするときに出てくるやつ。
  */
-#include <QtWidgets>
+#include "TootInfo.h"
 #include "../Mastodon/TootData.h"
 #include "ImageLabel.h"
 #include "MainWindow.h"
 #include "TootContent.h"
-#include "TootInfo.h"
+#include <QtWidgets>
 
 TootInfo::TootInfo(MainWindow *parent_window, QWidget *parent,
                    Qt::WindowFlags f)
@@ -21,7 +21,7 @@ TootInfo::TootInfo(MainWindow *parent_window, QWidget *parent,
   info_text_label->setPixmap(QPixmap(":/add.png"));
   info_text_label->setVisible(false);
   media_layout->addWidget(info_text_label);
-  media_layout->addStretch();  //こっちの方が見た目がいいかな
+  media_layout->addStretch(); //こっちの方が見た目がいいかな
   main_layout->addLayout(media_layout);
   reply_layout = new QHBoxLayout;
   info_text_label = new QLabel;
@@ -45,7 +45,8 @@ TootInfo::~TootInfo() {}
  * 概要:ImageLabelのPixmapをとってくる。
  */
 const QPixmap *TootInfo::getImage(const unsigned int index) const {
-  if (countImage() <= index) return nullptr;
+  if (countImage() <= index)
+    return nullptr;
   QLayoutItem *item = media_layout->itemAt(index + 2 /*QLabel + addStretch分*/);
   return item ? (qobject_cast<ImageLabel *>(item->widget()))->pixmap()
               : nullptr;
@@ -59,7 +60,8 @@ const QPixmap *TootInfo::getImage(const unsigned int index) const {
  */
 void TootInfo::setImage(const QPixmap &pixmap, const unsigned int index) {
   unsigned int size = countImage();
-  if (size == 0) media_layout->itemAt(0)->widget()->setVisible(true);
+  if (size == 0)
+    media_layout->itemAt(0)->widget()->setVisible(true);
   if (size <= index) {
     ImageLabel *iml = new ImageLabel(50, 50, size);
     connect(iml, &ImageLabel::rightClicked, this, &TootInfo::ImageMenu);
@@ -101,11 +103,13 @@ void TootInfo::ImageMenu(TootData *_tdata, unsigned int index) {
  * 概要:Pixmapを削除する。
  */
 void TootInfo::deleteImage(const unsigned int index) {
-  if (countImage() <= index) return;
+  if (countImage() <= index)
+    return;
   QLayoutItem *old = media_layout->takeAt(
       index +
-      2 /*QLabel + addStretch分*/);  //一番最初に追加したやつから番号が振られる。
-  if (old != nullptr) delete old->widget();
+      2 /*QLabel + addStretch分*/); //一番最初に追加したやつから番号が振られる。
+  if (old != nullptr)
+    delete old->widget();
   if (countImage() == 0)
     media_layout->itemAt(0)->widget()->setVisible(false);
   else {
@@ -128,8 +132,9 @@ void TootInfo::deleteImageAll() {
   unsigned int i;
   if ((i = countImage()))
     for (i--;; i--) {
-      deleteImage(i);  // i==0のときも作業しないといけない
-      if (!i) break;
+      deleteImage(i); // i==0のときも作業しないといけない
+      if (!i)
+        break;
     }
 }
 
@@ -139,7 +144,7 @@ void TootInfo::deleteImageAll() {
  * 概要:Imagelabel(Pixmap)の数を返す。
  */
 unsigned int TootInfo::countImage() const {
-  return media_layout->count() - 2;  // QLabel + addStretch分
+  return media_layout->count() - 2; // QLabel + addStretch分
 }
 
 /*
@@ -160,13 +165,15 @@ TootData *TootInfo::getQuoteToot() {
  * 概要:トゥートの引用表示を行う。
  */
 void TootInfo::setQuoteToot(TootContent *data) {
-  if (data == nullptr) return;
-  if (quote_layout->count() > 1) deleteQuoteToot();
+  if (data == nullptr)
+    return;
+  if (quote_layout->count() > 1)
+    deleteQuoteToot();
   data->setFrameShape(QFrame::StyledPanel);
   data->setFrameShadow(QFrame::Sunken);
   quote_layout->addWidget(data);
   connect(data, &TootContent::action, this,
-          &TootInfo::deleteQuoteToot);  //現在は削除以外ないのでこの実装
+          &TootInfo::deleteQuoteToot); //現在は削除以外ないのでこの実装
   quote_layout->itemAt(0)->widget()->setVisible(true);
 }
 
@@ -179,7 +186,7 @@ void TootInfo::deleteQuoteToot() {
   QLayoutItem *old = quote_layout->takeAt(1);
   if (old != nullptr)
     old->widget()
-        ->deleteLater();  // TootContentからのSignal時にクラッシュしないように
+        ->deleteLater(); // TootContentからのSignal時にクラッシュしないように
   quote_layout->itemAt(0)->widget()->setVisible(false);
   closeWhenEmpty();
   return;
@@ -203,13 +210,15 @@ TootData *TootInfo::getReplyToot() {
  * 概要:トゥートの返信表示を行う。
  */
 void TootInfo::setReplyToot(TootContent *data) {
-  if (data == nullptr) return;
-  if (reply_layout->count() > 1) deleteReplyToot();
+  if (data == nullptr)
+    return;
+  if (reply_layout->count() > 1)
+    deleteReplyToot();
   data->setFrameShape(QFrame::StyledPanel);
   data->setFrameShadow(QFrame::Sunken);
   reply_layout->addWidget(data);
   connect(data, &TootContent::action, this,
-          &TootInfo::deleteReplyToot);  //現在は削除以外ないのでこの実装
+          &TootInfo::deleteReplyToot); //現在は削除以外ないのでこの実装
   reply_layout->itemAt(0)->widget()->setVisible(true);
   return;
 }
@@ -223,7 +232,7 @@ void TootInfo::deleteReplyToot() {
   QLayoutItem *old = reply_layout->takeAt(1);
   if (old != nullptr)
     old->widget()
-        ->deleteLater();  // TootContentからのSignal時にクラッシュしないように
+        ->deleteLater(); // TootContentからのSignal時にクラッシュしないように
   reply_layout->itemAt(0)->widget()->setVisible(false);
   closeWhenEmpty();
   return;
@@ -246,5 +255,6 @@ bool TootInfo::isEmpty() {
  * 概要:何も中身がないとき非表示にする。
  */
 void TootInfo::closeWhenEmpty() {
-  if (isEmpty()) parentWidget()->parentWidget()->setVisible(false);
+  if (isEmpty())
+    parentWidget()->parentWidget()->setVisible(false);
 }

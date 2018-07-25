@@ -4,9 +4,9 @@
  */
 #pragma once
 
-#include <QStringList>
 #include "../Network/Network.h"
 #include "../Setting/Setting.h"
+#include <QStringList>
 
 class QNetworkReply;
 class QNetworkRequest;
@@ -14,7 +14,7 @@ class Network;
 class Setting;
 
 class Mastodon {
- public:
+public:
   explicit Mastodon();
   Mastodon(const Mastodon &other);
   virtual ~Mastodon();
@@ -49,7 +49,7 @@ class Mastodon {
   //ユーザ関係
   QNetworkReply *requestCurrentAccountInfo();
 
- private:
+private:
   /*汎用関数。あくまでMastodonクラスから呼ぶもので他のクラス(UIなど)からはこれを呼ばず専用の関数を作る。*/
   QNetworkReply *get(QNetworkRequest &req);
   QNetworkReply *post(QNetworkRequest &req, const QByteArray &data);

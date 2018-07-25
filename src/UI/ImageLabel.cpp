@@ -5,11 +5,11 @@
  * ImageLabel クラス
  * これを応用すれば画像や動画のラベルも作れる。
  */
+#include "ImageLabel.h"
+#include "TootContent.h"
 #include <QHash>
 #include <QMouseEvent>
 #include <QNetworkReply>
-#include "ImageLabel.h"
-#include "TootContent.h"
 
 QHash<QString, QPixmap> ImageLabel::images;
 
@@ -18,11 +18,8 @@ ImageLabel::ImageLabel(const unsigned int init_sizex,
                        const unsigned int init_index,
                        TootContent *init_parent_content, QWidget *parent,
                        Qt::WindowFlags f)
-    : QLabel(parent, f),
-      parent_content(init_parent_content),
-      index(init_index),
-      sizex(init_sizex),
-      sizey(init_sizey) {}
+    : QLabel(parent, f), parent_content(init_parent_content), index(init_index),
+      sizex(init_sizex), sizey(init_sizey) {}
 
 /*
  * 引数:target_url(画像の名前)
@@ -34,7 +31,7 @@ bool ImageLabel::setPixmapByName(const QString &target_url) {
   const QHash<QString, QPixmap>::iterator image = images.find(url);
   if (image == images.end()) {
     if (images.size() > 256)
-      images.clear();  //ここらで一回全部消してメモリの使用を減らす
+      images.clear(); //ここらで一回全部消してメモリの使用を減らす
     return false;
   }
   setPixmap(image.value());
@@ -50,11 +47,11 @@ void ImageLabel::setPixmapByNetwork() {
   QNetworkReply *rep = qobject_cast<QNetworkReply *>(sender());
   QPixmap p;
 
-  rep->deleteLater();  // returnしたあとに削除される
+  rep->deleteLater(); // returnしたあとに削除される
   if (rep->error() != QNetworkReply::NoError || !p.loadFromData(rep->readAll()))
     return;
   if (sizex && sizey) {
-    p = p.scaled(sizex, sizey, Qt::KeepAspectRatio);  //縮小
+    p = p.scaled(sizex, sizey, Qt::KeepAspectRatio); //縮小
     images[url] = p;
   }
   setPixmap(p);
@@ -118,17 +115,17 @@ void ImageLabel::setIndex(unsigned int i) { index = i; }
  */
 void ImageLabel::mousePressEvent(QMouseEvent *event) {
   switch (event->button()) {
-    case Qt::LeftButton:
-      emit clicked((parent_content) ? parent_content->getTootData() : nullptr,
-                   index);
-      break;
-    case Qt::RightButton:
-      emit rightClicked(
-          (parent_content) ? parent_content->getTootData() : nullptr, index);
-      break;
-    default:
-      event->ignore();
-      return;
+  case Qt::LeftButton:
+    emit clicked((parent_content) ? parent_content->getTootData() : nullptr,
+                 index);
+    break;
+  case Qt::RightButton:
+    emit rightClicked(
+        (parent_content) ? parent_content->getTootData() : nullptr, index);
+    break;
+  default:
+    event->ignore();
+    return;
   }
   event->accept();
 }

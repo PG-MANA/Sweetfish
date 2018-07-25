@@ -5,16 +5,17 @@
  * ImageViewer クラス
  * 画像を表示する。
  */
-#include <QNetworkReply>
-#include <QtWidgets>
+#include "ImageViewer.h"
 #include "../Sweetfish.h"
 #include "ImageLabel.h"
-#include "ImageViewer.h"
+#include <QNetworkReply>
+#include <QtWidgets>
 
 ImageViewer::ImageViewer(TootData *tdata, unsigned int index, QWidget *parent,
                          Qt::WindowFlags f)
     : QWidget(parent, f), now_index(index), first(true) {
-  if (tdata == nullptr) return;
+  if (tdata == nullptr)
+    return;
   media_data = tdata->getMediaData();
 
   QVBoxLayout *main_layout = new QVBoxLayout(this);
@@ -25,11 +26,12 @@ ImageViewer::ImageViewer(TootData *tdata, unsigned int index, QWidget *parent,
   setAttribute(Qt::WA_DeleteOnClose);
 
   int link_size = media_data.size();
-  if (link_size <= index) now_index = 0;
+  if (link_size <= index)
+    now_index = 0;
 
   //画像
   image_area->setWidgetResizable(true);
-  image_area->setWidget(iml);  //先に追加しておいてボタンを下に持ってくる
+  image_area->setWidget(iml); //先に追加しておいてボタンを下に持ってくる
   main_layout->addWidget(image_area);
   //ボタン作成
   createButtons(main_layout);
@@ -37,8 +39,10 @@ ImageViewer::ImageViewer(TootData *tdata, unsigned int index, QWidget *parent,
   TootMediaDataEntry media_entry = media_data.getEntry(now_index);
   setImage(media_entry.getRemoteUrl().isEmpty() ? media_entry.getUrl()
                                                 : media_entry.getRemoteUrl());
-  if (now_index == 0) back_button->setEnabled(false);
-  if (now_index == link_size - 1) next_button->setEnabled(false);
+  if (now_index == 0)
+    back_button->setEnabled(false);
+  if (now_index == link_size - 1)
+    next_button->setEnabled(false);
 }
 
 /*
@@ -56,7 +60,7 @@ void ImageViewer::createButtons(QVBoxLayout *main_layout) {
   QPushButton *close_button = new QPushButton(tr("閉じる(&C)"));
   //アイコン設定
   close_button->setIcon(style()->standardIcon(
-      QStyle::SP_TitleBarCloseButton));  //直感的に操作できるように
+      QStyle::SP_TitleBarCloseButton)); //直感的に操作できるように
   next_button->setIcon(style()->standardIcon(QStyle::SP_ArrowRight));
   save_button->setIcon(style()->standardIcon(QStyle::SP_DialogSaveButton));
   copy_button->setIcon(style()->standardIcon(QStyle::SP_FileIcon));
@@ -82,11 +86,11 @@ void ImageViewer::createButtons(QVBoxLayout *main_layout) {
  * 概要:ImageLabelに画像をセットする。
  */
 void ImageViewer::setImage(const QString &url) {
-  QNetworkReply *rep = net.get(url);  //:origをつけると原寸大だが時間がかかる
+  QNetworkReply *rep = net.get(url); //:origをつけると原寸大だが時間がかかる
   connect(rep, &QNetworkReply::finished, iml, &ImageLabel::setPixmapByNetwork);
   connect(rep, &QNetworkReply::finished, this, &ImageViewer::fit);
   connect(this, &ImageViewer::destroyed, rep,
-          &QNetworkReply::deleteLater);  // abortも入れるべきか?
+          &QNetworkReply::deleteLater); // abortも入れるべきか?
   save_button->setEnabled(false);
 }
 
@@ -98,7 +102,7 @@ void ImageViewer::setImage(const QString &url) {
 void ImageViewer::fit() {
   save_button->setEnabled(true);
   if (first) {
-    resize(iml->sizeHint());  //関数名の由来(たまにでかすぎることが...)
+    resize(iml->sizeHint()); //関数名の由来(たまにでかすぎることが...)
     first = false;
   }
 }
@@ -109,13 +113,15 @@ void ImageViewer::fit() {
  * 概要:次の画像を表示する。
  */
 void ImageViewer::nextImage() {
-  if (!save_button->isEnabled()) return;  //作業中
+  if (!save_button->isEnabled())
+    return; //作業中
   now_index++;
   TootMediaDataEntry media_entry = media_data.getEntry(now_index);
   setImage(media_entry.getRemoteUrl().isEmpty() ? media_entry.getUrl()
                                                 : media_entry.getRemoteUrl());
   back_button->setEnabled(true);
-  if (now_index == media_data.size() - 1) next_button->setEnabled(false);
+  if (now_index == media_data.size() - 1)
+    next_button->setEnabled(false);
 }
 
 /*
@@ -124,13 +130,15 @@ void ImageViewer::nextImage() {
  * 概要:次の画像を表示する。
  */
 void ImageViewer::backImage() {
-  if (!save_button->isEnabled()) return;  //作業中
+  if (!save_button->isEnabled())
+    return; //作業中
   now_index--;
   TootMediaDataEntry media_entry = media_data.getEntry(now_index);
   setImage(media_entry.getRemoteUrl().isEmpty() ? media_entry.getUrl()
                                                 : media_entry.getRemoteUrl());
   next_button->setEnabled(true);
-  if (now_index == 0) back_button->setEnabled(false);
+  if (now_index == 0)
+    back_button->setEnabled(false);
 }
 
 /*
@@ -139,7 +147,8 @@ void ImageViewer::backImage() {
  * 概要:ImageLabelにセットされている画像をクリップボードにコピーする。
  */
 void ImageViewer::copy() {
-  if (!save_button->isEnabled()) return;  //作業中
+  if (!save_button->isEnabled())
+    return; //作業中
   if (const QPixmap *pixmap = iml->pixmap())
     QApplication::clipboard()->setPixmap(*pixmap);
 }
@@ -156,19 +165,19 @@ void ImageViewer::save() {
                            : media_entry.getRemoteUrl();
   QString tempname =
       media_link.split("/")
-          .constLast();  // http://doc.qt.io/qt-5/qstring.html#split に「If sep
-                         // does not match anywhere in the string, split()
-                         // returns a single-element list containing this
-                         // string.」とあるのでsplitが返すQStringListは空であることはない...はず
+          .constLast(); // http://doc.qt.io/qt-5/qstring.html#split に「If sep
+                        // does not match anywhere in the string, split()
+                        // returns a single-element list containing this
+                        // string.」とあるのでsplitが返すQStringListは空であることはない...はず
   QString templocation =
       QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
   QString filter(tr("画像") +
-                 "(");  // stream使っても良い(翻訳しやすいようにわざと分離する)
+                 "("); // stream使っても良い(翻訳しやすいようにわざと分離する)
   QByteArrayList spfilters = QImageWriter::supportedImageFormats();
 
   for (int cnt = spfilters.size() - 1; cnt >= 0;
        filter.append(" *." + spfilters.at(cnt)), cnt--)
-    ;  //順序は逆になるけどすっきりするから別にいいや
+    ; //順序は逆になるけどすっきりするから別にいいや
   filter.append(")");
   QString filename = QFileDialog::getSaveFileName(
       this, tr("名前を付けて保存"), templocation + "/" + tempname, filter);

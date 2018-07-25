@@ -22,8 +22,8 @@ static const QString user_stream("/api/v1/streaming/user");
 
 //トゥート関係
 static const QString statuses("/api/v1/statuses");
-static const QString reblog("/reblog");  // statusesとidを組み合わせる。
-static const QString favourite("/favourite");  // statusesとidを組み合わせる。
+static const QString reblog("/reblog"); // statusesとidを組み合わせる。
+static const QString favourite("/favourite"); // statusesとidを組み合わせる。
 //お気に入り関係
 
 //アップロード関係
@@ -33,4 +33,4 @@ static const QString media_upload("/api/v1/media");
 static const QString lists("/api/v1/lists");
 //ユーザ関係
 static const QString accounts_current("/api/v1/accounts/verify_credentials");
-}  // namespace MastodonUrl
+} // namespace MastodonUrl

@@ -16,7 +16,7 @@ class TootNotificationData;
 
 class Streamer : public QObject {
   Q_OBJECT
- public:
+public:
   explicit Streamer(QObject *parent = nullptr);
   ~Streamer();
   enum Error : unsigned int {
@@ -25,20 +25,20 @@ class Streamer : public QObject {
     BadPointer         /*不正なポインタがあった*/
   };
 
- signals:
+signals:
   void newToot(TootData *twdata);
   void deleteToot(const QString &id);
   void newNotification(TootNotificationData *nfdata);
   void abort(unsigned int err);
 
- public slots:
+public slots:
   void setMastodon(const Mastodon *original_mastodon);
   void startUserStream();
   void stopUserStream();
   void readStream();
   void finishedStream();
 
- protected:
+protected:
   QByteArray buffer;
   Mastodon *mastodon;
   QNetworkReply *reply;

@@ -7,8 +7,8 @@
  */
 #pragma once
 
-#include <QFrame>
 #include "../Network/Network.h"
+#include <QFrame>
 
 class QMouseEvent;
 class QMenu;
@@ -16,8 +16,8 @@ class TootData;
 
 class TootContent : public QFrame {
   Q_OBJECT
- public:
-  enum Mode {  //主にメニューの表示内容の制御
+public:
+  enum Mode { //主にメニューの表示内容の制御
     Normal,
     Reply = 1 << 1,
     Info = 1 << 2,
@@ -33,17 +33,17 @@ class TootContent : public QFrame {
   void setTootData(TootData *target_tdata);
   TootData *getTootData();
 
- signals:
+signals:
   void action(TootData *ori, unsigned char act);
 
- private slots:
+private slots:
   void triggeredAction();
   void openUrl();
   void showPicture(TootData *tdata, unsigned int index);
   void openWindow();
   void transferAction(TootData *ori, unsigned char act);
 
- private:
+private:
   virtual void mousePressEvent(QMouseEvent *event) override;
   void drawToot();
   void createActions();

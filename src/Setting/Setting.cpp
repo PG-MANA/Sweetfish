@@ -3,9 +3,9 @@
  * See LICENSE
  */
 
-#include <QtCore>
-#include "../Sweetfish.h"
 #include "Setting.h"
+#include "../Sweetfish.h"
+#include <QtCore>
 
 Setting::Setting(const QString &ini_file_name)
     : setting(getFilePath(ini_file_name), QSettings::IniFormat) {}

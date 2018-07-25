@@ -4,11 +4,11 @@
  * MediaUpload クラス
  * MediaUploadに使う。INIT=>APPEND=>FINALIZEと処理していき、media_idを返す。
  */
+#include "MediaUpload.h"
+#include "Mastodon.h"
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QNetworkReply>
-#include "Mastodon.h"
-#include "MediaUpload.h"
 
 // MEMO:APIを叩くときはmastodonクラスを使う。(additional_owners対応したら面白いかも。)
 MediaUpload::MediaUpload(const QByteArrayList &_list,
@@ -24,7 +24,8 @@ MediaUpload::~MediaUpload() {}
  * 概要:アップロード作業を開始する。
  */
 bool MediaUpload::start() {
-  if (mastodon == nullptr || !list.size() || !mimetype.size()) return false;
+  if (mastodon == nullptr || !list.size() || !mimetype.size())
+    return false;
   connect(mastodon->requestMediaUpload(list.at(counter), mimetype.at(counter)),
           &QNetworkReply::finished, this, &MediaUpload::next);
   return true;

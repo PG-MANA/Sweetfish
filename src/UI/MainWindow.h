@@ -9,8 +9,8 @@
  */
 #pragma once
 
-#include <QMainWindow>
 #include "../Network/Network.h"
+#include <QMainWindow>
 
 class Mastodon;
 class TootData;
@@ -33,11 +33,11 @@ class QSystemTrayIcon;
 
 class MainWindow : public QMainWindow {
   Q_OBJECT
- public:
+public:
   explicit MainWindow();
   virtual ~MainWindow();
   bool init(const QString setting_file_name);
- public slots:
+public slots:
   void show();
   void toot();
   void tootWithMedia(const QByteArray &id);
@@ -56,7 +56,7 @@ class MainWindow : public QMainWindow {
   void setListsMenu();
   void changeStatusStream(bool checked);
 
- protected:
+protected:
   virtual void closeEvent(QCloseEvent *event) override;
   virtual void keyPressEvent(QKeyEvent *qkey) override;
   virtual bool eventFilter(QObject *obj, QEvent *event) override;
@@ -65,7 +65,7 @@ class MainWindow : public QMainWindow {
   void deleteToot(TootData *tdata);
   Network net;
 
- private:
+private:
   void createMenus();
   void createTimeLine();
   void createTootBox();
@@ -77,10 +77,10 @@ class MainWindow : public QMainWindow {
 
   QString showAuthCodeInputDialog();
   QString showInstanceDomainInputDialog();
-  Mastodon *mstdn;  //将来複数持てるかも
+  Mastodon *mstdn; //将来複数持てるかも
   Setting *setting;
   QVBoxLayout *main_layout;
-  QScrollArea *info_scroll_area;  //ツイートに画像などを添付する時表示されるもの
+  QScrollArea *info_scroll_area; //ツイートに画像などを添付する時表示されるもの
   QPushButton *toot_button;
   TootInfo *toot_info;
   QPlainTextEdit *toot_editer;
@@ -89,6 +89,6 @@ class MainWindow : public QMainWindow {
   QThread *timeline_thread;
   QAction *stream_status;
   QSystemTrayIcon *
-      tray_info;  //これだとMainWindowが複数できたときにそれごとにトレイに追加されるのでstaticで管理するか、Sweetfish.cppが管理する必要が出てくるかもしれない。ただし、show()=>showMessage()=>hide()であたかもメッセージだけ表示された感じになる。これもヒープ上に作るのが世の常らしい(QtドキュメントもHeap上に作ってる。)。
+      tray_info; //これだとMainWindowが複数できたときにそれごとにトレイに追加されるのでstaticで管理するか、Sweetfish.cppが管理する必要が出てくるかもしれない。ただし、show()=>showMessage()=>hide()であたかもメッセージだけ表示された感じになる。これもヒープ上に作るのが世の常らしい(QtドキュメントもHeap上に作ってる。)。
   QMenu *list_menu;
 };

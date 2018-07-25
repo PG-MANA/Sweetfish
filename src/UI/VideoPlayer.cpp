@@ -5,9 +5,9 @@
  * VideoPlayer クラス
  * 動画をを再生する。Phonon依存している
  */
-#include <QtWidgets>
-#include "../Sweetfish.h"
 #include "VideoPlayer.h"
+#include "../Sweetfish.h"
+#include <QtWidgets>
 #ifdef NO_PHONON
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
@@ -18,7 +18,8 @@
 
 VideoPlayer::VideoPlayer(TootData *tdata, QWidget *parent, Qt::WindowFlags f)
     : QWidget(parent, f) {
-  if (tdata == nullptr || !tdata->getMediaData().size()) return;
+  if (tdata == nullptr || !tdata->getMediaData().size())
+    return;
   media_data = tdata->getMediaData();
   QString media_url = media_data.getEntry(0).getRemoteUrl().isEmpty()
                           ? media_data.getEntry(0).getUrl()
@@ -28,15 +29,15 @@ VideoPlayer::VideoPlayer(TootData *tdata, QWidget *parent, Qt::WindowFlags f)
 #ifdef NO_PHONON
   video_player = new QMediaPlayer;
   QVideoWidget *video_widget = new QVideoWidget;
-  video_player->setMedia(QUrl(media_url));  //先に読んでおく
+  video_player->setMedia(QUrl(media_url)); //先に読んでおく
   video_player->setVideoOutput(video_widget);
   main_layout->addWidget(video_widget);
 #else
   video_player = new Phonon::VideoPlayer(Phonon::VideoCategory);
-  video_player->load(QUrl(media_url));  //先に読んでおく
+  video_player->load(QUrl(media_url)); //先に読んでおく
   connect(video_player, &Phonon::VideoPlayer::finished, video_player,
           static_cast<void (Phonon::VideoPlayer::*)(void)>(
-              &Phonon::VideoPlayer::play));  // Loop
+              &Phonon::VideoPlayer::play)); // Loop
   main_layout->addWidget(video_player);
 #endif
 
@@ -65,7 +66,7 @@ void VideoPlayer::createButtons(QVBoxLayout *main_layout) {
   QHBoxLayout *button_layout = new QHBoxLayout;
   QPushButton *start = new QPushButton(tr("再生(&S)"));
   QPushButton *pause = new QPushButton(tr("一時停止(&P)"));
-  QPushButton *back = new QPushButton(tr("最初に戻る(&B)"));  //最初に戻る
+  QPushButton *back = new QPushButton(tr("最初に戻る(&B)")); //最初に戻る
   QPushButton *close = new QPushButton(tr("閉じる(&C)"));
   start->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
   pause->setIcon(style()->standardIcon(QStyle::SP_MediaPause));

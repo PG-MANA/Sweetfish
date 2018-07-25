@@ -2,12 +2,12 @@
  * This software is Licensed under the Apache License Version 2.0
  * See LICENSE
  */
+#include "Network.h"
+#include "../Sweetfish.h"
 #include <QHttpMultiPart>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
-#include "../Sweetfish.h"
-#include "Network.h"
 
 Network::Network() {}
 
@@ -83,7 +83,8 @@ QNetworkReply *Network::upload(QNetworkRequest &req,
       new QHttpMultiPart(QHttpMultiPart::FormDataType);
 
   for (const QByteArrayList &entry : data) {
-    if (entry.size() != 4) continue;  //無効
+    if (entry.size() != 4)
+      continue; //無効
     QHttpPart dataPart;
     if (!entry.at(1).isEmpty()) {
       dataPart.setHeader(QNetworkRequest::ContentDispositionHeader,

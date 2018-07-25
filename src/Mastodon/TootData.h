@@ -8,7 +8,7 @@
 #include <QString>
 
 class TootAccountData {
- public:
+public:
   TootAccountData(){};
   explicit TootAccountData(const QJsonObject &target);
 
@@ -22,18 +22,18 @@ class TootAccountData {
   QString getAcct() const { return acct; };
   QString getAvatar() const { return avatar; };
 
- private:
+private:
   QByteArray id;
-  QString user_name;  //スクリーンネーム(ABC)
-  QString acct;       //インスタンス名を含むユーザ名
+  QString user_name; //スクリーンネーム(ABC)
+  QString acct;      //インスタンス名を含むユーザ名
   QString display_name;
-  QString avatar;  //ユーザアイコン
+  QString avatar; //ユーザアイコン
   bool locked;
   // bool following;
 };
 
 class TootMediaDataEntry {
- public:
+public:
   // getter
   QString getType() const { return type; };
   QString getUrl() const { return url; };
@@ -41,7 +41,7 @@ class TootMediaDataEntry {
   QString getPreviewUrl() const { return preview_url; };
   QString getTextUrl() const { return text_url; };
 
- private:
+private:
   QString type;
   QString url;
   QString remote_url;
@@ -52,7 +52,7 @@ class TootMediaDataEntry {
 };
 
 class TootMediaData {
- public:
+public:
   TootMediaData(){};
   explicit TootMediaData(const QJsonArray &target);
   unsigned int size() const { return media_list.size(); };
@@ -60,12 +60,12 @@ class TootMediaData {
     return media_list.at(index);
   };
 
- private:
+private:
   QVector<TootMediaDataEntry> media_list;
 };
 
 class TootUrlData {
- public:
+public:
   TootUrlData(){};
   void addUrlPair(const QString &display_url, const QString &full_url);
   unsigned int count() const { return data.count(); };
@@ -73,12 +73,12 @@ class TootUrlData {
   QString getDisplayUrl(unsigned int index) const;
   QString getFullUrl(unsigned int index) const;
 
- private:
+private:
   QList<QPair<QString, QString>> data;
 };
 
 class TootData {
- public:
+public:
   TootData(){};
   explicit TootData(const QJsonObject &target,
                     const QByteArray &my_user_id = QByteArray());
@@ -101,13 +101,13 @@ class TootData {
   QDateTime getDateTime() const { return created_at; };
   QString getContent() const { return content; };
 
- private:
+private:
   QByteArray id;
   QDateTime created_at;
   QString uri;
   QString url;
   QString content;
-  QPair<QString, QString> application;  // via
+  QPair<QString, QString> application; // via
   unsigned flag;
 
   TootAccountData account;
@@ -119,8 +119,8 @@ class TootData {
 };
 
 class TootNotificationData {
- public:
-  enum Event {  //使いそうなやつだけ
+public:
+  enum Event { //使いそうなやつだけ
     NoEvent,
     Mention,
     Boost,
@@ -145,7 +145,7 @@ class TootNotificationData {
   const TootAccountData &getAccount() const { return account; };
   const TootData &getStatus() const { return status; };
 
- private:
+private:
   TootAccountData account;
   TootData status;
   Event type;

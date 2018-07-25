@@ -18,7 +18,7 @@ class TootData;
 
 class ImageLabel : public QLabel {
   Q_OBJECT
- public:
+public:
   explicit ImageLabel(const unsigned int init_sizex = 0,
                       const unsigned int init_sizey = 0,
                       const unsigned int init_index = 0,
@@ -34,17 +34,17 @@ class ImageLabel : public QLabel {
   unsigned int getIndex();
   void setIndex(unsigned int index);
 
- signals:
+signals:
   void clicked(TootData *tdata, unsigned int index);
   void rightClicked(TootData *tdata, unsigned int index);
- public slots:
-  void setPixmapByNetwork();  // QNetworkReplyのfinishedと接続する。
- protected:
+public slots:
+  void setPixmapByNetwork(); // QNetworkReplyのfinishedと接続する。
+protected:
   void mousePressEvent(QMouseEvent *event) override;
-  static QHash<QString, QPixmap> images;  // C++でいう、unordered_map
+  static QHash<QString, QPixmap> images; // C++でいう、unordered_map
 
   QString url;
-  TootContent *parent_content;  //親(TweetDataを引っ張り出すため)
-  unsigned int index;           //何番目か(0から始まる)
-  unsigned int sizex, sizey;    //縮小サイズ(0なら縮小しない)
+  TootContent *parent_content; //親(TweetDataを引っ張り出すため)
+  unsigned int index;          //何番目か(0から始まる)
+  unsigned int sizex, sizey;   //縮小サイズ(0なら縮小しない)
 };

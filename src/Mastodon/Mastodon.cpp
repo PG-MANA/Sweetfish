@@ -2,13 +2,13 @@
  * This software is Licensed under the Apache License Version 2.0
  * See LICENSE
  */
+#include "Mastodon.h"
+#include "../Network/Network.h"
+#include "../Sweetfish.h"
+#include "MastodonUrl.h"
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QtCore>
-#include "../Network/Network.h"
-#include "../Sweetfish.h"
-#include "Mastodon.h"
-#include "MastodonUrl.h"
 
 Mastodon::Mastodon() {}
 
@@ -55,16 +55,16 @@ QUrl Mastodon::getAuthorizeUrl(const QString &domain,
  * 戻値:受信用QNetworkReply
  * 概要:アクセストークンをもらうために認証コードを送る。
  */
-QNetworkReply *Mastodon::requestAccessToken(
-    const QString &domain, const QByteArray &client_id,
-    const QByteArray &client_secret, const QString &authorization_token_code) {
+QNetworkReply *
+Mastodon::requestAccessToken(const QString &domain, const QByteArray &client_id,
+                             const QByteArray &client_secret,
+                             const QString &authorization_token_code) {
   QNetworkRequest req;
   req.setUrl(MastodonUrl::scheme + domain + MastodonUrl::token);
-  return net.post(req,
-                  "grant_type=authorization_code&redirect_uri=urn:ietf:wg:"
-                  "oauth:2.0:oob&client_id=" +
-                      client_id + "&client_secret=" + client_secret +
-                      "&code=" + authorization_token_code.toUtf8());
+  return net.post(req, "grant_type=authorization_code&redirect_uri=urn:ietf:wg:"
+                       "oauth:2.0:oob&client_id=" +
+                           client_id + "&client_secret=" + client_secret +
+                           "&code=" + authorization_token_code.toUtf8());
 }
 
 /*

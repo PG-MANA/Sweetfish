@@ -9,10 +9,10 @@
  */
 #pragma once
 
-#include <QWidget>
 #include "../Mastodon/Mastodon.h"
 #include "../Mastodon/TootData.h"
 #include "../Network/Network.h"
+#include <QWidget>
 
 class ImageLabel;
 class QScrollArea;
@@ -21,21 +21,21 @@ class QPushButton;
 
 class ImageViewer : public QWidget {
   Q_OBJECT
- public:
+public:
   explicit ImageViewer(TootData *tdata, unsigned int index = 0,
                        QWidget *parent = Q_NULLPTR,
                        Qt::WindowFlags f = Qt::WindowFlags());
 
- public slots:
+public slots:
   void nextImage();
   void backImage();
   void copy();
   void save();
 
- private slots:
+private slots:
   void fit();
 
- private:
+private:
   void setImage(const QString &url);
   void createButtons(QVBoxLayout *main_layout);
   TootMediaData media_data;

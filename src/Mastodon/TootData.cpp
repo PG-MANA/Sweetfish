@@ -2,16 +2,17 @@
  * This software is Licensed under the Apache License Version 2.0
  * See LICENSE
  */
-#include <QtCore>
 #include "TootData.h"
+#include <QtCore>
 
 TootAccountData::TootAccountData(const QJsonObject &target) {
-  if (target.isEmpty()) return;
+  if (target.isEmpty())
+    return;
   id = target["id"].toString().toLatin1();
   user_name = target["username"].toString();
   display_name = target["display_name"].toString();
   acct = target["acct"].toString();
-  avatar = target["avatar"].toString();  //アイコン
+  avatar = target["avatar"].toString(); //アイコン
   locked = target["locked"].toBool();
 }
 
@@ -21,7 +22,8 @@ TootAccountData::TootAccountData(const QJsonObject &target) {
  * 概要:投稿したユーザ情報を返す。ブーストなどはブースト元のアカウント情報を返す。
  */
 const TootAccountData &TootData::getOriginalAccountData() const {
-  if (reblog != nullptr) return reblog->account;
+  if (reblog != nullptr)
+    return reblog->account;
   return account;
 }
 
@@ -67,7 +69,8 @@ TootMediaData::TootMediaData(const QJsonArray &target) {
 }
 
 TootData::TootData(const QJsonObject &target, const QByteArray &my_user_id) {
-  if (target.find("id") == target.end()) return;
+  if (target.find("id") == target.end())
+    return;
   id = target["id"].toString().toLatin1();
   created_at.setTimeSpec(Qt::UTC);
   created_at =
@@ -84,7 +87,7 @@ TootData::TootData(const QJsonObject &target, const QByteArray &my_user_id) {
   media = TootMediaData(target["media_attachments"].toArray());
 
   if (target["reblogged"].toBool()) {
-    flag |= 1 << 0;  //一般化
+    flag |= 1 << 0; //一般化
   }
   if (target["favourited"].toBool()) {
     flag |= 1 << 1;
@@ -94,9 +97,9 @@ TootData::TootData(const QJsonObject &target, const QByteArray &my_user_id) {
   }
 
   if (QJsonValue reblog_status = target["reblog"]; reblog_status.isObject()) {
-    QJsonObject reblog_object = reblog_status.toObject();  // constならいらない
+    QJsonObject reblog_object = reblog_status.toObject(); // constならいらない
     reblog = new TootData(reblog_object);
-    media = reblog->getMediaData();  //扱いやすいように
+    media = reblog->getMediaData(); //扱いやすいように
     content = reblog->getContent();
   }
   //製作中
@@ -150,7 +153,7 @@ void TootData::analyzeContent(QString c /*remove使うため参照ではない*/
   c.replace("<br>", "\n").replace("<br />", "\n");
   c.replace("&gt;", ">")
       .replace("&lt;", "<")
-      .replace("&amp;", "&");  //見やすいように連結した。
+      .replace("&amp;", "&"); //見やすいように連結した。
 
   QRegularExpressionMatchIterator &&link_tags =
       QRegularExpression("<a[^>]* href=\"([^\"]*)\"[^>]*>([^<]*)<\\/a>")
@@ -164,7 +167,8 @@ void TootData::analyzeContent(QString c /*remove使うため参照ではない*/
 }
 
 TootNotificationData::TootNotificationData(const QJsonObject &target) {
-  if (target.find("id") == target.end()) return;
+  if (target.find("id") == target.end())
+    return;
   QString &&type_str = target["type"].toString();
 
   // type判定

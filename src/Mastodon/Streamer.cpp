@@ -4,14 +4,14 @@
  *
  * 役目は、受信した文字をJSONパースして必要事項を詰め込んで、メインスレッドに投げることだけ。
  */
+#include "Streamer.h"
+#include "Mastodon.h"
+#include "TootData.h"
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QNetworkReply>
 #include <QUrlQuery>
-#include "Mastodon.h"
-#include "Streamer.h"
-#include "TootData.h"
 
 Streamer::Streamer(QObject *parent)
     : QObject(parent), mastodon(nullptr), reply(nullptr) {}
@@ -40,8 +40,10 @@ void Streamer::setMastodon(const Mastodon *original_mastodon) {
  * 概要:user_streamを開始する。reply->closeするか、deleteするまで永遠と動く。
  */
 void Streamer::startUserStream() {
-  if (mastodon == nullptr) return emit abort(BadPointer);
-  if (reply != nullptr && reply->isRunning()) return;
+  if (mastodon == nullptr)
+    return emit abort(BadPointer);
+  if (reply != nullptr && reply->isRunning())
+    return;
   reply = mastodon->requestUserStream();
   if (reply->error() != QNetworkReply::NoError) {
     delete reply;
@@ -86,7 +88,7 @@ void Streamer::readStream() {
   for (cnt = 0; cnt < size; cnt++) {
     if (message_list.at(cnt).startsWith("event:")) {
       if (cnt + 2 >= size || !message_list.at(cnt + 2).isEmpty()) {
-        break;  //まだ読み込み途中
+        break; //まだ読み込み途中
       }
       // switch使いたい
       QByteArray &&event_type =
@@ -150,7 +152,8 @@ void Streamer::readStream() {
 void Streamer::finishedStream() {
   if (reply) {
     QNetworkReply::NetworkError error = reply->error();
-    if (reply->isRunning()) stopUserStream();
+    if (reply->isRunning())
+      stopUserStream();
     if (error != QNetworkReply::OperationCanceledError)
       emit abort(NetworkError);
   }

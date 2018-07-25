@@ -14,25 +14,25 @@ class Mastodon;
 
 class MediaUpload : public QObject {
   Q_OBJECT
- public:
+public:
   explicit MediaUpload(const QByteArrayList &_list, const QByteArrayList &mime,
                        Mastodon *m, QObject *parent = Q_NULLPTR);
   virtual ~MediaUpload();
   bool start();
 
- signals:
+signals:
   void finished(const QByteArray &media_id);
   void aborted();
 
- public slots:
+public slots:
   void next();
   void retry();
 
- private:
+private:
   QByteArrayList list;
   QByteArrayList mimetype;
-  QByteArray id;        //=media_ids
-  QByteArray media_id;  //操作中のmedia_id
+  QByteArray id;       //=media_ids
+  QByteArray media_id; //操作中のmedia_id
   Mastodon *mastodon;
   unsigned int counter;
 };
