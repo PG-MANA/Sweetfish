@@ -6,6 +6,7 @@
 #include <QDateTime>
 #include <QJsonObject>
 #include <QString>
+#include <QVector>
 
 class TootAccountData {
 public:
