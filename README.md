@@ -31,6 +31,9 @@ This software is Licensed under the Apache License Version 2.0
 See LICENSE  
 注意:src/Resources/icon/以下のアイコンなどは「ロゴ」にあたり、派生成果物に含めることはできません。  
 
+## コーディングスタイル
+clang-formatかけています。
+
 ## ビルド
 ### 環境
 * Qt 5.9 (Qt5::Widgets Qt5::Network) 開発用ヘッダファイルなど
