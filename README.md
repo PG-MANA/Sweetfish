@@ -54,7 +54,7 @@ make
 
 https://repo.taprix.org/pg_mana/linux/rpm/ はx86_64用のrpmリポジトリになっています。
 ## 備考
-* 動作確認は netstat.app で行っています。
+* 動作確認は https://netstat.app で行っています。
 
 ## リンク
 ### SweetfishについてのWebページ
