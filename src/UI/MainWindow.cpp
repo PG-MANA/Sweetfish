@@ -2,7 +2,6 @@
  * This software is Licensed under the Apache License Version 2.0
  * See LICENSE
  */
-#include "MainWindow.h"
 #include "../Mastodon/Mastodon.h"
 #include "../Mastodon/MediaUpload.h"
 #include "../Mastodon/Streamer.h"
@@ -10,6 +9,7 @@
 #include "../Sweetfish.h"
 #include "ImageLabel.h"
 #include "ImageViewer.h"
+#include "MainWindow.h"
 #include "TextLabel.h"
 #include "TootContent.h"
 #include "TootInfo.h"
@@ -619,16 +619,16 @@ void MainWindow::showNotification(TootNotificationData *nfdata) {
     message = nfdata->getAccount().getDisplayName() + tr("さんが") +
               tr("以下のトゥートをお気に入りに登録しました。\n") +
               ((nfdata->getStatus().getContent().isEmpty())
-                   ? nfdata->getStatus().getContent()
-                   : tr("不明"));
+                   ? tr("不明")
+                   : nfdata->getStatus().getContent());
     break;
 
   case TootNotificationData::Event::Boost:
     message = nfdata->getAccount().getDisplayName() + tr("さんが") +
               tr("以下のトゥートをブーストしました。\n") +
               ((nfdata->getStatus().getContent().isEmpty())
-                   ? nfdata->getStatus().getContent()
-                   : tr("不明"));
+                   ? tr("不明")
+                   : nfdata->getStatus().getContent());
     break;
 
   case TootNotificationData::Event::Mention:
