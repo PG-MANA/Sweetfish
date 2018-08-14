@@ -2,9 +2,9 @@
  * This software is Licensed under the Apache License Version 2.0
  * See LICENSE
  */
-#include "Mastodon.h"
 #include "../Network/Network.h"
 #include "../Sweetfish.h"
+#include "Mastodon.h"
 #include "MastodonUrl.h"
 #include <QNetworkReply>
 #include <QNetworkRequest>

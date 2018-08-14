@@ -30,7 +30,7 @@ public:
                        QWidget *parent = Q_NULLPTR,
                        Qt::WindowFlags f = Qt::WindowFlags());
   virtual ~TootContent();
-  void setTootData(TootData *target_tdata);
+  void setTootData(TootData *target_tdata, bool should_redraw = false);
   TootData *getTootData();
 
 signals:
@@ -46,6 +46,7 @@ private slots:
 private:
   virtual void mousePressEvent(QMouseEvent *event) override;
   void drawToot();
+  void redrawToot();
   void createActions();
   Mode mode;
   Network net;

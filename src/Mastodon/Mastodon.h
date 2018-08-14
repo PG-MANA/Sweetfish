@@ -30,7 +30,7 @@ public:
   void setInstanceDomain(const QString &instance_domain);
   void setUserId(const QByteArray &id);
   QByteArray getUserId() const;
-  //ツイート関係
+  //トゥート関係
   QNetworkReply *requestToot(
       const QString &message,
       const QByteArray &media_id = QByteArray() /*ポインタのほうがいいかな...*/,

@@ -5,13 +5,13 @@
  * ToottContent クラス
  * タイムラインのトゥート一つ一つの(HTMLで言う)divみたいなもの
  */
-#include "TootContent.h"
-#include "../Mastodon/Mastodon.h"
+#include "../Mastodon/MastodonUrl.h"
 #include "../Mastodon/TootData.h"
 #include "../Sweetfish.h"
 #include "ImageLabel.h"
 #include "ImageViewer.h"
 #include "TextLabel.h"
+#include "TootContent.h"
 #include "VideoPlayer.h"
 #include <QNetworkReply>
 #include <QtWidgets>
@@ -31,11 +31,15 @@ TootContent::TootContent(TootData *init_tdata, Mode init_mode,
 TootContent::~TootContent() { delete tdata; }
 
 /*
- * 引数:tdata(新TootData)
+ * 引数:tdata(新TootData), should_redraw(再描画すべきか)
  * 戻値:なし
  * 概要:tdataを更新するときに使う。元のtdataの削除はしないので呼び出し元でする。
  */
-void TootContent::setTootData(TootData *target_tdata) { tdata = target_tdata; };
+void TootContent::setTootData(TootData *target_tdata, bool should_redraw) {
+  tdata = target_tdata;
+  if (should_redraw)
+    redrawToot();
+}
 
 /*
  * 引数:なし
@@ -174,6 +178,16 @@ void TootContent::openUrl() {
 /*
  * 引数:なし
  * 戻値:なし
+ * 概要:もう一度TootDataを使ってトゥートを表示し直す
+ */
+void TootContent::redrawToot() {
+  delete layout();
+  drawToot();
+}
+
+/*
+ * 引数:なし
+ * 戻値:なし
  * 概要:TootDataを使ってトゥートを表示する
  */
 void TootContent::drawToot() {
@@ -263,6 +277,41 @@ void TootContent::drawToot() {
       }
       text_box->addWidget(media_box);
     }
+  }
+  //引用(独自機能)
+  // BETTER: Mastodon本体の改造を促すべき
+  for (unsigned int cnt = 0, size = tdata->getUrlData().size(); cnt < size;
+       cnt++) {
+    QStringList url =
+        tdata->getUrlData().getFullUrl(cnt).split('/', QString::SkipEmptyParts);
+    QString id;
+    int url_size = url.size(); // URLを'/'で区切った時の要素数
+    if (url_size < 4)
+      continue;
+    if (url_size >= 6 && url[2] == "users" && url[4] == "statuses") {
+      id = url[5];
+    } else if (url_size >= 5 && url[2] == "web" && url[3] == "statuses") {
+      id = url[4];
+    } else if (url[2].at(0) == '@') {
+      id = url[3];
+    }
+    if (!QRegExp("^\\d+$").exactMatch(id))
+      continue;
+
+    TootContent *quote = new TootContent;
+    quote->setFrameShape(QFrame::StyledPanel);
+    quote->setFrameShadow(QFrame::Sunken);
+    text_box->addWidget(quote);
+    connect(
+        net.get(MastodonUrl::scheme + url[1] + MastodonUrl::statuses + "/" +
+                id),
+        &QNetworkReply::finished, this, [this, quote] {
+          QNetworkReply *rep = qobject_cast<QNetworkReply *>(sender());
+          quote->setTootData(
+              new TootData(QJsonDocument::fromJson(rep->readAll()).object()),
+              true);
+          rep->deleteLater();
+        });
   }
   //その他情報
   QLabel *info_text = new QLabel(tdata->getDateTime()
