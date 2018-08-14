@@ -10,13 +10,12 @@
 #include "../Network/Network.h"
 #include <QWidget>
 
-#if __has_include("phonon/VideoPlayer")
+#ifdef NO_PHONON
+class QMediaPlayer;
+#else
 namespace Phonon {
 class VideoPlayer;
 }
-#else
-#define NO_PHONON
-class QMediaPlayer;
 #endif
 
 class QVBoxLayout;
