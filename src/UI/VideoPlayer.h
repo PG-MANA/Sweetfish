@@ -10,7 +10,7 @@
 #include "../Network/Network.h"
 #include <QWidget>
 
-#ifdef NO_PHONON
+#ifdef USE_MULTIMEDIA
 class QMediaPlayer;
 #else
 namespace Phonon {
@@ -33,7 +33,7 @@ public slots:
 private:
   void createButtons(QVBoxLayout *main_layout);
   TootMediaData media_data;
-#ifdef NO_PHONON
+#ifdef USE_MULTIMEDIA
   QMediaPlayer *video_player;
 #else
   Phonon::VideoPlayer *video_player;

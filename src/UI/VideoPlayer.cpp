@@ -5,10 +5,10 @@
  * VideoPlayer クラス
  * 動画をを再生する。Phonon依存している
  */
-#include "VideoPlayer.h"
 #include "../Sweetfish.h"
+#include "VideoPlayer.h"
 #include <QtWidgets>
-#ifdef NO_PHONON
+#ifdef USE_MULTIMEDIA
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
 #include <QVideoWidget>
@@ -26,7 +26,7 @@ VideoPlayer::VideoPlayer(TootData *tdata, QWidget *parent, Qt::WindowFlags f)
                           : media_data.getEntry(0).getRemoteUrl();
   QVBoxLayout *main_layout = new QVBoxLayout(this);
 
-#ifdef NO_PHONON
+#ifdef USE_MULTIMEDIA
   video_player = new QMediaPlayer;
   QVideoWidget *video_widget = new QVideoWidget;
   video_player->setMedia(QUrl(media_url)); //先に読んでおく
@@ -72,7 +72,7 @@ void VideoPlayer::createButtons(QVBoxLayout *main_layout) {
   pause->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
   back->setIcon(style()->standardIcon(QStyle::SP_MediaSkipBackward));
   close->setIcon(style()->standardIcon(QStyle::SP_TitleBarCloseButton));
-#ifdef NO_PHONON
+#ifdef USE_MULTIMEDIA
   connect(start, &QPushButton::clicked, video_player, &QMediaPlayer::play);
   connect(pause, &QPushButton::clicked, video_player, &QMediaPlayer::pause);
   connect(back, &QPushButton::clicked, video_player, &QMediaPlayer::position);
