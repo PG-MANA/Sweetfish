@@ -81,8 +81,7 @@ private:
 class TootData {
 public:
   TootData(){};
-  explicit TootData(const QJsonObject &target,
-                    const QByteArray &my_user_id = QByteArray());
+  explicit TootData(const QJsonObject &target);
   virtual ~TootData();
 
   bool isEmpty() const { return id.isEmpty(); };
@@ -102,6 +101,9 @@ public:
   QDateTime getDateTime() const { return created_at; };
   QString getContent() const { return content; };
 
+  // setter
+  static void addOwnerUserId(const QByteArray &id);
+
 private:
   QByteArray id;
   QDateTime created_at;
@@ -117,6 +119,9 @@ private:
   TootData *reblog = nullptr;
 
   void analyzeContent(QString content);
+
+  static QByteArrayList
+      static_owner_user_id_list; //あまりいい方法ではない気もする...
 };
 
 class TootNotificationData {

@@ -5,6 +5,9 @@
 #include "TootData.h"
 #include <QtCore>
 
+//自分の使用しているアカウントのidリスト
+QByteArrayList TootData::static_owner_user_id_list;
+
 TootAccountData::TootAccountData(const QJsonObject &target) {
   if (target.isEmpty())
     return;
@@ -68,7 +71,7 @@ TootMediaData::TootMediaData(const QJsonArray &target) {
   }
 }
 
-TootData::TootData(const QJsonObject &target, const QByteArray &my_user_id) {
+TootData::TootData(const QJsonObject &target) {
   if (target.find("id") == target.end())
     return;
   id = target["id"].toString().toLatin1();
@@ -92,7 +95,7 @@ TootData::TootData(const QJsonObject &target, const QByteArray &my_user_id) {
   if (target["favourited"].toBool()) {
     flag |= 1 << 1;
   }
-  if (account.getId() == my_user_id) {
+  if (static_owner_user_id_list.contains(account.getId())) {
     flag |= 1 << 2;
   }
 
@@ -164,6 +167,15 @@ void TootData::analyzeContent(QString c /*remove使うため参照ではない*/
   }
   c.replace(QRegExp("<a[^>]* href=\"[^\"]*\"[^>]*>([^<]*)<\\/a>"), "\\1");
   content = c;
+}
+
+/*
+ * 引数:id(使用しているアカウントのid)
+ * 戻値:なし
+ * 概要:トゥートが自分のものか判定するためのidを登録する。
+ */
+void TootData::addOwnerUserId(const QByteArray &id) {
+  static_owner_user_id_list += id;
 }
 
 TootNotificationData::TootNotificationData(const QJsonObject &target) {

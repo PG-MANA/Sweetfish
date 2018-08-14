@@ -97,6 +97,7 @@ bool MainWindow::init(const QString setting_file_name) {
     mstdn->setAccessToken(setting->getAccessToken());
     mstdn->setInstanceDomain(setting->getInstanceDomain());
     mstdn->setUserId(setting->getUserId());
+    TootData::addOwnerUserId(setting->getUserId());
   }
 
   //タイトル
@@ -454,7 +455,7 @@ void MainWindow::showTimeLine() {
 
     for (int i = toots.size() - 1; i >= 0; i--) {
       QJsonObject obj = toots[i].toObject();
-      TootData *tdata = new TootData(obj, mstdn->getUserId());
+      TootData *tdata = new TootData(obj);
       if (!tdata->isEmpty())
         showToot(tdata);
     }
