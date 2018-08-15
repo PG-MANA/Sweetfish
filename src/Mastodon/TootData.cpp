@@ -89,6 +89,7 @@ TootData::TootData(const QJsonObject &target) {
   account = TootAccountData(target["account"].toObject());
   media = TootMediaData(target["media_attachments"].toArray());
 
+  flag = 0;
   if (target["reblogged"].toBool()) {
     flag |= 1 << 0; //一般化
   }

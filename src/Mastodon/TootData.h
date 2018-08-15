@@ -111,7 +111,7 @@ private:
   QString url;
   QString content;
   QPair<QString, QString> application; // via
-  unsigned flag;
+  unsigned int flag;
 
   TootAccountData account;
   TootUrlData url_list;
