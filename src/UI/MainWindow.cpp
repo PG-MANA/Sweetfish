@@ -921,9 +921,12 @@ void MainWindow::boost(TootData *tdata) {
   } else if (tdata->isBoosted()) {
     QMessageBox::information(this, APP_NAME,
                              tr("このトゥートはすでにブーストしています。"));
-  } else if (tdata->getOriginalAccountData().isLocked()) {
-    QMessageBox::information(
-        this, APP_NAME, tr("鍵アカウントのトゥートのためブーストできません。"));
+  } else if (tdata->isPrivateToot()) {
+    QMessageBox::information(this, APP_NAME,
+                             tr("非公開のトゥートのためブーストできません。"));
+  } else if (tdata->iSDirectMessage()) {
+    QMessageBox::information(this, APP_NAME,
+                             tr("ダイレクトメッセージのブーストできません。"));
   } else {
     connect(mstdn->requestBoost(tdata->getId()), &QNetworkReply::finished, this,
             &MainWindow::finishedRequest);
@@ -976,10 +979,13 @@ void MainWindow::contentAction(TootData *tdata, unsigned char act) {
     boost(tdata);
     break;
   case 'q':
-    if (tdata->getOriginalAccountData().isLocked())
+    if (tdata->isPrivateToot()) {
+      QMessageBox::information(this, APP_NAME,
+                               tr("非公開のトゥートのため引用できません。"));
+    } else if (tdata->iSDirectMessage()) {
       QMessageBox::information(
-          this, APP_NAME, tr("鍵アカウントのトゥートのため引用できません。"));
-    else {
+          this, APP_NAME, tr("ダイレクトメッセージのため引用できません。"));
+    } else {
       TootContent *content =
           new TootContent(new TootData(*tdata), TootContent::Info);
       toot_info->setQuoteToot(content);
