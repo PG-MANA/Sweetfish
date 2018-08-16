@@ -14,6 +14,9 @@ TootAccountData::TootAccountData(const QJsonObject &target) {
   id = target["id"].toString().toLatin1();
   user_name = target["username"].toString();
   display_name = target["display_name"].toString();
+  if (display_name.isEmpty()) {
+    display_name = user_name;
+  }
   acct = target["acct"].toString();
   avatar = target["avatar"].toString(); //アイコン
   locked = target["locked"].toBool();
