@@ -14,6 +14,9 @@ TootAccountData::TootAccountData(const QJsonObject &target) {
   id = target["id"].toString().toLatin1();
   user_name = target["username"].toString();
   display_name = target["display_name"].toString();
+  if (display_name.isEmpty()) {
+    display_name = user_name;
+  }
   acct = target["acct"].toString();
   avatar = target["avatar"].toString(); //アイコン
   locked = target["locked"].toBool();
@@ -89,6 +92,7 @@ TootData::TootData(const QJsonObject &target) {
   account = TootAccountData(target["account"].toObject());
   media = TootMediaData(target["media_attachments"].toArray());
 
+  flag = 0;
   if (target["reblogged"].toBool()) {
     flag |= 1 << 0; //一般化
   }
@@ -97,6 +101,12 @@ TootData::TootData(const QJsonObject &target) {
   }
   if (static_owner_user_id_list.contains(account.getId())) {
     flag |= 1 << 2;
+  }
+  if (target["visibility"].toString() == "private") {
+    flag |= 1 << 3;
+  }
+  if (target["visibility"].toString() == "direct") {
+    flag |= 1 << 4;
   }
 
   if (QJsonValue reblog_status = target["reblog"]; reblog_status.isObject()) {
@@ -130,6 +140,20 @@ bool TootData::isFavourited() const { return flag & (1 << 1); }
  * 概要:自分の投稿かどうかを返す。
  */
 bool TootData::isTootOwner() const { return flag & (1 << 2); }
+
+/*
+ * 引数:なし
+ * 戻値:bool(非公開の投稿ならtrue、それ以外はfalse)
+ * 概要:非公開の投稿(フォローしてないと見れない)かどうかを返す。
+ */
+bool TootData::isPrivateToot() const { return flag & (1 << 3); }
+
+/*
+ * 引数:なし
+ * 戻値:bool(ダイレクトメッセージならtrue、それ以外はfalse)
+ * 概要:ダイレクトメッセージかどうかを返す。
+ */
+bool TootData::iSDirectMessage() const { return flag & (1 << 4); }
 
 /*
  * 引数:なし

@@ -88,6 +88,8 @@ public:
   bool isBoosted() const;
   bool isFavourited() const;
   bool isTootOwner() const;
+  bool isPrivateToot() const;
+  bool iSDirectMessage() const;
 
   // getter
   QByteArray getId() const { return id; };
@@ -111,7 +113,7 @@ private:
   QString url;
   QString content;
   QPair<QString, QString> application; // via
-  unsigned flag;
+  qint64 flag;
 
   TootAccountData account;
   TootUrlData url_list;
