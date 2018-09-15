@@ -234,7 +234,8 @@ void TootContent::drawToot() {
   text_box->addWidget(new TextLabel(tdata->getContent()));
   if (tdata->getMediaData().size() && !(mode & Mode::Info)) {
     TootMediaData media_data = tdata->getMediaData();
-    if (media_data.getEntry(0).getType() == "video") { //動画(一つのみ対応)
+    if (media_data.getEntry(0).getType() == "video" ||
+        media_data.getEntry(0).getType() == "gifv") { //動画(一つのみ対応)
       TootMediaDataEntry video_entry = media_data.getEntry(0);
 
       ImageLabel *iml = new ImageLabel(50, 50, 0, this);
