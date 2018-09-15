@@ -1,4 +1,4 @@
-# spec file for Sardine
+# spec file for Sweetfish
 #
 # Copyright 2017 PG_MANA
 #
