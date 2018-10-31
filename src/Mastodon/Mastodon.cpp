@@ -12,12 +12,9 @@
 
 Mastodon::Mastodon() {}
 
-Mastodon::Mastodon(const Mastodon &other) {
-  access_token = other.access_token;
-  domain = other.domain;
-  user_id = other.user_id;
-  // Networkは新規
-}
+Mastodon::Mastodon(const Mastodon &other)
+    : user_id(other.user_id), access_token(other.access_token),
+      domain(other.domain) {}
 
 Mastodon::~Mastodon() {}
 
