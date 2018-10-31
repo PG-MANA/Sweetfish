@@ -926,7 +926,7 @@ void MainWindow::boost(TootData *tdata) {
                              tr("非公開のトゥートのためブーストできません。"));
   } else if (tdata->iSDirectMessage()) {
     QMessageBox::information(this, APP_NAME,
-                             tr("ダイレクトメッセージのブーストできません。"));
+                             tr("ダイレクトメッセージのためブーストできません。"));
   } else {
     connect(mstdn->requestBoost(tdata->getId()), &QNetworkReply::finished, this,
             &MainWindow::finishedRequest);
