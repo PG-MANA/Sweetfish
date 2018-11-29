@@ -129,6 +129,11 @@ If possible, set this in your window manager instead.</translation>
         <translation>&amp;Help</translation>
     </message>
     <message>
+    <location filename="MainWindow.cpp" line="162"/>
+    <source>Sweetfishについて(&amp;A)</source>
+    <translation>&amp;About Sweetfish</translation>
+    </message>
+    <message>
         <location filename="MainWindow.cpp" line="165"/>
         <source>バージョンやライセンスについてのダイアログを表示します。</source>
         <translation>Displays version and license information.</translation>

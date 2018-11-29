@@ -22,7 +22,7 @@ ImageViewer::ImageViewer(TootData *tdata, unsigned int index, QWidget *parent,
   QScrollArea *image_area = new QScrollArea;
   iml = new ImageLabel(0, 0, 0, nullptr);
 
-  setWindowTitle(tr("画像の詳細 " APP_NAME));
+  setWindowTitle(tr("画像の詳細 ") + APP_NAME);
   setAttribute(Qt::WA_DeleteOnClose);
 
   int link_size = media_data.size();
