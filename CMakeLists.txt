@@ -13,17 +13,21 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)#C++17でなければ中止
 set(CMAKE_CXX_EXTENSIONS OFF)#独自拡張のライブラリリンク防止
 
 # Find the Qt library
-find_package(Qt5 CONFIG REQUIRED Core Widgets Network)
+find_package(Qt5 CONFIG REQUIRED Core Widgets Network LinguistTools)
 
 #Make libraries
 add_subdirectory(src/Network)
 add_subdirectory(src/Setting)
 add_subdirectory(src/Mastodon)
 add_subdirectory(src/UI)
+add_subdirectory(src/Translations)
 
-add_executable(sweetfish src/Sweetfish.cpp src/Resources/icon/icon.qrc src/Resources/ui/ui-icon.qrc) 
+add_executable(sweetfish src/Sweetfish.cpp src/Resources/icon/icon.qrc src/Resources/ui/ui-icon.qrc)
 
 #Link libraries
 target_link_libraries(sweetfish UI) #UI <= Twitter <= Setting <= Networkとつながってる...はず
 
+add_dependencies(sweetfish translations)
+
 install(TARGETS sweetfish DESTINATION bin)
+#install(DIRECTORY locales RESOURCE DESTINATION lib/sweetfish) # Not working...

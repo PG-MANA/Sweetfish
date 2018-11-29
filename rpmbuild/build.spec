@@ -40,10 +40,11 @@ This software uses qt.So it may be possible to work on macOS or Windows.
 make %{?_smp_mflags}
 
 %install
-mkdir -p %{buildroot}/usr/share/applications %{buildroot}/usr/share/pixmaps
+mkdir -p %{buildroot}/usr/share/applications %{buildroot}/usr/share/pixmaps %{buildroot}/usr/lib/%{APP_NAME}/
 cp src/Resources/icon/icon-normal.png %{buildroot}/usr/share/pixmaps/%{APP_NAME}.png
 cp %{APP_NAME}.desktop %{buildroot}/usr/share/applications/%{APP_NAME}.desktop
 cd build
+cp -r locales %{buildroot}/usr/lib/%{APP_NAME}/
 make install DESTDIR=%{buildroot}
 
 %clean
@@ -53,3 +54,4 @@ rm -rf $RPM_BUILD_ROOT
 /usr/bin/%{APP_NAME}
 /usr/share/pixmaps/%{APP_NAME}.png
 /usr/share/applications/%{APP_NAME}.desktop
+/usr/lib/%{APP_NAME}/locales/*.qm
