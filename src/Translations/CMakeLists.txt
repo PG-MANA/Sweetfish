@@ -5,8 +5,7 @@
 cmake_minimum_required(VERSION 3.1)
 
 set(TS_FILES en_AU.ts)
-qt5_add_translation(QM_FILES ${TS_FILES})
-
+qt5_create_translation(QM_FILES ../UI/ ${TS_FILES})
 add_custom_target(translations DEPENDS ${QM_FILES})
 
 add_custom_command(

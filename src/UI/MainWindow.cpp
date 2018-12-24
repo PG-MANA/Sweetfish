@@ -158,9 +158,10 @@ void MainWindow::createMenus() {
   QMenu *help_menu = menuBar()->addMenu(tr("ヘルプ(&H)"));
   help_menu->setToolTipsVisible(true);
   help_menu
-      ->addAction(QIcon(":/icon-normal.png"),
-                  tr(APP_NAME "について(&A)" /*分離すると翻訳しづらそう*/),
-                  this, &MainWindow::showAbout)
+      ->addAction(
+          QIcon(":/icon-normal.png"),
+          tr("このソフトウェアについて(&A)" /*分離すると翻訳しづらそう*/), this,
+          &MainWindow::showAbout)
       ->setToolTip(
           tr("バージョンやライセンスについてのダイアログを表示します。"));
   help_menu
@@ -877,7 +878,7 @@ void MainWindow::processToot(QString &text) {
  */
 void MainWindow::showAbout() {
   QMessageBox::about(
-      this, APP_NAME + tr("について"),
+      this, APP_NAME,
       "<b>" APP_NAME_LONG "</b>"
       "<p>Ver " APP_VERSION "</p>"
       "<p>" +
@@ -925,8 +926,8 @@ void MainWindow::boost(TootData *tdata) {
     QMessageBox::information(this, APP_NAME,
                              tr("非公開のトゥートのためブーストできません。"));
   } else if (tdata->iSDirectMessage()) {
-    QMessageBox::information(this, APP_NAME,
-                             tr("ダイレクトメッセージのためブーストできません。"));
+    QMessageBox::information(
+        this, APP_NAME, tr("ダイレクトメッセージのためブーストできません。"));
   } else {
     connect(mstdn->requestBoost(tdata->getId()), &QNetworkReply::finished, this,
             &MainWindow::finishedRequest);
