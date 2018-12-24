@@ -11,8 +11,7 @@
 %define APP_HOMEPAGE    https://soft.taprix.org/product/sweetfish.html
 %define APP_LICENCE     Apache License, Version 2.0
 
-Summary: Sweetfish for Linux
-Summary(ja):Mastodon client for Linux
+Summary:Mastodon client for Linux
 Name: %{APP_NAME}
 Source0: %{APP_NAME}-%{APP_VERSION}.tar.gz
 Version: %{APP_VERSION}
