@@ -120,17 +120,12 @@
     <message>
         <location filename="../UI/MainWindow.cpp" line="153"/>
         <source>常にこのウィンドウを手前に表示します。(ウィンドウマネージャで設定できる場合はそちらで設定してください。)</source>
-        <translation>Keeps the window floating above other windows.
-If possible, set this in your window manager instead.</translation>
+        <translation>Keeps the window floating above other windows.(If possible, set this in your window manager instead.)</translation>
     </message>
     <message>
         <location filename="../UI/MainWindow.cpp" line="158"/>
         <source>ヘルプ(&amp;H)</source>
         <translation>&amp;Help</translation>
-    </message>
-    <message>
-        <source>Sweetfishについて(&amp;A)</source>
-        <translation type="vanished">&amp;About Sweetfish</translation>
     </message>
     <message>
         <location filename="../UI/MainWindow.cpp" line="163"/>
@@ -207,7 +202,8 @@ If possible, set this in your window manager instead.</translation>
         <location filename="../UI/MainWindow.cpp" line="340"/>
         <source>認証するインスタンスのドメイン名を入力してください。(https://は不要です。)
 例) netstat.app</source>
-        <translation>Enter the domain name of your instance, without the protocol specifier (ie https://).</translation>
+        <translation>Enter the domain name of your instance, without the protocol specifier (ie https://).
+Ex) netstat.app</translation>
     </message>
     <message>
         <location filename="../UI/MainWindow.cpp" line="361"/>
@@ -387,53 +383,58 @@ If possible, set this in your window manager instead.</translation>
 <context>
     <name>TootContent</name>
     <message>
-        <location filename="../UI/TootContent.cpp" line="84"/>
-        <location filename="../UI/TootContent.cpp" line="121"/>
+        <location filename="../UI/TootContent.cpp" line="85"/>
+        <location filename="../UI/TootContent.cpp" line="122"/>
         <source>Delete(&amp;D)</source>
         <translation>&amp;Delete</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="93"/>
+        <location filename="../UI/TootContent.cpp" line="94"/>
         <source>Boost(&amp;B)</source>
         <translation>&amp;Boost</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="99"/>
+        <location filename="../UI/TootContent.cpp" line="100"/>
         <source>Quote Toot(&amp;Q)</source>
         <translation>&amp;Quote</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="105"/>
+        <location filename="../UI/TootContent.cpp" line="106"/>
         <source>Reply(&amp;R)</source>
         <translation>&amp;Reply</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="111"/>
+        <location filename="../UI/TootContent.cpp" line="112"/>
         <source>Favourite(&amp;F)</source>
         <translation>&amp;Favourite</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="125"/>
+        <location filename="../UI/TootContent.cpp" line="126"/>
         <source>Open in new window(&amp;W)</source>
         <translation>&amp;Open in new window</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="129"/>
+        <location filename="../UI/TootContent.cpp" line="130"/>
         <source>URL</source>
         <translation>URL</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="144"/>
+        <location filename="../UI/TootContent.cpp" line="143"/>
+        <source>ユーザー情報</source>
+        <translation>User information</translation>
+    </message>
+    <message>
+        <location filename="../UI/TootContent.cpp" line="150"/>
         <source>クライアント</source>
         <translation>Client</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="211"/>
+        <location filename="../UI/TootContent.cpp" line="217"/>
         <source> boosted</source>
         <translation> boosted</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="363"/>
+        <location filename="../UI/TootContent.cpp" line="369"/>
         <source>トゥートの詳細 </source>
         <translation>Toot details - </translation>
     </message>
@@ -449,6 +450,19 @@ If possible, set this in your window manager instead.</translation>
         <location filename="../UI/TootInfo.cpp" line="90"/>
         <source>Delete(&amp;D)</source>
         <translation>&amp;Delete</translation>
+    </message>
+</context>
+<context>
+    <name>UserInfoBox</name>
+    <message>
+        <location filename="../UI/UserInfoBox.cpp" line="76"/>
+        <source>フォロー中:</source>
+        <translation>Following:</translation>
+    </message>
+    <message>
+        <location filename="../UI/UserInfoBox.cpp" line="81"/>
+        <source>フォロワー:</source>
+        <translation>Followers:</translation>
     </message>
 </context>
 <context>

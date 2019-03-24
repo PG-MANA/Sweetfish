@@ -12,6 +12,7 @@
 #include "ImageViewer.h"
 #include "TextLabel.h"
 #include "TootContent.h"
+#include "UserInfoBox.h"
 #include "VideoPlayer.h"
 #include <QNetworkReply>
 #include <QtWidgets>
@@ -86,8 +87,8 @@ void TootContent::createActions() {
     return; //最低限の表示のみ
   }
   //リトゥート
-  popup->addSection((tdata->getContent().size() > 15)
-                        ? tdata->getContent().left(15).append("...")
+  popup->addSection((tdata->getContent().size() >= 16)
+                        ? tdata->getContent().left(16).append("...")
                         : tdata->getContent()); //使い方合ってるんかいな...
   popup
       ->addAction(QIcon(":/bst.png"), tr("Boost(&B)"), this,
@@ -139,7 +140,12 @@ void TootContent::createActions() {
       popup->addAction(url_open_action);
     }
   }
-
+  popup->addSection(tr("ユーザー情報"));
+  popup->addAction(tdata->getOriginalAccountData().getDisplayName(), this, [this] {
+    UserInfoBox *box =
+        new UserInfoBox(tdata->getOriginalAccountData(), root_widget, Qt::Window);
+    box->show();
+  });
   if (!tdata->getApplicationName().isEmpty()) {
     popup->addSection(tr("クライアント"));
     popup
