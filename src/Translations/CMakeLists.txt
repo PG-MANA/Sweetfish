@@ -5,7 +5,8 @@
 cmake_minimum_required(VERSION 3.1)
 
 set(TS_FILES en_AU.ts)
-qt5_create_translation(QM_FILES ../UI/ ${TS_FILES})
+set_directory_properties(PROPERTIES CLEAN_NO_CUSTOM 1)# For Clean
+qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR}/src/UI/ ${TS_FILES})
 add_custom_target(translations DEPENDS ${QM_FILES})
 
 add_custom_command(
