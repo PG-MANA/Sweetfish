@@ -23,6 +23,9 @@ public:
   QString getDisplayName() const { return display_name; };
   QString getAcct() const { return acct; };
   QString getAvatar() const { return avatar; };
+  QString getDescription() const { return description; };
+  unsigned int getFollowingCount() const { return following_count; };
+  unsigned int getFollowersCount() const { return followers_count; };
 
 private:
   QByteArray id;
@@ -30,6 +33,9 @@ private:
   QString acct;      //インスタンス名を含むユーザ名
   QString display_name;
   QString avatar; //ユーザアイコン
+  QString description;
+  unsigned int following_count;
+  unsigned int followers_count;
   bool locked;
   // bool following;
 };

@@ -19,7 +19,10 @@ TootAccountData::TootAccountData(const QJsonObject &target) {
   }
   acct = target["acct"].toString();
   avatar = target["avatar"].toString(); //アイコン
+  following_count = target["following_count"].toInt();
+  followers_count = target["followers_count"].toInt();
   locked = target["locked"].toBool();
+  description = target["note"].toString();
 }
 
 /*
