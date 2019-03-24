@@ -5,6 +5,8 @@
  * VideoPlayer クラス
  * 動画をを再生する。Phonon依存している
  */
+#pragma once
+
 #include "../Mastodon/Mastodon.h"
 #include "../Mastodon/TootData.h"
 #include "../Network/Network.h"
