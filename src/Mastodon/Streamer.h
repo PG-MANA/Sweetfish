@@ -9,7 +9,7 @@
 
 #include <QObject>
 
-class Mastodon;
+class MastodonAPI;
 class QNetworkReply;
 class TootData;
 class TootNotificationData;
@@ -32,7 +32,7 @@ signals:
   void abort(unsigned int err);
 
 public slots:
-  void setMastodon(const Mastodon *original_mastodon);
+  void setMastodonAPI(const MastodonAPI *original_mastodon);
   void startUserStream();
   void stopUserStream();
   void readStream();
@@ -40,6 +40,6 @@ public slots:
 
 protected:
   QByteArray buffer;
-  Mastodon *mastodon;
+  MastodonAPI *mastodon_api;
   QNetworkReply *reply;
 };

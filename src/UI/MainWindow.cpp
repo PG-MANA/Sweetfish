@@ -2,7 +2,7 @@
  * This software is Licensed under the Apache License Version 2.0
  * See LICENSE
  */
-#include "../Mastodon/Mastodon.h"
+#include "../Mastodon/MastodonAPI.h"
 #include "../Mastodon/MediaUpload.h"
 #include "../Mastodon/Streamer.h"
 #include "../Setting/Setting.h"
@@ -76,7 +76,7 @@ bool MainWindow::init(const QString setting_file_name) {
   //設定読み込み
   setting = new Setting(setting_file_name);
   restoreGeometry(setting->getGeometry());
-  mstdn = new Mastodon;
+  mstdn = new MastodonAPI;
 
   if (setting->getAccessToken().isEmpty()) {
     try {
@@ -104,10 +104,11 @@ bool MainWindow::init(const QString setting_file_name) {
   setWindowTitle(setting->getUserName() + "@" + setting->getInstanceDomain() +
                  " - " APP_NAME);
   QMetaObject::invokeMethod(
-      timeline_streamer, "setMastodon", Qt::BlockingQueuedConnection,
+      timeline_streamer, "setMastodonAPI", Qt::BlockingQueuedConnection,
       QGenericReturnArgument(nullptr),
-      Q_ARG(const Mastodon *,
-            mstdn)); //別スレッドでMastodonクラスを作らないといろいろ怒られる。
+      Q_ARG(
+          const MastodonAPI *,
+          mstdn)); //別スレッドでMastodonAPIクラスを作らないといろいろ怒られる。
   return true;
 }
 

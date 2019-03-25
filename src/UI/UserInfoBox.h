@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "../Mastodon/Mastodon.h"
+/*#include "../Mastodon/MastodonAPI.h"*/
 #include "../Mastodon/TootData.h"
 #include <QWidget>
 
@@ -29,6 +29,6 @@ private:
   void createInfoBox();
   QWidget *root_widget;
   TootAccountData user;
-  Mastodon mstdn;
+  /*MastodonAPI mstdn;*/
   QVBoxLayout *main_layout;
 };

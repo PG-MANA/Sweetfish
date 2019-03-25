@@ -6,8 +6,9 @@
  * 各ユーザーの詳細を表示する。
  */
 
-#include "../Mastodon/Mastodon.h"
+/*#include "../Mastodon/MastodonAPI.h"*/
 #include "../Mastodon/TootData.h"
+#include "../Network/Network.h"
 #include "ImageLabel.h"
 #include "TextLabel.h"
 #include "UserInfoBox.h"

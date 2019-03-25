@@ -12,7 +12,7 @@
 #include "../Network/Network.h"
 #include <QMainWindow>
 
-class Mastodon;
+class MastodonAPI;
 class TootData;
 class TootNotificationData;
 class Streamer;
@@ -77,7 +77,7 @@ private:
 
   QString showAuthCodeInputDialog();
   QString showInstanceDomainInputDialog();
-  Mastodon *mstdn; //将来複数持てるかも
+  MastodonAPI *mstdn; //将来複数持てるかも
   Setting *setting;
   QVBoxLayout *main_layout;
   QScrollArea *info_scroll_area; //ツイートに画像などを添付する時表示されるもの

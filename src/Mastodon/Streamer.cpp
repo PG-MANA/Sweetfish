@@ -5,7 +5,7 @@
  * 役目は、受信した文字をJSONパースして必要事項を詰め込んで、メインスレッドに投げることだけ。
  */
 #include "Streamer.h"
-#include "Mastodon.h"
+#include "MastodonAPI.h"
 #include "TootData.h"
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -14,11 +14,11 @@
 #include <QUrlQuery>
 
 Streamer::Streamer(QObject *parent)
-    : QObject(parent), mastodon(nullptr), reply(nullptr) {}
+    : QObject(parent), mastodon_api(nullptr), reply(nullptr) {}
 
 Streamer::~Streamer() {
   stopUserStream();
-  delete mastodon;
+  delete mastodon_api;
 }
 
 /*
@@ -26,11 +26,11 @@ Streamer::~Streamer() {
  * 戻値:なし
  * 概要:Mastodonクラス生成。動作するスレッドでよぶ。(QMetaObject::invokeMethodを使ってQt::ConnectionTypeはQt::BlockingQueuedConnection)
  */
-void Streamer::setMastodon(const Mastodon *original_mastodon) {
+void Streamer::setMastodonAPI(const MastodonAPI *original_mastodon) {
   if (original_mastodon != nullptr) {
-    mastodon = new Mastodon(*original_mastodon);
+    mastodon_api = new MastodonAPI(*original_mastodon);
   } else {
-    mastodon = new Mastodon;
+    mastodon_api = new MastodonAPI;
   }
 }
 
@@ -40,11 +40,11 @@ void Streamer::setMastodon(const Mastodon *original_mastodon) {
  * 概要:user_streamを開始する。reply->closeするか、deleteするまで永遠と動く。
  */
 void Streamer::startUserStream() {
-  if (mastodon == nullptr)
+  if (mastodon_api == nullptr)
     return emit abort(BadPointer);
   if (reply != nullptr && reply->isRunning())
     return;
-  reply = mastodon->requestUserStream();
+  reply = mastodon_api->requestUserStream();
   if (reply->error() != QNetworkReply::NoError) {
     delete reply;
     reply = nullptr;

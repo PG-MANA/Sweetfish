@@ -7,7 +7,6 @@
  */
 #pragma once
 
-#include "../Mastodon/Mastodon.h"
 #include "../Mastodon/TootData.h"
 #include "../Network/Network.h"
 #include <QWidget>

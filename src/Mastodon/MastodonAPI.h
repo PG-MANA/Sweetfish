@@ -13,11 +13,11 @@ class QNetworkRequest;
 class Network;
 class Setting;
 
-class Mastodon {
+class MastodonAPI {
 public:
-  explicit Mastodon();
-  Mastodon(const Mastodon &other);
-  virtual ~Mastodon();
+  explicit MastodonAPI();
+  MastodonAPI(const MastodonAPI &other);
+  virtual ~MastodonAPI();
 
   //認証関係
   QNetworkReply *registerApp(const QString &domain);
@@ -50,7 +50,7 @@ public:
   QNetworkReply *requestCurrentAccountInfo();
 
 private:
-  /*汎用関数。あくまでMastodonクラスから呼ぶもので他のクラス(UIなど)からはこれを呼ばず専用の関数を作る。*/
+  /*汎用関数。あくまでMastodonAPIクラスから呼ぶもので他のクラス(UIなど)からはこれを呼ばず専用の関数を作る。*/
   QNetworkReply *get(QNetworkRequest &req);
   QNetworkReply *post(QNetworkRequest &req, const QByteArray &data);
   QNetworkReply *del(QNetworkRequest &req);

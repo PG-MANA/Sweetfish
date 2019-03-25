@@ -10,13 +10,13 @@
 #include <QByteArray>
 #include <QObject>
 
-class Mastodon;
+class MastodonAPI;
 
 class MediaUpload : public QObject {
   Q_OBJECT
 public:
   explicit MediaUpload(const QByteArrayList &_list, const QByteArrayList &mime,
-                       Mastodon *m, QObject *parent = Q_NULLPTR);
+                       MastodonAPI *m, QObject *parent = Q_NULLPTR);
   virtual ~MediaUpload();
   bool start();
 
@@ -33,6 +33,6 @@ private:
   QByteArrayList mimetype;
   QByteArray id;       //=media_ids
   QByteArray media_id; //操作中のmedia_id
-  Mastodon *mastodon;
+  MastodonAPI *mastodon_api;
   unsigned int counter;
 };
