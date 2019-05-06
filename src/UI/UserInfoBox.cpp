@@ -17,7 +17,8 @@
 
 UserInfoBox::UserInfoBox(const TootAccountData &user_data /*, Mastodon &mstdn*/,
                          QWidget *root_window, Qt::WindowFlags f)
-    : QWidget(root_window, f), root_widget(root_window), user(user_data)
+    : QWidget(root_window, f), root_widget(root_window), user(user_data),
+      menu(nullptr)
 /*,mstdn(mstdn)*/ {
   setAttribute(Qt::WA_DeleteOnClose);
   //ウィンドウ準備
@@ -91,3 +92,34 @@ void UserInfoBox::createInfoBox() {
  * 概要:ウィンドウを表示する時呼ばれる。
  */
 void UserInfoBox::show() { QWidget::show(); }
+
+/*
+ * 引数:event
+ * 戻値:なし
+ * 概要:マウス操作がされたときに呼び出される。
+ */
+void UserInfoBox::mousePressEvent(QMouseEvent *event) {
+  switch (event->button()) {
+  case Qt::RightButton:
+    if (!menu) {
+      menu = new QMenu(user.getDisplayName(),
+                       this); // Title表示されない...
+      createMenu();
+    }
+    menu->popup(event->globalPos());
+    break;
+  default:
+    event->ignore();
+    return;
+  }
+  event->accept();
+}
+
+/*
+ * 引数:なし
+ * 戻値:なし
+ * 概要:ポップアップメニュー作成。
+ */
+void UserInfoBox::createMenu() {
+  menu->addAction(tr("Follow(&F)"), this, [] {});
+}

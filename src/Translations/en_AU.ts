@@ -455,14 +455,19 @@ Ex) netstat.app</translation>
 <context>
     <name>UserInfoBox</name>
     <message>
-        <location filename="../UI/UserInfoBox.cpp" line="77"/>
+        <location filename="../UI/UserInfoBox.cpp" line="78"/>
         <source>フォロー中:</source>
         <translation>Following:</translation>
     </message>
     <message>
-        <location filename="../UI/UserInfoBox.cpp" line="82"/>
+        <location filename="../UI/UserInfoBox.cpp" line="83"/>
         <source>フォロワー:</source>
         <translation>Followers:</translation>
+    </message>
+    <message>
+        <location filename="../UI/UserInfoBox.cpp" line="124"/>
+        <source>Follow(&amp;F)</source>
+        <translation>&amp;Follow</translation>
     </message>
 </context>
 <context>

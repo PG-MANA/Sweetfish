@@ -14,6 +14,7 @@
 
 class MainWindow;
 class QVBoxLayout;
+class QMenu;
 
 class UserInfoBox : public QWidget {
   Q_OBJECT
@@ -25,10 +26,13 @@ public:
   void show();
 
 private:
+  virtual void mousePressEvent(QMouseEvent *event) override;
   void createNameBox();
   void createInfoBox();
+  void createMenu();
   QWidget *root_widget;
   TootAccountData user;
   /*MastodonAPI mstdn;*/
   QVBoxLayout *main_layout;
+  QMenu *menu;
 };
