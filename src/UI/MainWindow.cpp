@@ -433,6 +433,15 @@ void MainWindow::show() {
  * 戻値:なし
  * 概要:ウィンドウ表示の際、メニューの表示=>リストに所持してるリストを設定する。
  */
+MastodonAPI *MainWindow::copyMastodonAPI() const {
+  return new MastodonAPI(*mstdn);
+}
+
+/*
+ * 引数:なし
+ * 戻値:なし
+ * 概要:ウィンドウ表示の際、メニューの表示=>リストに所持してるリストを設定する。
+ */
 void MainWindow::setListsMenu() {
   QNetworkReply *rep = qobject_cast<QNetworkReply *>(sender());
   for (const QJsonValue &list_entry :

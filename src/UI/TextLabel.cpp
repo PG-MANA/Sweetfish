@@ -11,6 +11,7 @@
 #include <QPainter>
 #include <QTextLayout>
 #include <QTextOption>
+#include <QDebug>
 
 TextLabel::TextLabel(const QString &text, QWidget *parent, Qt::WindowFlags f)
     : QFrame(parent, f), string(text.split('\n')) {}

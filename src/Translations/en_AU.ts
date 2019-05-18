@@ -231,151 +231,151 @@ Ex) netstat.app</translation>
         <translation>An unknown error occured.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="496"/>
+        <location filename="../UI/MainWindow.cpp" line="505"/>
         <source>メディア追加</source>
         <translation>Add media.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="497"/>
+        <location filename="../UI/MainWindow.cpp" line="506"/>
         <source>メディア (*.png *.jpg *.gif *.bmp *.pbm *.pgm *.ppm *.xbm *.xpm *.svg)</source>
         <translation>Media (*.png *.jpg *.gif *.bmp *.pbm *.pgm *.ppm *.xbm *.xpm *.svg)</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="512"/>
+        <location filename="../UI/MainWindow.cpp" line="521"/>
         <source>サポートしていない画像です。</source>
         <translation>File type not supported.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="515"/>
+        <location filename="../UI/MainWindow.cpp" line="524"/>
         <source>ファイルサイズが大きすぎます。</source>
         <translation>File too large.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="518"/>
-        <location filename="../UI/MainWindow.cpp" line="541"/>
+        <location filename="../UI/MainWindow.cpp" line="527"/>
+        <location filename="../UI/MainWindow.cpp" line="550"/>
         <source>４枚以上の画像は投稿できません。</source>
         <translation>You can only post 4 images at a time.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="622"/>
-        <location filename="../UI/MainWindow.cpp" line="630"/>
+        <location filename="../UI/MainWindow.cpp" line="631"/>
+        <location filename="../UI/MainWindow.cpp" line="639"/>
         <source>さんが</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="623"/>
+        <location filename="../UI/MainWindow.cpp" line="632"/>
         <source>以下のトゥートをお気に入りに登録しました。
 </source>
         <translation>added your toot to their favourites:
 </translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="625"/>
-        <location filename="../UI/MainWindow.cpp" line="633"/>
+        <location filename="../UI/MainWindow.cpp" line="634"/>
+        <location filename="../UI/MainWindow.cpp" line="642"/>
         <source>不明</source>
         <translation>Unknown</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="631"/>
+        <location filename="../UI/MainWindow.cpp" line="640"/>
         <source>以下のトゥートをブーストしました。
 </source>
         <translation>boosted the following toot:
 </translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="639"/>
+        <location filename="../UI/MainWindow.cpp" line="648"/>
         <source>さんがあなたに向けてトゥートしました。
 </source>
         <translation>mentioned you
 </translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="646"/>
+        <location filename="../UI/MainWindow.cpp" line="655"/>
         <source>さんがあなたをフォローしました。</source>
         <translation>followed you</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="681"/>
+        <location filename="../UI/MainWindow.cpp" line="690"/>
         <source>トゥートに失敗しました </source>
         <translation>Toot failed </translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="716"/>
+        <location filename="../UI/MainWindow.cpp" line="725"/>
         <source>作業に失敗しました </source>
         <translation>Operation failed </translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="802"/>
+        <location filename="../UI/MainWindow.cpp" line="811"/>
         <source>画像の読み込みに失敗しました。</source>
         <translation>Failed to load the image.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="812"/>
+        <location filename="../UI/MainWindow.cpp" line="821"/>
         <source>アップロード中にエラーが発生しました。再試行しますか。</source>
         <translation>Failed to upload. Try again?</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="821"/>
+        <location filename="../UI/MainWindow.cpp" line="830"/>
         <source>アップロードの初期化作業に失敗しました。</source>
         <translation>Failed to start the upload.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="886"/>
+        <location filename="../UI/MainWindow.cpp" line="895"/>
         <source>Qtを使用して製作されているMastodonクライアント。</source>
         <translation>Sweetfish is a Mastodon client written with Qt.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="889"/>
+        <location filename="../UI/MainWindow.cpp" line="898"/>
         <source>本ソフトウェアはQtオープンソース版のLGPLv3を選択しています。詳しくは&lt;a href=&quot;https://www.qt.io/licensing/&quot;&gt;https://www.qt.io/licensing/&lt;/a&gt;をご覧ください。</source>
         <translation>This software has chosen to use the LGPLv3  open source version  of Qt. For details, please see &lt;a href=&quot;https://www.qt.io/licensing/&quot;&gt; https://www.qt.io/licensing/ &lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="895"/>
+        <location filename="../UI/MainWindow.cpp" line="904"/>
         <source>License</source>
         <translation>License</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="912"/>
+        <location filename="../UI/MainWindow.cpp" line="921"/>
         <source>このソフトウェアについてのページを開く</source>
         <translation>Open the Sweetfish homepage.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="925"/>
+        <location filename="../UI/MainWindow.cpp" line="934"/>
         <source>このトゥートはすでにブーストしています。</source>
         <translation>This toot has already been boosted.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="928"/>
+        <location filename="../UI/MainWindow.cpp" line="937"/>
         <source>非公開のトゥートのためブーストできません。</source>
         <translation>Can&apos;t boost a private toot.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="931"/>
+        <location filename="../UI/MainWindow.cpp" line="940"/>
         <source>ダイレクトメッセージのためブーストできません。</source>
         <translation>Can&apos;t boost a personal message.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="948"/>
+        <location filename="../UI/MainWindow.cpp" line="957"/>
         <source>このトゥートはすでにお気に入りに登録しています。</source>
         <translation>You already favourited this toot.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="952"/>
+        <location filename="../UI/MainWindow.cpp" line="961"/>
         <source>さんのトゥートをお気に入りに登録しますか。</source>
         <translation>Favourite this toot?</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="968"/>
+        <location filename="../UI/MainWindow.cpp" line="977"/>
         <source>トゥートを削除しますか。</source>
         <translation>Do you want to delete this toot?</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="986"/>
+        <location filename="../UI/MainWindow.cpp" line="995"/>
         <source>非公開のトゥートのため引用できません。</source>
         <translation>Cannot quote a private toot.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="989"/>
+        <location filename="../UI/MainWindow.cpp" line="998"/>
         <source>ダイレクトメッセージのため引用できません。</source>
         <translation>Cannot quote a personal message.</translation>
     </message>
@@ -424,17 +424,17 @@ Ex) netstat.app</translation>
         <translation>User information</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="150"/>
+        <location filename="../UI/TootContent.cpp" line="151"/>
         <source>クライアント</source>
         <translation>Client</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="217"/>
+        <location filename="../UI/TootContent.cpp" line="218"/>
         <source> boosted</source>
         <translation> boosted</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="369"/>
+        <location filename="../UI/TootContent.cpp" line="370"/>
         <source>トゥートの詳細 </source>
         <translation>Toot details - </translation>
     </message>
@@ -455,17 +455,22 @@ Ex) netstat.app</translation>
 <context>
     <name>UserInfoBox</name>
     <message>
-        <location filename="../UI/UserInfoBox.cpp" line="78"/>
+        <location filename="../UI/UserInfoBox.cpp" line="26"/>
+        <source>ユーザー情報</source>
+        <translation>User information</translation>
+    </message>
+    <message>
+        <location filename="../UI/UserInfoBox.cpp" line="101"/>
         <source>フォロー中:</source>
         <translation>Following:</translation>
     </message>
     <message>
-        <location filename="../UI/UserInfoBox.cpp" line="83"/>
+        <location filename="../UI/UserInfoBox.cpp" line="106"/>
         <source>フォロワー:</source>
         <translation>Followers:</translation>
     </message>
     <message>
-        <location filename="../UI/UserInfoBox.cpp" line="124"/>
+        <location filename="../UI/UserInfoBox.cpp" line="187"/>
         <source>Follow(&amp;F)</source>
         <translation>&amp;Follow</translation>
     </message>

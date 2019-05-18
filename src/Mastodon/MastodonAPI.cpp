@@ -199,8 +199,20 @@ QNetworkReply *MastodonAPI::requestFavourite(const QByteArray &id) {
 QNetworkReply *MastodonAPI::requestCurrentAccountInfo() {
   QNetworkRequest req;
 
-  req.setUrl(MastodonUrl::scheme + domain + MastodonUrl::accounts_current);
+  req.setUrl(MastodonUrl::scheme + domain + MastodonUrl::current_account);
   return get(req);
+}
+
+/*
+ * 引数:user_id(投稿を取得するユーザのID)
+ * 戻値:結果取得用のQNetworkReply
+ * 概要:指定したUserIDの投稿一覧を取得する。
+ */
+QNetworkReply *MastodonAPI::requestUserStatuses(const QByteArray &user_id) {
+  QNetworkRequest req;
+
+  req.setUrl(MastodonUrl::scheme + domain + MastodonUrl::accounts + user_id + MastodonUrl::accounts_status);
+    return get(req);
 }
 
 /*

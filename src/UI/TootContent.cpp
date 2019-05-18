@@ -10,6 +10,7 @@
 #include "../Sweetfish.h"
 #include "ImageLabel.h"
 #include "ImageViewer.h"
+#include "MainWindow.h"
 #include "TextLabel.h"
 #include "TootContent.h"
 #include "UserInfoBox.h"
@@ -21,10 +22,9 @@
 // staticだと終了時スレッドが残ってると怒られる(一番最後まで残るから?)
 
 TootContent::TootContent(TootData *init_tdata, Mode init_mode,
-                         QWidget *_root_widget /*ImageViewerなどに渡す*/,
+                         MainWindow *rw /*ImageViewerなどに渡す*/,
                          QWidget *parent, Qt::WindowFlags f)
-    : QFrame(parent, f), mode(init_mode), root_widget(_root_widget),
-      popup(nullptr) {
+    : QFrame(parent, f), mode(init_mode), root_window(rw), popup(nullptr) {
   setTootData(init_tdata);
   drawToot();
 }
@@ -141,11 +141,12 @@ void TootContent::createActions() {
     }
   }
   popup->addSection(tr("ユーザー情報"));
-  popup->addAction(tdata->getOriginalAccountData().getDisplayName(), this, [this] {
-    UserInfoBox *box =
-        new UserInfoBox(tdata->getOriginalAccountData(), root_widget, Qt::Window);
-    box->show();
-  });
+  popup->addAction(
+      tdata->getOriginalAccountData().getDisplayName(), this, [this] {
+        UserInfoBox *box = new UserInfoBox(tdata->getOriginalAccountData(),
+                                           root_window, Qt::Window);
+        box->show();
+      });
   if (!tdata->getApplicationName().isEmpty()) {
     popup->addSection(tr("クライアント"));
     popup
@@ -339,17 +340,17 @@ void TootContent::drawToot() {
 void TootContent::showPicture(TootData *tdata, unsigned int index) {
   if (tdata == nullptr || !tdata->getMediaData().size())
     return;
-  // if ( tdata->flag & 0x40 && QMessageBox::question ( root_widget, APP_NAME,
+  // if ( tdata->flag & 0x40 && QMessageBox::question ( root_window, APP_NAME,
   // tr (
   // "この画像・動画を表示すると気分を害する可能性があります。表示しますか。" ),
   // QMessageBox::Yes | QMessageBox::No, QMessageBox::No ) != QMessageBox::Yes )
   // return;
   if (tdata->getMediaData().getEntry(0).getType() == "video") { //動画
-    VideoPlayer *player = new VideoPlayer(tdata, root_widget, Qt::Window);
+    VideoPlayer *player = new VideoPlayer(tdata, root_window, Qt::Window);
     player->show();
   } else { //画像
     ImageViewer *viewer =
-        new ImageViewer(tdata, index, root_widget, Qt::Window);
+        new ImageViewer(tdata, index, root_window, Qt::Window);
     viewer->show();
   }
 }
@@ -362,8 +363,8 @@ void TootContent::showPicture(TootData *tdata, unsigned int index) {
 void TootContent::openWindow() {
   if (tdata == nullptr)
     return;
-  TootContent *window = new TootContent(new TootData(*tdata), mode, root_widget,
-                                        root_widget, Qt::Window);
+  TootContent *window = new TootContent(new TootData(*tdata), mode, root_window,
+                                        root_window, Qt::Window);
   QPalette Palette = window->palette();
   window->setAttribute(Qt::WA_DeleteOnClose);
   window->setWindowTitle(tr("トゥートの詳細 ") + APP_NAME);

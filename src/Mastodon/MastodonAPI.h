@@ -48,6 +48,7 @@ public:
   QNetworkReply *requestGetLists();
   //ユーザ関係
   QNetworkReply *requestCurrentAccountInfo();
+  QNetworkReply *requestUserStatuses(const QByteArray &user_id);
 
 private:
   /*汎用関数。あくまでMastodonAPIクラスから呼ぶもので他のクラス(UIなど)からはこれを呼ばず専用の関数を作る。*/

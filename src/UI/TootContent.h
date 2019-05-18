@@ -13,6 +13,7 @@
 class QMouseEvent;
 class QMenu;
 class TootData;
+class MainWindow;
 
 class TootContent : public QFrame {
   Q_OBJECT
@@ -26,7 +27,7 @@ public:
 
   explicit TootContent(TootData *init_tdata = nullptr,
                        Mode init_mode = Mode::Normal,
-                       QWidget *init_root_widget = Q_NULLPTR,
+                       MainWindow *rw = Q_NULLPTR,
                        QWidget *parent = Q_NULLPTR,
                        Qt::WindowFlags f = Qt::WindowFlags());
   virtual ~TootContent();
@@ -50,7 +51,7 @@ private:
   void createActions();
   Mode mode;
   Network net;
-  QWidget *root_widget;
+  MainWindow *root_window;
   QMenu *popup;
   TootData *tdata;
 };

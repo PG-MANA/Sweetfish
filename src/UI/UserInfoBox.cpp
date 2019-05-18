@@ -6,33 +6,56 @@
  * 各ユーザーの詳細を表示する。
  */
 
-/*#include "../Mastodon/MastodonAPI.h"*/
+#include "../Mastodon/MastodonAPI.h"
 #include "../Mastodon/TootData.h"
 #include "../Network/Network.h"
 #include "ImageLabel.h"
+#include "MainWindow.h"
 #include "TextLabel.h"
+#include "TootContent.h"
 #include "UserInfoBox.h"
 #include <QNetworkReply>
 #include <QtWidgets>
 
-UserInfoBox::UserInfoBox(const TootAccountData &user_data /*, Mastodon &mstdn*/,
-                         QWidget *root_window, Qt::WindowFlags f)
-    : QWidget(root_window, f), root_widget(root_window), user(user_data),
-      menu(nullptr)
-/*,mstdn(mstdn)*/ {
-  setAttribute(Qt::WA_DeleteOnClose);
+UserInfoBox::UserInfoBox(const TootAccountData &user_data, MainWindow *rw,
+                         Qt::WindowFlags f)
+    : QMainWindow(rw, f), root_window(rw), user(user_data), mstdn(nullptr),
+      menu(nullptr) {
+
   //ウィンドウ準備
-  main_layout = new QVBoxLayout; //メインレイアウト
-  QPalette Palette = palette();
-  Palette.setColor(QPalette::Window, Qt::black); //背景を黒く
-  Palette.setColor(QPalette::Text, Qt::white);
-  setAutoFillBackground(true);
-  setPalette(Palette);
+  setWindowTitle(tr("ユーザー情報"));
+  setAttribute(Qt::WA_DeleteOnClose);
+  QScrollArea *main_scroll_area = new QScrollArea;
+  main_scroll_area->setFrameShape(QFrame::NoFrame); //枠線をなくす
+  main_scroll_area->setVerticalScrollBarPolicy(
+      Qt::ScrollBarAlwaysOn);                 //常に表示
+  main_scroll_area->setWidgetResizable(true); //先にこれを設定する。
+  QWidget *center = new QWidget;
+  QPalette palette = main_scroll_area->palette();
+  palette.setColor(QPalette::Window, Qt::black); //背景を黒く
+  palette.setColor(QPalette::WindowText, Qt::white);
+  main_scroll_area->setPalette(palette);
+  main_scroll_area->setAutoFillBackground(true);
+
+  main_layout = new QVBoxLayout;
+  center->setLayout(main_layout);
+
+  main_scroll_area->setWidget(center);
+  setCentralWidget(main_scroll_area);
+
+  // API情報受け渡し
+  if (root_window != nullptr) {
+    mstdn = root_window->copyMastodonAPI();
+  } else {
+    mstdn = new MastodonAPI;
+  }
+
   //基本情報を表示
   createNameBox();
   createInfoBox();
-  setLayout(main_layout);
 }
+
+UserInfoBox::~UserInfoBox() { delete mstdn; }
 
 /*
  * 引数:なし
@@ -91,7 +114,47 @@ void UserInfoBox::createInfoBox() {
  * 戻値:なし
  * 概要:ウィンドウを表示する時呼ばれる。
  */
-void UserInfoBox::show() { QWidget::show(); }
+void UserInfoBox::show() {
+  QMainWindow::show();
+  connect(mstdn->requestUserStatuses(user.getId()), &QNetworkReply::finished,
+          this, &UserInfoBox::showTimeLine);
+  resize(root_window->width(), root_window->height() / 2);
+}
+
+/*
+ * 引数:なし
+ * 戻値:なし
+ * 概要:ユーザーの投稿を表示する。requestUserStatusesが終わったら呼ばれる。
+ */
+void UserInfoBox::showTimeLine() {
+  QNetworkReply *rep = qobject_cast<QNetworkReply *>(sender());
+  if (rep->error() == QNetworkReply::NoError) {
+    //こうしてるのは将来ストリームに対応するかもしれないから
+    //水平線作成
+    QFrame *horizontal_line = new QFrame;
+    horizontal_line->setFrameShape(QFrame::HLine);
+    horizontal_line->setFrameShadow(QFrame::Sunken);
+    main_layout->addWidget(horizontal_line);
+
+    QBoxLayout *timeline_layout =
+        new QBoxLayout(QBoxLayout::BottomToTop); //下から上
+    //一個づつ表示する
+    QJsonArray toots = QJsonDocument::fromJson(rep->readAll()).array();
+    for (int i = toots.size() - 1; i >= 0; i--) {
+      QJsonObject obj = toots[i].toObject();
+      TootData *tdata = new TootData(obj);
+      if (!tdata->isEmpty()) {
+        TootContent *content =
+            new TootContent(tdata, TootContent::Mode::Normal, root_window);
+        connect(content, &TootContent::action, root_window,
+                &MainWindow::contentAction);
+        timeline_layout->addWidget(content);
+      }
+    }
+    main_layout->addLayout(timeline_layout);
+  }
+  rep->deleteLater();
+}
 
 /*
  * 引数:event

@@ -32,5 +32,8 @@ static const QString media_upload("/api/v1/media");
 //リスト関係
 static const QString lists("/api/v1/lists");
 //ユーザ関係
-static const QString accounts_current("/api/v1/accounts/verify_credentials");
+static const QString current_account("/api/v1/accounts/verify_credentials");
+static const QString accounts("/api/v1/accounts/");
+static const QString accounts_status("/statuses");
+
 } // namespace MastodonUrl

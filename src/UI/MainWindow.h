@@ -37,6 +37,7 @@ public:
   explicit MainWindow();
   virtual ~MainWindow();
   bool init(const QString setting_file_name);
+  MastodonAPI *copyMastodonAPI() const;
 public slots:
   void show();
   void toot();

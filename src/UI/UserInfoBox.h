@@ -10,29 +10,32 @@
 
 /*#include "../Mastodon/MastodonAPI.h"*/
 #include "../Mastodon/TootData.h"
-#include <QWidget>
+#include <QMainWindow>
 
 class MainWindow;
+class MastodonAPI;
 class QVBoxLayout;
 class QMenu;
 
-class UserInfoBox : public QWidget {
+class UserInfoBox : public QMainWindow {
   Q_OBJECT
 public:
-  explicit UserInfoBox(const TootAccountData &user_data, /*Mastodon &mstdn,*/
-                       QWidget *root_window,
+  explicit UserInfoBox(const TootAccountData &user_data,
+                       MainWindow *rw,
                        Qt::WindowFlags f = Qt::WindowFlags());
+  virtual ~UserInfoBox();
 
   void show();
-
+public slots:
+  void showTimeLine();
 private:
   virtual void mousePressEvent(QMouseEvent *event) override;
   void createNameBox();
   void createInfoBox();
   void createMenu();
-  QWidget *root_widget;
+  MainWindow *root_window;
   TootAccountData user;
-  /*MastodonAPI mstdn;*/
+  MastodonAPI *mstdn;
   QVBoxLayout *main_layout;
   QMenu *menu;
 };
