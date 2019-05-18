@@ -211,8 +211,23 @@ QNetworkReply *MastodonAPI::requestCurrentAccountInfo() {
 QNetworkReply *MastodonAPI::requestUserStatuses(const QByteArray &user_id) {
   QNetworkRequest req;
 
-  req.setUrl(MastodonUrl::scheme + domain + MastodonUrl::accounts + user_id + MastodonUrl::accounts_status);
-    return get(req);
+  req.setUrl(MastodonUrl::scheme + domain + MastodonUrl::accounts + user_id +
+             MastodonUrl::accounts_status);
+  return get(req);
+}
+
+/*
+ * 引数:user_id(関係を取得するユーザのID)
+ * 戻値:結果取得用のQNetworkReply
+ * 概要:指定したUserIDと利用中のアカウントの関係を取得する。(注意:結果は配列で帰る)
+ */
+QNetworkReply *MastodonAPI::requestUserRelationship(const QByteArray &user_id) {
+  QNetworkRequest req;
+
+  req.setUrl(MastodonUrl::scheme + domain + MastodonUrl::accounts_relationship +
+             "?id[]=" + user_id);
+
+  return get(req);
 }
 
 /*

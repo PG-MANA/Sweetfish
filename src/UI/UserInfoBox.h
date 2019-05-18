@@ -20,14 +20,15 @@ class QMenu;
 class UserInfoBox : public QMainWindow {
   Q_OBJECT
 public:
-  explicit UserInfoBox(const TootAccountData &user_data,
-                       MainWindow *rw,
+  explicit UserInfoBox(const TootAccountData &user_data, MainWindow *rw,
                        Qt::WindowFlags f = Qt::WindowFlags());
   virtual ~UserInfoBox();
 
   void show();
 public slots:
   void showTimeLine();
+  void showRelationship();
+
 private:
   virtual void mousePressEvent(QMouseEvent *event) override;
   void createNameBox();
@@ -35,7 +36,9 @@ private:
   void createMenu();
   MainWindow *root_window;
   TootAccountData user;
+  TootRelationshipData relation;
   MastodonAPI *mstdn;
   QVBoxLayout *main_layout;
+  QVBoxLayout *infobox_layout;
   QMenu *menu;
 };

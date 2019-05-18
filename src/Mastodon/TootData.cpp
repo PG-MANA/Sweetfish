@@ -36,6 +36,13 @@ const TootAccountData &TootData::getOriginalAccountData() const {
   return account;
 }
 
+TootRelationshipData::TootRelationshipData(const QJsonObject &target) {
+  following = target["following"].toBool();
+  followed = target["followed_by"].toBool();
+  muting = target["muting"].toBool();
+  blocking = target["blocking"].toBool();
+}
+
 /*
  * 引数:display_url(表示してるURLなど), full_url(完全なリンク)
  * 戻値:なし

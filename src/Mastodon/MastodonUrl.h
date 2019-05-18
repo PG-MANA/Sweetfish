@@ -35,5 +35,6 @@ static const QString lists("/api/v1/lists");
 static const QString current_account("/api/v1/accounts/verify_credentials");
 static const QString accounts("/api/v1/accounts/");
 static const QString accounts_status("/statuses");
+static const QString accounts_relationship("/api/v1/accounts/relationships");
 
 } // namespace MastodonUrl

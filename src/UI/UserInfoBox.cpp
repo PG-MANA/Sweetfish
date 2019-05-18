@@ -43,6 +43,9 @@ UserInfoBox::UserInfoBox(const TootAccountData &user_data, MainWindow *rw,
   main_scroll_area->setWidget(center);
   setCentralWidget(main_scroll_area);
 
+  infobox_layout = new QVBoxLayout;
+  main_layout->addLayout(infobox_layout);
+
   // API情報受け渡し
   if (root_window != nullptr) {
     mstdn = root_window->copyMastodonAPI();
@@ -82,7 +85,7 @@ void UserInfoBox::createNameBox() {
   user_name->setWordWrap(true);
   name_box->addWidget(user_name);
   icon_box->addLayout(name_box);
-  main_layout->addLayout(icon_box);
+  infobox_layout->addLayout(icon_box);
 }
 
 /*
@@ -96,17 +99,19 @@ void UserInfoBox::createInfoBox() {
   user_description->setStyleSheet("color:white;");
   user_description->setWordWrap(true);
   user_description->setTextFormat(Qt::RichText);
-  main_layout->addWidget(user_description);
+  infobox_layout->addWidget(user_description);
   QLabel *following_info =
       new QLabel(tr("フォロー中:") + QString::number(user.getFollowingCount()));
   following_info->setStyleSheet("color:white;");
   following_info->setWordWrap(true);
-  main_layout->addWidget(following_info);
+  infobox_layout->addWidget(following_info);
   QLabel *followers_info =
       new QLabel(tr("フォロワー:") + QString::number(user.getFollowersCount()));
   followers_info->setStyleSheet("color:white;");
   followers_info->setWordWrap(true);
-  main_layout->addWidget(followers_info);
+  infobox_layout->addWidget(followers_info);
+  connect(mstdn->requestUserRelationship(user.getId()),
+          &QNetworkReply::finished, this, &UserInfoBox::showRelationship);
 }
 
 /*
@@ -119,6 +124,29 @@ void UserInfoBox::show() {
   connect(mstdn->requestUserStatuses(user.getId()), &QNetworkReply::finished,
           this, &UserInfoBox::showTimeLine);
   resize(root_window->width(), root_window->height() / 2);
+}
+
+/*
+ * 引数:なし
+ * 戻値:なし
+ * 概要:特定ユーザーと使用しているアカウントの関係を表示する。requestUserRelationshipが終わったら呼ばれる。
+ */
+void UserInfoBox::showRelationship() {
+  QNetworkReply *rep = qobject_cast<QNetworkReply *>(sender());
+  if (rep->error() == QNetworkReply::NoError) {
+    relation = TootRelationshipData(
+        QJsonDocument::fromJson(rep->readAll()).array()[0].toObject());
+    if (relation.isfollowing()) {
+      infobox_layout->addWidget(new QLabel(tr("フォローしてます")));
+    }
+    if (relation.isfollowed()) {
+      infobox_layout->addWidget(new QLabel(tr("フォローされてます")));
+    }
+    if (relation.isblocking()) {
+      infobox_layout->addWidget(new QLabel(tr("ブロックしてます")));
+    }
+  }
+  rep->deleteLater();
 }
 
 /*

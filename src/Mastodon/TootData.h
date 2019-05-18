@@ -40,6 +40,23 @@ private:
   // bool following;
 };
 
+class TootRelationshipData {
+public:
+  TootRelationshipData(){};
+  explicit TootRelationshipData(const QJsonObject &target);
+
+  bool isfollowing() const { return following; };
+  bool isfollowed() const { return followed; };
+  bool ismuting() const { return muting; };
+  bool isblocking() const { return blocking; };
+
+private:
+  bool following = false;
+  bool followed = false;
+  bool muting = false;
+  bool blocking = false;
+};
+
 class TootMediaDataEntry {
 public:
   // getter
