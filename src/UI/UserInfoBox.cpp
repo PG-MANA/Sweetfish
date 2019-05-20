@@ -45,6 +45,7 @@ UserInfoBox::UserInfoBox(const TootAccountData &user_data, MainWindow *rw,
 
   infobox_layout = new QVBoxLayout;
   main_layout->addLayout(infobox_layout);
+  main_layout->addStretch();
 
   // API情報受け渡し
   if (root_window != nullptr) {
