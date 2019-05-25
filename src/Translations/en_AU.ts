@@ -460,32 +460,32 @@ Ex) netstat.app</translation>
         <translation>User information</translation>
     </message>
     <message>
-        <location filename="../UI/UserInfoBox.cpp" line="104"/>
+        <location filename="../UI/UserInfoBox.cpp" line="105"/>
         <source>フォロー中:</source>
         <translation>Following:</translation>
     </message>
     <message>
-        <location filename="../UI/UserInfoBox.cpp" line="109"/>
+        <location filename="../UI/UserInfoBox.cpp" line="110"/>
         <source>フォロワー:</source>
         <translation>Followers:</translation>
     </message>
     <message>
-        <location filename="../UI/UserInfoBox.cpp" line="140"/>
+        <location filename="../UI/UserInfoBox.cpp" line="143"/>
         <source>フォローしてます</source>
         <translation>Following</translation>
     </message>
     <message>
-        <location filename="../UI/UserInfoBox.cpp" line="143"/>
+        <location filename="../UI/UserInfoBox.cpp" line="146"/>
         <source>フォローされてます</source>
         <translation>Is followed</translation>
     </message>
     <message>
-        <location filename="../UI/UserInfoBox.cpp" line="146"/>
+        <location filename="../UI/UserInfoBox.cpp" line="149"/>
         <source>ブロックしてます</source>
         <translation>Blocking</translation>
     </message>
     <message>
-        <location filename="../UI/UserInfoBox.cpp" line="215"/>
+        <location filename="../UI/UserInfoBox.cpp" line="218"/>
         <source>Follow(&amp;F)</source>
         <translation>&amp;Follow</translation>
     </message>

@@ -111,8 +111,10 @@ void UserInfoBox::createInfoBox() {
   followers_info->setStyleSheet("color:white;");
   followers_info->setWordWrap(true);
   infobox_layout->addWidget(followers_info);
-  connect(mstdn->requestUserRelationship(user.getId()),
-          &QNetworkReply::finished, this, &UserInfoBox::showRelationship);
+  if (user.getId() != mstdn->getUserId()) {
+    connect(mstdn->requestUserRelationship(user.getId()),
+            &QNetworkReply::finished, this, &UserInfoBox::showRelationship);
+  }
 }
 
 /*
