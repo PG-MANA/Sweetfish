@@ -460,34 +460,77 @@ Ex) netstat.app</translation>
         <translation>User information</translation>
     </message>
     <message>
-        <location filename="../UI/UserInfoBox.cpp" line="105"/>
+        <location filename="../UI/UserInfoBox.cpp" line="107"/>
         <source>フォロー中:</source>
         <translation>Following:</translation>
     </message>
     <message>
-        <location filename="../UI/UserInfoBox.cpp" line="110"/>
+        <location filename="../UI/UserInfoBox.cpp" line="112"/>
         <source>フォロワー:</source>
         <translation>Followers:</translation>
     </message>
     <message>
-        <location filename="../UI/UserInfoBox.cpp" line="143"/>
+        <location filename="../UI/UserInfoBox.cpp" line="145"/>
+        <location filename="../UI/UserInfoBox.cpp" line="309"/>
         <source>フォローしてます</source>
         <translation>Following</translation>
     </message>
     <message>
-        <location filename="../UI/UserInfoBox.cpp" line="146"/>
+        <location filename="../UI/UserInfoBox.cpp" line="148"/>
+        <location filename="../UI/UserInfoBox.cpp" line="312"/>
         <source>フォローされてます</source>
         <translation>Is followed</translation>
     </message>
     <message>
-        <location filename="../UI/UserInfoBox.cpp" line="149"/>
+        <location filename="../UI/UserInfoBox.cpp" line="151"/>
+        <location filename="../UI/UserInfoBox.cpp" line="315"/>
         <source>ブロックしてます</source>
         <translation>Blocking</translation>
     </message>
     <message>
-        <location filename="../UI/UserInfoBox.cpp" line="218"/>
+        <location filename="../UI/UserInfoBox.cpp" line="224"/>
+        <source>Unfollow(&amp;F)</source>
+        <translation>Unfollow(&amp;F)</translation>
+    </message>
+    <message>
+        <location filename="../UI/UserInfoBox.cpp" line="230"/>
+        <source>フォロー解除できませんでした。</source>
+        <translation>Failed to unfollow.</translation>
+    </message>
+    <message>
+        <location filename="../UI/UserInfoBox.cpp" line="239"/>
+        <source>Unblock(&amp;B)</source>
+        <translation>Unblock(&amp;B)</translation>
+    </message>
+    <message>
+        <location filename="../UI/UserInfoBox.cpp" line="245"/>
+        <source>ブロック解除できませんでした。</source>
+        <translation>Failed to unblock.</translation>
+    </message>
+    <message>
+        <location filename="../UI/UserInfoBox.cpp" line="254"/>
         <source>Follow(&amp;F)</source>
         <translation>&amp;Follow</translation>
+    </message>
+    <message>
+        <location filename="../UI/UserInfoBox.cpp" line="260"/>
+        <source>フォローできませんでした。</source>
+        <translation>Failed to follow.</translation>
+    </message>
+    <message>
+        <location filename="../UI/UserInfoBox.cpp" line="269"/>
+        <source>Block(&amp;B)</source>
+        <translation>Block(&amp;B)</translation>
+    </message>
+    <message>
+        <location filename="../UI/UserInfoBox.cpp" line="271"/>
+        <source>本当にブロックしますか。</source>
+        <translation>Do you really want to block?</translation>
+    </message>
+    <message>
+        <location filename="../UI/UserInfoBox.cpp" line="280"/>
+        <source>ブロックできませんでした。</source>
+        <translation>Failed to block.</translation>
     </message>
 </context>
 <context>

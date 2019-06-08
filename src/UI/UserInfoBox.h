@@ -34,11 +34,13 @@ private:
   void createNameBox();
   void createInfoBox();
   void createMenu();
+  void resetRelationInfo();
   MainWindow *root_window;
   TootAccountData user;
   TootRelationshipData relation;
   MastodonAPI *mstdn;
   QVBoxLayout *main_layout;
   QVBoxLayout *infobox_layout;
+  QVBoxLayout *relationinfo_layout;
   QMenu *menu;
 };

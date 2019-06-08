@@ -50,6 +50,10 @@ public:
   QNetworkReply *requestCurrentAccountInfo();
   QNetworkReply *requestUserStatuses(const QByteArray &user_id);
   QNetworkReply *requestUserRelationship(const QByteArray &user_id);
+  QNetworkReply *requestFollow(const QByteArray &user_id);
+  QNetworkReply *requestUnfollow(const QByteArray &user_id);
+  QNetworkReply *requestBlock(const QByteArray &user_id);
+  QNetworkReply *requestUnblock(const QByteArray &user_id);
 
 private:
   /*汎用関数。あくまでMastodonAPIクラスから呼ぶもので他のクラス(UIなど)からはこれを呼ばず専用の関数を作る。*/

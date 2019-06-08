@@ -231,6 +231,54 @@ QNetworkReply *MastodonAPI::requestUserRelationship(const QByteArray &user_id) {
 }
 
 /*
+ * 引数:user_id(フォローするユーザのID)
+ * 戻値:結果取得用のQNetworkReply
+ * 概要:指定したUserIDをフォローする
+ */
+QNetworkReply *MastodonAPI::requestFollow(const QByteArray &user_id) {
+  QNetworkRequest req;
+  req.setUrl(MastodonUrl::scheme + domain + MastodonUrl::accounts + user_id +
+             MastodonUrl::accounts_follow);
+  return post(req, QByteArray());
+}
+
+/*
+ * 引数:user_id(フォロー解除するユーザのID)
+ * 戻値:結果取得用のQNetworkReply
+ * 概要:指定したUserIDのフォローを解除する
+ */
+QNetworkReply *MastodonAPI::requestUnfollow(const QByteArray &user_id) {
+  QNetworkRequest req;
+  req.setUrl(MastodonUrl::scheme + domain + MastodonUrl::accounts + user_id +
+             MastodonUrl::accounts_unfollow);
+  return post(req, QByteArray());
+}
+
+/*
+ * 引数:user_id(ブロックするユーザのID)
+ * 戻値:結果取得用のQNetworkReply
+ * 概要:指定したUserIDをブロックする
+ */
+QNetworkReply *MastodonAPI::requestBlock(const QByteArray &user_id) {
+  QNetworkRequest req;
+  req.setUrl(MastodonUrl::scheme + domain + MastodonUrl::accounts + user_id +
+             MastodonUrl::accounts_block);
+  return post(req, QByteArray());
+}
+
+/*
+ * 引数:user_id(フォロー解除するユーザのID)
+ * 戻値:結果取得用のQNetworkReply
+ * 概要:指定したUserIDのブロックを解除する
+ */
+QNetworkReply *MastodonAPI::requestUnblock(const QByteArray &user_id) {
+  QNetworkRequest req;
+  req.setUrl(MastodonUrl::scheme + domain + MastodonUrl::accounts + user_id +
+             MastodonUrl::accounts_unblock);
+  return post(req, QByteArray());
+}
+
+/*
  * 引数:data(アップロードするデータ),mime_type(dataのMIME-TYPE)
  * 戻値:結果取得用のQNetworkReply
  * 概要:メディアのアップロードを行う。postdataはQHttpMultiPartなどを使いmultipart/form-data形式にすること。

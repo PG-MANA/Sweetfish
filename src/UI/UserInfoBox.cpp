@@ -44,7 +44,9 @@ UserInfoBox::UserInfoBox(const TootAccountData &user_data, MainWindow *rw,
   setCentralWidget(main_scroll_area);
 
   infobox_layout = new QVBoxLayout;
+  relationinfo_layout = new QVBoxLayout;
   main_layout->addLayout(infobox_layout);
+  main_layout->addLayout(relationinfo_layout);
   main_layout->addStretch();
 
   // API情報受け渡し
@@ -140,13 +142,13 @@ void UserInfoBox::showRelationship() {
     relation = TootRelationshipData(
         QJsonDocument::fromJson(rep->readAll()).array()[0].toObject());
     if (relation.isfollowing()) {
-      infobox_layout->addWidget(new QLabel(tr("フォローしてます")));
+      relationinfo_layout->addWidget(new QLabel(tr("フォローしてます")));
     }
     if (relation.isfollowed()) {
-      infobox_layout->addWidget(new QLabel(tr("フォローされてます")));
+      relationinfo_layout->addWidget(new QLabel(tr("フォローされてます")));
     }
     if (relation.isblocking()) {
-      infobox_layout->addWidget(new QLabel(tr("ブロックしてます")));
+      relationinfo_layout->addWidget(new QLabel(tr("ブロックしてます")));
     }
   }
   rep->deleteLater();
@@ -215,5 +217,106 @@ void UserInfoBox::mousePressEvent(QMouseEvent *event) {
  * 概要:ポップアップメニュー作成。
  */
 void UserInfoBox::createMenu() {
-  menu->addAction(tr("Follow(&F)"), this, [] {});
+  // relation変数がセットされてないときはデフォルトとして扱う。
+  // TODO: サブユニットとして分離
+  if (mstdn->getUserId() != user.getId()) {
+    if (relation.isfollowing()) {
+      menu->addAction(tr("Unfollow(&F)"), this, [this] {
+        connect(mstdn->requestUnfollow(user.getId()), &QNetworkReply::finished,
+                this, [this] {
+                  QNetworkReply *rep = qobject_cast<QNetworkReply *>(sender());
+                  if (rep->error() != QNetworkReply::NoError) {
+                    QMessageBox::critical(this, APP_NAME,
+                                          tr("フォロー解除できませんでした。"));
+                    rep->deleteLater();
+                  } else {
+                    resetRelationInfo();
+                  }
+                });
+      });
+
+    } else if (relation.isblocking()) {
+      menu->addAction(tr("Unblock(&B)"), this, [this] {
+        connect(mstdn->requestUnblock(user.getId()), &QNetworkReply::finished,
+                this, [this] {
+                  QNetworkReply *rep = qobject_cast<QNetworkReply *>(sender());
+                  if (rep->error() != QNetworkReply::NoError) {
+                    QMessageBox::critical(this, APP_NAME,
+                                          tr("ブロック解除できませんでした。"));
+                    rep->deleteLater();
+                  } else {
+                    resetRelationInfo();
+                  }
+                });
+      });
+
+    } else {
+      menu->addAction(tr("Follow(&F)"), this, [this] {
+        connect(mstdn->requestFollow(user.getId()), &QNetworkReply::finished,
+                this, [this] {
+                  QNetworkReply *rep = qobject_cast<QNetworkReply *>(sender());
+                  if (rep->error() != QNetworkReply::NoError) {
+                    QMessageBox::critical(this, APP_NAME,
+                                          tr("フォローできませんでした。"));
+                    rep->deleteLater();
+                  } else {
+                    resetRelationInfo();
+                  }
+                });
+      });
+    }
+    if (!relation.isblocking()) {
+      menu->addAction(tr("Block(&B)"), this, [this] {
+        if (QMessageBox::question(this, APP_NAME,
+                                  tr("本当にブロックしますか。"),
+                                  QMessageBox::Yes | QMessageBox::No,
+                                  QMessageBox::No) == QMessageBox::Yes) {
+          connect(mstdn->requestBlock(user.getId()), &QNetworkReply::finished,
+                  this, [this] {
+                    QNetworkReply *rep =
+                        qobject_cast<QNetworkReply *>(sender());
+                    if (rep->error() != QNetworkReply::NoError) {
+                      QMessageBox::critical(this, APP_NAME,
+                                            tr("ブロックできませんでした。"));
+                      rep->deleteLater();
+                    } else {
+                      resetRelationInfo();
+                    }
+                  });
+        }
+      });
+    }
+  }
+}
+
+/*
+ * 引数:なし
+ * 戻値:なし
+ * 概要:フォローなどしたあとに表示などの再更新をするため
+ */
+void UserInfoBox::resetRelationInfo() {
+  QLayoutItem *label;
+  while ((label = relationinfo_layout->takeAt(0)) != nullptr) {
+    delete label->widget();
+  }
+
+  QNetworkReply *rep = qobject_cast<QNetworkReply *>(sender());
+  if (rep->error() == QNetworkReply::NoError) {
+    relation =
+        TootRelationshipData(QJsonDocument::fromJson(rep->readAll())
+                                 .object()); //ここがshowRelationshipと違う
+    if (relation.isfollowing()) {
+      relationinfo_layout->addWidget(new QLabel(tr("フォローしてます")));
+    }
+    if (relation.isfollowed()) {
+      relationinfo_layout->addWidget(new QLabel(tr("フォローされてます")));
+    }
+    if (relation.isblocking()) {
+      relationinfo_layout->addWidget(new QLabel(tr("ブロックしてます")));
+    }
+  }
+
+  rep->deleteLater();
+  menu->deleteLater();
+  menu = nullptr;
 }
