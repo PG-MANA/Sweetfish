@@ -1,6 +1,7 @@
 name:               sweetfish
 version:            0.0.4
 base:               core18
+icon:               snap/gui/sweetfish.png
 license:            Apache-2.0
 summary:            Mastodon client for Linux
 description:        The Mastodon client for linux/X11.This software uses qt.So it may be possible to work on macOS or Windows.
