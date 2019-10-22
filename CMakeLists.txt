@@ -30,5 +30,4 @@ target_link_libraries(sweetfish UI) #UI <= Twitter <= Setting <= Networkとつ�
 add_dependencies(sweetfish translations)
 
 install(TARGETS sweetfish DESTINATION bin)
-install(DIRECTORY build/locales DESTINATION lib/sweetfish)
-install(FILES src/Resources/icon/icon-normal.png DESTINATION share/pixmaps/ RENAME sweetfish.png)
+install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/locales DESTINATION lib/sweetfish)

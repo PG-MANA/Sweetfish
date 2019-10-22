@@ -1,17 +1,30 @@
 name:               sweetfish
 version:            0.0.4
 base:               core18
-icon:               snap/gui/icon.png
 license:            Apache-2.0
 summary:            Mastodon client for Linux
 description:        The Mastodon client for linux/X11.This software uses qt.So it may be possible to work on macOS or Windows.
 confinement:        strict
 grade:              stable
 
+architectures:
+  - build-on:       amd64
+  - build-on:       i386
+  - build-on:       arm64
+
 apps:
   sweetfish:
-    command:        bin/sweetfish
-    plugs:          [network, home, desktop, wayland, x11]
+    command:        bin/desktop-launch sweetfish
+    plugs:
+      - audio-playback
+      - desktop-legacy
+      - desktop
+      - home
+      - network
+      - pulseaudio
+      - wayland
+      - x11
+      - unity7
 
 parts:
   sweetfish:
@@ -19,6 +32,7 @@ parts:
     source-type:    git
     plugin:         cmake
     build-packages: [g++, qtbase5-dev, qttools5-dev, libphonon4qt5-dev]
+    after:          [desktop-qt5]
     stage-packages:
       - libasyncns0
       - libdouble-conversion1
@@ -47,3 +61,10 @@ parts:
       - libxau6
       - libxcb1
       - libxdmcp6
+
+  desktop-qt5:
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-subdir: qt
+    plugin: make
+    make-parameters: ["FLAVOR=qt5"]
+    build-packages: [qtbase5-dev, dpkg-dev]
