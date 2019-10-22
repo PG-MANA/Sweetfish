@@ -2,6 +2,7 @@
  * This software is Licensed under the Apache License Version 2.0
  * See LICENSE
  */
+#include "MainWindow.h"
 #include "../Mastodon/MastodonAPI.h"
 #include "../Mastodon/MediaUpload.h"
 #include "../Mastodon/Streamer.h"
@@ -9,7 +10,6 @@
 #include "../Sweetfish.h"
 #include "ImageLabel.h"
 #include "ImageViewer.h"
-#include "MainWindow.h"
 #include "TextLabel.h"
 #include "TootContent.h"
 #include "TootInfo.h"
