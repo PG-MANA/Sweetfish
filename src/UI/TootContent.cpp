@@ -5,6 +5,7 @@
  * ToottContent クラス
  * タイムラインのトゥート一つ一つの(HTMLで言う)divみたいなもの
  */
+#include "TootContent.h"
 #include "../Mastodon/MastodonUrl.h"
 #include "../Mastodon/TootData.h"
 #include "../Sweetfish.h"
@@ -12,7 +13,6 @@
 #include "ImageViewer.h"
 #include "MainWindow.h"
 #include "TextLabel.h"
-#include "TootContent.h"
 #include "UserInfoBox.h"
 #include "VideoPlayer.h"
 #include <QNetworkReply>
@@ -88,7 +88,7 @@ void TootContent::createActions() {
   }
   //リトゥート
   popup->addSection((tdata->getContent().size() >= 16)
-                        ? tdata->getContent().left(16).append("...")
+                        ? tdata->getContent().left(16 - 3).append("...")
                         : tdata->getContent()); //使い方合ってるんかいな...
   popup
       ->addAction(QIcon(":/bst.png"), tr("Boost(&B)"), this,
@@ -214,8 +214,12 @@ void TootContent::drawToot() {
   main_box->addWidget(icon, 0, Qt::AlignTop);
 
   if (tdata->getBoostedData() != nullptr) { // Boost
-    QLabel *boosted_user_name =
-        new QLabel(tdata->getAccountData().getDisplayName() + tr(" boosted"));
+    QLabel *boosted_user_name = new QLabel(
+        ((tdata->getAccountData().getDisplayName().size() >= 20)
+             ? tdata->getAccountData().getDisplayName().left(20 - 3).append(
+                   "...")
+             : tdata->getAccountData().getDisplayName()) +
+        tr(" boosted"));
     boosted_user_name->setStyleSheet(
         "font-size:10px;color:lime;"); // small指定ができない
     boosted_user_name->setWordWrap(true);
@@ -223,7 +227,12 @@ void TootContent::drawToot() {
   }
 
   QLabel *display_name =
-      new QLabel(tdata->getOriginalAccountData().getDisplayName());
+      new QLabel((tdata->getOriginalAccountData().getDisplayName().size() >= 20)
+                     ? tdata->getOriginalAccountData()
+                           .getDisplayName()
+                           .left(20 - 3)
+                           .append("...")
+                     : tdata->getOriginalAccountData().getDisplayName());
   display_name->setStyleSheet("font-weight:bold;color:white;");
   display_name->setWordWrap(true);
   text_box->addWidget(display_name);

@@ -429,12 +429,12 @@ Ex) netstat.app</translation>
         <translation>Client</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="218"/>
+        <location filename="../UI/TootContent.cpp" line="222"/>
         <source> boosted</source>
         <translation> boosted</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="370"/>
+        <location filename="../UI/TootContent.cpp" line="379"/>
         <source>トゥートの詳細 </source>
         <translation>Toot details - </translation>
     </message>
