@@ -186,11 +186,14 @@ QString TootData::getApplicationSite() const { return application.second; }
  */
 void TootData::analyzeContent(QString c /*remove使うため参照ではない*/) {
   // spanとpを消す
-  c.remove(QRegExp("<\\/?(span|p)[^>]*>"));
-  c.replace("<br>", "\n").replace("<br />", "\n");
-  c.replace("&gt;", ">")
+  c.replace("</p><p>", "\n")
+      .replace("<br>", "\n")
+      .replace("<br />", "\n")
+      .remove(QRegExp("<\\/?(span|p)[^>]*>"))
+      .replace("&gt;", ">")
       .replace("&lt;", "<")
-      .replace("&amp;", "&"); //見やすいように連結した。
+      .replace("&amp;", "&")
+      .replace("&quot;", "\""); //見やすいように連結した。
 
   QRegularExpressionMatchIterator &&link_tags =
       QRegularExpression("<a[^>]* href=\"([^\"]*)\"[^>]*>([^<]*)<\\/a>")
