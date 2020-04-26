@@ -199,11 +199,10 @@
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="341"/>
         <source>認証するインスタンスのドメイン名を入力してください。(https://は不要です。)
 例) netstat.app</source>
-        <translation>Enter the domain name of your instance, without the protocol specifier (ie https://).
-Ex) netstat.app</translation>
+        <translation type="vanished">Enter the domain name of your instance, without the protocol specifier (ie https://).
+ Ex) don.taprix.org</translation>
     </message>
     <message>
         <location filename="../UI/MainWindow.cpp" line="362"/>

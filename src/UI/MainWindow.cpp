@@ -339,7 +339,7 @@ QString MainWindow::showInstanceDomainInputDialog() {
   connect(ok_button, &QPushButton::clicked, &dialog, &QWidget::close);
   layout->addWidget(
       new QLabel(tr("認証するインスタンスのドメイン名を入力してください。("
-                    "https://は不要です。)\n例) netstat.app")));
+                    "https://は不要です。)\n例) don.taprix.org")));
   layout->addWidget(domain_editer);
   layout->addWidget(ok_button);
   dialog.exec();
