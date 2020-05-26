@@ -186,7 +186,7 @@ QString TootData::getApplicationSite() const { return application.second; }
  */
 void TootData::analyzeContent(QString c /*remove使うため参照ではない*/) {
   // spanとpを消す
-  c.replace("</p><p>", "\n")
+  c.replace("</p><p>", "\n\n")
       .replace("<br>", "\n")
       .replace("<br />", "\n")
       .remove(QRegExp("<\\/?(span|p)[^>]*>"))
