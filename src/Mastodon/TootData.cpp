@@ -8,6 +8,19 @@
 //自分の使用しているアカウントのidリスト
 QByteArrayList TootData::static_owner_user_id_list;
 
+TootCardData::TootCardData(const QJsonObject &target) {
+  url = target["url"].toString();
+  description = target["description"].toString();
+  type = target["type"].toString();
+  title = target["title"].toString();
+  author_name = target["author_name"].toString();
+  author_url = target["author_url"].toString();
+  preview_url = target["image"].toString();
+  if (preview_url.isEmpty()) {
+    preview_url = target["embed_url"].toString();
+  }
+}
+
 TootAccountData::TootAccountData(const QJsonObject &target) {
   if (target.isEmpty())
     return;
@@ -101,6 +114,10 @@ TootData::TootData(const QJsonObject &target) {
 
   account = TootAccountData(target["account"].toObject());
   media = TootMediaData(target["media_attachments"].toArray());
+  if (!target["card"].isNull()) {
+    qDebug()<<"OK";
+    card = TootCardData(target["card"].toObject());
+  }
 
   flag = 0;
   if (target["reblogged"].toBool()) {

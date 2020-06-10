@@ -299,37 +299,40 @@ void TootContent::drawToot() {
   // BETTER: Mastodon本体の改造を促すべき
   for (unsigned int cnt = 0, size = tdata->getUrlData().size(); cnt < size;
        cnt++) {
-    QStringList url =
-        tdata->getUrlData().getFullUrl(cnt).split('/', QString::SkipEmptyParts);
-    QString id;
-    int url_size = url.size(); // URLを'/'で区切った時の要素数
-    if (url_size < 4)
-      continue;
-    if (url_size >= 6 && url[2] == "users" && url[4] == "statuses") {
-      id = url[5];
-    } else if (url_size >= 5 && url[2] == "web" && url[3] == "statuses") {
-      id = url[4];
-    } else if (url[2].at(0) == '@') {
-      id = url[3];
-    }
-    if (!QRegExp("^\\d+$").exactMatch(id))
-      continue;
-
-    TootContent *quote = new TootContent;
-    quote->setFrameShape(QFrame::StyledPanel);
-    quote->setFrameShadow(QFrame::Sunken);
-    text_box->addWidget(quote);
-    connect(
-        net.get(MastodonUrl::scheme + url[1] + MastodonUrl::statuses + "/" +
-                id),
-        &QNetworkReply::finished, this, [this, quote] {
-          QNetworkReply *rep = qobject_cast<QNetworkReply *>(sender());
-          quote->setTootData(
-              new TootData(QJsonDocument::fromJson(rep->readAll()).object()),
-              true);
-          rep->deleteLater();
-        });
+    QString full_url = tdata->getUrlData().getFullUrl(cnt);
+    drawQuoteToot(full_url, text_box);
+    // drawQuoteNoteOfMisskey(full_url, text_box);
   }
+
+  //リンクカード
+  if (!tdata->getCardData().getUrl().isEmpty() && !(mode & Mode::Info)) {
+    TootCardData card_data = tdata->getCardData();
+    QFrame *card_frame = new QFrame;
+    QVBoxLayout *card_box = new QVBoxLayout(card_frame);
+
+    card_frame->setFrameShape(QFrame::StyledPanel);
+    card_frame->setFrameShadow(QFrame::Sunken);
+
+    QLabel *title_label =
+        new QLabel((card_data.getTitle().size() >= 10)
+                       ? card_data.getTitle().left(10 - 3).append("...")
+                       : card_data.getTitle());
+    title_label->setStyleSheet("font-weight:bold;color:white;");
+
+    card_box->addWidget(title_label);
+    card_box->addWidget(new TextLabel(card_data.getDescription()));
+    if (!card_data.getPreviewUrl().isEmpty()) {
+      ImageLabel *preview_icon = new ImageLabel(80, 45);
+      if (!preview_icon->setPixmapByName(
+              card_data.getPreviewUrl())) { //アイコンのキャッシュがない
+        connect(net.get(card_data.getPreviewUrl()), &QNetworkReply::finished,
+                preview_icon, &ImageLabel::setPixmapByNetwork);
+      }
+      card_box->addWidget(preview_icon);
+    }
+    text_box->addWidget(card_frame);
+  }
+
   //その他情報
   QLabel *info_text = new QLabel(tdata->getDateTime()
                                      .toTimeSpec(Qt::LocalTime)
@@ -339,6 +342,37 @@ void TootContent::drawToot() {
   text_box->addWidget(info_text, 0, Qt::AlignRight);
   main_box->addLayout(text_box);
   setLayout(main_box);
+}
+
+void TootContent::drawQuoteToot(QString full_url, QVBoxLayout *text_box) {
+  QStringList url = full_url.split('/', QString::SkipEmptyParts);
+  QString id;
+  int url_size = url.size(); // URLを'/'で区切った時の要素数
+  if (url_size < 4)
+    return;
+  if (url_size >= 6 && url[2] == "users" && url[4] == "statuses") {
+    id = url[5];
+  } else if (url_size >= 5 && url[2] == "web" && url[3] == "statuses") {
+    id = url[4];
+  } else if (url[2].at(0) == '@') {
+    id = url[3];
+  }
+  if (!QRegExp("^\\d+$").exactMatch(id))
+    return;
+
+  TootContent *quote = new TootContent;
+  quote->setFrameShape(QFrame::StyledPanel);
+  quote->setFrameShadow(QFrame::Sunken);
+  text_box->addWidget(quote);
+  connect(
+      net.get(MastodonUrl::scheme + url[1] + MastodonUrl::statuses + "/" + id),
+      &QNetworkReply::finished, this, [this, quote] {
+        QNetworkReply *rep = qobject_cast<QNetworkReply *>(sender());
+        quote->setTootData(
+            new TootData(QJsonDocument::fromJson(rep->readAll()).object()),
+            true);
+        rep->deleteLater();
+      });
 }
 
 /*

@@ -11,6 +11,7 @@
 #include <QFrame>
 
 class QMouseEvent;
+class QVBoxLayout;
 class QMenu;
 class TootData;
 class MainWindow;
@@ -27,8 +28,7 @@ public:
 
   explicit TootContent(TootData *init_tdata = nullptr,
                        Mode init_mode = Mode::Normal,
-                       MainWindow *rw = Q_NULLPTR,
-                       QWidget *parent = Q_NULLPTR,
+                       MainWindow *rw = Q_NULLPTR, QWidget *parent = Q_NULLPTR,
                        Qt::WindowFlags f = Qt::WindowFlags());
   virtual ~TootContent();
   void setTootData(TootData *target_tdata, bool should_redraw = false);
@@ -47,6 +47,8 @@ private slots:
 private:
   virtual void mousePressEvent(QMouseEvent *event) override;
   void drawToot();
+  void drawQuoteToot(QString full_url, QVBoxLayout *text_box);
+  void drawCard(QString full_url, QVBoxLayout *text_box);
   void redrawToot();
   void createActions();
   Mode mode;

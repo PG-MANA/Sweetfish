@@ -205,6 +205,12 @@
  Ex) don.taprix.org</translation>
     </message>
     <message>
+        <location filename="../UI/MainWindow.cpp" line="341"/>
+        <source>認証するインスタンスのドメイン名を入力してください。(https://は不要です。)
+例) don.taprix.org</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../UI/MainWindow.cpp" line="362"/>
         <source>表示されたブラウザでMastodonの認証して、表示された認証コードを入力してください。</source>
         <translation>Please log in to Mastodon and copy the authentication code into this window.</translation>
@@ -433,7 +439,7 @@
         <translation> boosted</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="379"/>
+        <location filename="../UI/TootContent.cpp" line="413"/>
         <source>トゥートの詳細 </source>
         <translation>Toot details - </translation>
     </message>
