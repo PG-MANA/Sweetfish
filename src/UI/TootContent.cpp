@@ -314,8 +314,8 @@ void TootContent::drawToot() {
     card_frame->setFrameShadow(QFrame::Sunken);
 
     QLabel *title_label =
-        new QLabel((card_data.getTitle().size() >= 10)
-                       ? card_data.getTitle().left(10 - 3).append("...")
+        new QLabel((card_data.getTitle().size() >= 16)
+                       ? card_data.getTitle().left(16 - 3).append("...")
                        : card_data.getTitle());
     title_label->setStyleSheet("font-weight:bold;color:white;");
 
@@ -329,7 +329,32 @@ void TootContent::drawToot() {
                 preview_icon, &ImageLabel::setPixmapByNetwork);
       }
       card_box->addWidget(preview_icon);
+      if (!card_data.getAuthorName().isEmpty()) {
+        QLabel *author_label = new QLabel(
+            tr("著者:") + "<a href=\"" + card_data.getAuthorUrl() + "\">" +
+            ((card_data.getAuthorName().size() >= 16)
+                 ? card_data.getAuthorName().left(16 - 3).append("...")
+                 : card_data.getAuthorName()) +
+            "</a>");
+        author_label->setOpenExternalLinks(true);
+        author_label->setWordWrap(true);
+        author_label->setTextFormat(Qt::RichText);
+        card_box->addWidget(author_label);
+      }
+      if (!card_data.getProviderName().isEmpty()) {
+        QLabel *provider_label = new QLabel(
+            tr("提供者:") + "<a href=\"" + card_data.getProviderUrl() + "\">" +
+            ((card_data.getProviderName().size() >= 16)
+                 ? card_data.getProviderName().left(16 - 3).append("...")
+                 : card_data.getProviderName()) +
+            "</a>");
+        provider_label->setOpenExternalLinks(true);
+        provider_label->setWordWrap(true);
+        provider_label->setTextFormat(Qt::RichText);
+        card_box->addWidget(provider_label);
+      }
     }
+
     text_box->addWidget(card_frame);
   }
 

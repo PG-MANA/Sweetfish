@@ -439,7 +439,17 @@
         <translation> boosted</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="413"/>
+        <location filename="../UI/TootContent.cpp" line="334"/>
+        <source>著者:</source>
+        <translation>Author:</translation>
+    </message>
+    <message>
+        <location filename="../UI/TootContent.cpp" line="346"/>
+        <source>提供者:</source>
+        <translation>Provider:</translation>
+    </message>
+    <message>
+        <location filename="../UI/TootContent.cpp" line="438"/>
         <source>トゥートの詳細 </source>
         <translation>Toot details - </translation>
     </message>

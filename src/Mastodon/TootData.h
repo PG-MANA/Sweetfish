@@ -85,6 +85,8 @@ public:
   QString getType() const { return type; }
   QString getAuthorName() const { return author_name; };
   QString getAuthorUrl() const { return author_url; };
+  QString getProviderName() const { return provider_name; };
+  QString getProviderUrl() const { return provider_url; };
   QString getPreviewUrl() const { return preview_url; };
   QString getDescription() const { return description; };
 
@@ -96,6 +98,8 @@ private:
   QString author_url;
   QString preview_url;
   QString description;
+  QString provider_name;
+  QString provider_url;
 };
 
 class TootMediaData {

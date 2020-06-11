@@ -15,6 +15,8 @@ TootCardData::TootCardData(const QJsonObject &target) {
   title = target["title"].toString();
   author_name = target["author_name"].toString();
   author_url = target["author_url"].toString();
+  provider_name = target["provider_name"].toString();
+  provider_url = target["provider_name"].toString();
   preview_url = target["image"].toString();
   if (preview_url.isEmpty()) {
     preview_url = target["embed_url"].toString();
@@ -115,7 +117,7 @@ TootData::TootData(const QJsonObject &target) {
   account = TootAccountData(target["account"].toObject());
   media = TootMediaData(target["media_attachments"].toArray());
   if (!target["card"].isNull()) {
-    qDebug()<<"OK";
+    qDebug() << "OK";
     card = TootCardData(target["card"].toObject());
   }
 
