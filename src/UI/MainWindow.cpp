@@ -140,7 +140,6 @@ void MainWindow::createMenus() {
   QMenu *timeline_menu = menuBar()->addMenu(tr("表示(&V)"));
   timeline_menu->setToolTipsVisible(true);
   timeline_menu->addAction(tr("ホーム(&H)"), this, [] {});
-  timeline_menu->addAction(tr("通知(&H)"), this, [] {});
   list_menu = timeline_menu->addMenu(tr("リスト(&L)"));
 
   //ウィンドウ
