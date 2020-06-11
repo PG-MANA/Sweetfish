@@ -129,15 +129,24 @@ void TootContent::createActions() {
   if (const TootUrlData url_list = tdata->getUrlData(); url_list.count() != 0) {
     popup->addSection(tr("URL"));
     for (unsigned int cnt = 0, size = url_list.count(); cnt < size; cnt++) {
-      QAction *url_open_action =
-          new QAction((url_list.getDisplayUrl(cnt).size() > 15)
-                          ? url_list.getDisplayUrl(cnt).left(15).append("...")
-                          : url_list.getDisplayUrl(cnt),
-                      popup);
-      url_open_action->setData(cnt);
-      connect(url_open_action, &QAction::triggered, this,
+      QMenu *url_menu =
+          new QMenu((url_list.getDisplayUrl(cnt).size() > 15)
+                        ? url_list.getDisplayUrl(cnt).left(15).append("...")
+                        : url_list.getDisplayUrl(cnt),
+                    popup);
+
+      QAction *browser_open_action = new QAction(tr("ブラウザで開く"));
+      browser_open_action->setData(cnt);
+      connect(browser_open_action, &QAction::triggered, this,
               &TootContent::openUrl);
-      popup->addAction(url_open_action);
+      url_menu->addAction(browser_open_action);
+      QAction *url_copy_action = new QAction(tr("コピー"), url_menu);
+      connect(url_copy_action, &QAction::triggered, this,
+              &TootContent::copyUrl);
+      url_copy_action->setData(cnt);
+      url_menu->addAction(url_copy_action);
+
+      popup->addMenu(url_menu);
     }
   }
   popup->addSection(tr("ユーザー情報"));
@@ -180,6 +189,17 @@ void TootContent::openUrl() {
   QString &&url = tdata->getUrlData().getFullUrl(
       qobject_cast<QAction *>(sender())->data().toInt());
   QDesktopServices::openUrl(url);
+}
+
+/*
+ * 引数:なし
+ * 戻値:なし
+ * 概要:クリックされたURLをクリップボードにコピーする
+ */
+void TootContent::copyUrl() {
+  QString &&url = tdata->getUrlData().getFullUrl(
+      qobject_cast<QAction *>(sender())->data().toInt());
+  QApplication::clipboard()->setText(url);
 }
 
 /*

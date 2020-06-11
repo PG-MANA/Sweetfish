@@ -419,32 +419,42 @@
         <translation>URL</translation>
     </message>
     <message>
+        <location filename="../UI/TootContent.cpp" line="138"/>
+        <source>ブラウザで開く</source>
+        <translation>Open in the browser</translation>
+    </message>
+    <message>
         <location filename="../UI/TootContent.cpp" line="143"/>
+        <source>コピー</source>
+        <translation>Copy</translation>
+    </message>
+    <message>
+        <location filename="../UI/TootContent.cpp" line="152"/>
         <source>ユーザー情報</source>
         <translation>User information</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="151"/>
+        <location filename="../UI/TootContent.cpp" line="160"/>
         <source>クライアント</source>
         <translation>Client</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="222"/>
+        <location filename="../UI/TootContent.cpp" line="242"/>
         <source> boosted</source>
         <translation> boosted</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="334"/>
+        <location filename="../UI/TootContent.cpp" line="354"/>
         <source>著者:</source>
         <translation>Author:</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="346"/>
+        <location filename="../UI/TootContent.cpp" line="366"/>
         <source>提供者:</source>
         <translation>Provider:</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="438"/>
+        <location filename="../UI/TootContent.cpp" line="458"/>
         <source>トゥートの詳細 </source>
         <translation>Toot details - </translation>
     </message>

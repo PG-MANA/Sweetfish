@@ -40,6 +40,7 @@ signals:
 private slots:
   void triggeredAction();
   void openUrl();
+  void copyUrl();
   void showPicture(TootData *tdata, unsigned int index);
   void openWindow();
   void transferAction(TootData *ori, unsigned char act);
