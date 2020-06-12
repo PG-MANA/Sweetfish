@@ -4,17 +4,17 @@
  * MediaUpload クラス
  * MediaUploadに使う。INIT=>APPEND=>FINALIZEと処理していき、media_idを返す。
  */
-#include "MastodonAPI.h"
 #include "MediaUpload.h"
+#include "MastodonAPI.h"
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QNetworkReply>
 
 // MEMO:APIを叩くときはmastodonクラスを使う。(additional_owners対応したら面白いかも。)
-MediaUpload::MediaUpload(const QByteArrayList &_list,
-                         const QByteArrayList &mime, MastodonAPI *m,
-                         QObject *parent)
-    : QObject(parent), list(_list), mimetype(mime), mastodon_api(m), counter(0) {}
+MediaUpload::MediaUpload(QList<QIODevice *> _list, const QByteArrayList &mime,
+                         MastodonAPI *m, QObject *parent)
+    : QObject(parent), list(_list), mimetype(mime), mastodon_api(m),
+      counter(0) {}
 
 MediaUpload::~MediaUpload() {}
 
@@ -27,8 +27,8 @@ bool MediaUpload::start() {
   if (mastodon_api == nullptr || !list.size() || !mimetype.size())
     return false;
   connect(
-      mastodon_api->requestMediaUpload(list.at(counter), mimetype.at(counter)),
-          &QNetworkReply::finished, this, &MediaUpload::next);
+      mastodon_api->requestMediaUpload(*list.at(counter), mimetype.at(counter)),
+      &QNetworkReply::finished, this, &MediaUpload::next);
   return true;
 }
 
@@ -48,6 +48,10 @@ void MediaUpload::next() {
             .toString()
             .toUtf8() +
         ",";
+
+  list.at(counter)->close();
+  delete list.at(counter);
+
   counter++;
   if (counter >= list.count()) {
     emit finished(id);

@@ -509,23 +509,18 @@ void MainWindow::addMedia() {
     QFileInfo file_info(file_path);
     //動画は分岐させる
     QByteArrayList &&supported_formats = QImageReader::supportedImageFormats();
-    QByteArray &&suffix =
-        file_info.suffix()
-            .toLower()
-            .toUtf8(); //ローマ字以外の拡張子ってあるんやろか...
+    QByteArray &&suffix = file_info.suffix().toLower().toUtf8();
     for (const QByteArray &e : supported_formats) {
       if (e == suffix)
         break;
       if (e == supported_formats.last())
         throw tr("サポートしていない画像です。");
     }
-    if (file_info.size() >= 5 * 1024 * 1024)
-      throw tr("ファイルサイズが大きすぎます。");
     unsigned int counter = toot_info->getNumOfImage();
     if (counter > 4)
       throw tr("４枚以上の画像は投稿できません。");
     // toot_infoに追加
-    toot_info->setImage(QPixmap(file_path), counter);
+    toot_info->setImage(QPixmap(file_path), file_path, counter);
     info_scroll_area->setVisible(true);
   } catch (QString &e) {
     QMessageBox::critical(this, APP_NAME, e);
@@ -550,7 +545,7 @@ bool MainWindow::addMediaByClipboard() {
     return false;
   }
   // toot_infoに追加
-  toot_info->setImage(pic, counter);
+  toot_info->setImage(pic, "", counter);
   info_scroll_area->setVisible(true);
   return true;
 }
@@ -796,20 +791,28 @@ void MainWindow::toot() {
   try {
     if (unsigned int c = toot_info->getNumOfImage()) {
       //画像あり
-      QByteArrayList media;
+      QList<QIODevice *> media;
       QByteArrayList mime;
       media.reserve(c);
       mime.reserve(c);
-      for (
-          unsigned int i = 0; i < c;
-          i++) { // QByteArrayListの初期化がなければこのforと上のifを統合したけど...
-        media.push_back(QByteArray()); //予め作成する。
-        QBuffer buff(&media[i]);
-        buff.open(QIODevice::WriteOnly);
-        if (!toot_info->getImage(i)->save(&buff, "PNG"))
-          throw tr(
-              "画像の読み込みに失敗しました。"); //すべてPNGで再エンコする鬼畜
-        mime.push_back(QByteArray("image/png"));
+      for (unsigned int i = 0; i < c; i++) {
+        QString file_path = toot_info->getImagePath(i);
+        if (file_path.isEmpty()) {
+          //クリップボードなどの画像
+          QBuffer *buff = new QBuffer;
+          buff->open(QIODevice::WriteOnly);
+          if (!toot_info->getImage(i)->save(buff, "PNG"))
+            throw tr("画像の読み込みに失敗しました。");
+          mime.push_back(QByteArray("image/png"));
+          media.append(buff);
+        } else {
+          QFile *file = new QFile(file_path);
+          if (!file->open(QIODevice::ReadOnly)) {
+            throw tr("画像の読み込みに失敗しました。");
+          }
+          mime.push_back(QMimeDatabase().mimeTypeForData(file).name().toUtf8());
+          media.append(file);
+        }
       }
       MediaUpload *upload = new MediaUpload(media, mime, mstdn, this);
       connect(upload, &MediaUpload::finished, this, &MainWindow::tootWithMedia);

@@ -2,9 +2,9 @@
  * This software is Licensed under the Apache License Version 2.0
  * See LICENSE
  */
+#include "MastodonAPI.h"
 #include "../Network/Network.h"
 #include "../Sweetfish.h"
-#include "MastodonAPI.h"
 #include "MastodonUrl.h"
 #include <QNetworkReply>
 #include <QNetworkRequest>
@@ -283,17 +283,16 @@ QNetworkReply *MastodonAPI::requestUnblock(const QByteArray &user_id) {
  * 戻値:結果取得用のQNetworkReply
  * 概要:メディアのアップロードを行う。postdataはQHttpMultiPartなどを使いmultipart/form-data形式にすること。
  */
-QNetworkReply *MastodonAPI::requestMediaUpload(const QByteArray &data,
+QNetworkReply *MastodonAPI::requestMediaUpload(QIODevice &data,
                                                const QByteArray &mime_type) {
   QNetworkRequest req;
   QList<QByteArrayList> upload_data;
 
   req.setUrl(MastodonUrl::scheme + domain + MastodonUrl::media_upload);
   //アップロードリスト作成
-  upload_data.push_back(
-      QByteArrayList({"file", "upload" /*暫定*/, mime_type, data}));
   //送信
-  return upload(req, upload_data);
+  return upload(req, QByteArrayList({"file", "upload" /*暫定*/, mime_type}),
+                data);
 }
 
 /*
@@ -330,13 +329,16 @@ QNetworkReply *MastodonAPI::post(QNetworkRequest &req, const QByteArray &data) {
 
 /*
  * 引数:req(URLなどをセットしたQNetworkRequest),
- * data(POSTデータ[QList<QByteArrayList>]) 戻値:受信用QNetworkReply
+ *      info(file_nameやMIMEなどの情報[QByteArrayList])
+ *      data(読み込み用のQIODevice)
+ * 戻値:受信用QNetworkReply
  * 概要:Authorizationヘッダを作成。AccessTokenがないときは使用しない。
  */
 QNetworkReply *MastodonAPI::upload(QNetworkRequest &req,
-                                   const QList<QByteArrayList> &data) {
+                                   const QByteArrayList &info,
+                                   QIODevice &data) {
   req.setRawHeader("Authorization", "Bearer " + access_token);
-  return net.upload(req, data);
+  return net.upload(req, info, data);
 }
 
 /*

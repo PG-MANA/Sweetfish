@@ -42,7 +42,7 @@ public:
   QNetworkReply *requestHomeTimeLine(const QByteArray &since_id = QByteArray());
   QNetworkReply *requestUserStream();
   //メディア関係
-  QNetworkReply *requestMediaUpload(const QByteArray &data,
+  QNetworkReply *requestMediaUpload(QIODevice &data,
                                     const QByteArray &mime_type);
   //リスト関係
   QNetworkReply *requestGetLists();
@@ -60,8 +60,8 @@ private:
   QNetworkReply *get(QNetworkRequest &req);
   QNetworkReply *post(QNetworkRequest &req, const QByteArray &data);
   QNetworkReply *del(QNetworkRequest &req);
-  QNetworkReply *upload(QNetworkRequest &req,
-                        const QList<QByteArrayList> &data);
+  QNetworkReply *upload(QNetworkRequest &req, const QByteArrayList &info,
+                        QIODevice &data);
 
   QByteArray user_id;
   QByteArray access_token;

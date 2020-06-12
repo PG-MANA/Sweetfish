@@ -19,9 +19,8 @@ public:
   QNetworkReply *get(QNetworkRequest &req);
   QNetworkReply *post(const QUrl &url, const QByteArray &data);
   QNetworkReply *post(QNetworkRequest &req, const QByteArray &data);
-  QNetworkReply *upload(const QUrl &url, const QList<QByteArrayList> &data);
-  QNetworkReply *upload(QNetworkRequest &req,
-                        const QList<QByteArrayList> &data);
+  QNetworkReply *upload(QNetworkRequest &req, const QByteArrayList &info,
+                        QIODevice &data);
   QNetworkReply *del(const QUrl &url);
   QNetworkReply *del(QNetworkRequest &req);
 

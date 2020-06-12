@@ -17,22 +17,22 @@ TootInfo::TootInfo(MainWindow *parent_window, QWidget *parent,
     : QWidget(parent, f), win(parent_window) {
   main_layout = new QVBoxLayout(this);
   media_layout = new QHBoxLayout;
-  
+
   QLabel *info_text_label = new QLabel;
   info_text_label->setPixmap(QPixmap(":/add.png"));
   info_text_label->setVisible(false);
-  
+
   media_layout->addWidget(info_text_label);
   media_layout->addStretch(); //こっちの方が見た目がいいかな
   main_layout->addLayout(media_layout);
-  
+
   reply_layout = new QHBoxLayout;
   info_text_label = new QLabel;
   info_text_label->setPixmap(QPixmap(":/rp.png"));
   info_text_label->setVisible(false);
   reply_layout->addWidget(info_text_label);
   main_layout->addLayout(reply_layout);
-  
+
   quote_layout = new QHBoxLayout;
   info_text_label = new QLabel;
   info_text_label->setPixmap(QPixmap(":/bst.png"));
@@ -57,12 +57,24 @@ const QPixmap *TootInfo::getImage(const unsigned int index) const {
 }
 
 /*
+ * 引数:index(0から始まる数で何番目のImageLabelか指定)
+ * 戻値:QPixmap
+ * 概要:保存されている添付ファイルのファイルパスをとってくる。クリップボードからの画像など存在しない場合もある
+ */
+QString TootInfo::getImagePath(const unsigned int index) const {
+  if (getNumOfImage() <= index)
+    return QString();
+  return media_file_path_list.at(index);
+}
+
+/*
  * 引数:pixmap,
  * index(0から始まる数で何番目のImageLabelか指定、すでにある場合は置き換える。)
  * 戻値:なし
  * 概要:Pixmapを追加し、必要であればImagelabelを生成する。
  */
-void TootInfo::setImage(const QPixmap &pixmap, const unsigned int index) {
+void TootInfo::setImage(const QPixmap &pixmap, QString file_path,
+                        const unsigned int index) {
   unsigned int num_of_img = getNumOfImage();
   if (num_of_img == 0)
     media_layout->itemAt(0)->widget()->setVisible(true);
@@ -72,11 +84,14 @@ void TootInfo::setImage(const QPixmap &pixmap, const unsigned int index) {
     iml->setPixmap(pixmap);
     iml->setFixedSize(50, 50);
     media_layout->addWidget(iml);
+    media_file_path_list.append(file_path);
   } else {
     QLayoutItem *item =
         media_layout->itemAt(index + 2 /*QLabel + addStretch分*/);
-    if (item != nullptr)
+    if (item != nullptr) {
       (qobject_cast<ImageLabel *>(item->widget()))->setPixmap(pixmap);
+      media_file_path_list.replace(index, file_path);
+    }
   }
 }
 
@@ -120,6 +135,7 @@ void TootInfo::deleteImage(const unsigned int index) {
     for (int cnt = 0; QLayoutItem *item = media_layout->itemAt(index + 2 + cnt);
          cnt++) {
       if (ImageLabel *label = qobject_cast<ImageLabel *>(item->widget())) {
+        media_file_path_list.swapItemsAt(label->getIndex(), index + cnt);
         label->setIndex(index + cnt);
       }
     }
