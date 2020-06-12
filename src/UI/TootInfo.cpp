@@ -84,7 +84,11 @@ void TootInfo::setImage(const QPixmap &pixmap, QString file_path,
     iml->setPixmap(pixmap);
     iml->setFixedSize(50, 50);
     media_layout->addWidget(iml);
-    media_file_path_list.append(file_path);
+    if (media_file_path_list.size() > index) {
+      media_file_path_list[index] = file_path;
+    } else {
+      media_file_path_list.append(file_path);
+    }
   } else {
     QLayoutItem *item =
         media_layout->itemAt(index + 2 /*QLabel + addStretch分*/);
