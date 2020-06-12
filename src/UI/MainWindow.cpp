@@ -521,7 +521,7 @@ void MainWindow::addMedia() {
     }
     if (file_info.size() >= 5 * 1024 * 1024)
       throw tr("ファイルサイズが大きすぎます。");
-    unsigned int counter = toot_info->countImage();
+    unsigned int counter = toot_info->getNumOfImage();
     if (counter > 4)
       throw tr("４枚以上の画像は投稿できません。");
     // toot_infoに追加
@@ -543,7 +543,7 @@ bool MainWindow::addMediaByClipboard() {
   if (pic.isNull())
     return false;
 
-  unsigned int counter = toot_info->countImage();
+  unsigned int counter = toot_info->getNumOfImage();
   if (counter > 4) {
     QMessageBox::critical(this, APP_NAME,
                           tr("４枚以上の画像は投稿できません。"));
@@ -794,7 +794,7 @@ void MainWindow::toot() {
     return; //作業中
   setEnabledToot(false);
   try {
-    if (unsigned int c = toot_info->countImage()) {
+    if (unsigned int c = toot_info->getNumOfImage()) {
       //画像あり
       QByteArrayList media;
       QByteArrayList mime;

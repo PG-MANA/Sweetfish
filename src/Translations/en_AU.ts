@@ -462,12 +462,12 @@
 <context>
     <name>TootInfo</name>
     <message>
-        <location filename="../UI/TootInfo.cpp" line="86"/>
+        <location filename="../UI/TootInfo.cpp" line="90"/>
         <source>操作</source>
         <translation>Operation</translation>
     </message>
     <message>
-        <location filename="../UI/TootInfo.cpp" line="90"/>
+        <location filename="../UI/TootInfo.cpp" line="94"/>
         <source>Delete(&amp;D)</source>
         <translation>&amp;Delete</translation>
     </message>

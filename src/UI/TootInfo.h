@@ -31,13 +31,13 @@ public:
   void setQuoteToot(TootContent *data);
   TootData *getReplyToot();
   void setReplyToot(TootContent *data);
-  unsigned int countImage() const;
+  unsigned int getNumOfImage() const;
   bool isEmpty();
 
 public slots:
   void deleteQuoteToot();
   void deleteReplyToot();
-  void ImageMenu(unsigned int index);
+  void showImageMenu(unsigned int index);
 
 private:
   void closeWhenEmpty();

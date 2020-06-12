@@ -17,18 +17,22 @@ TootInfo::TootInfo(MainWindow *parent_window, QWidget *parent,
     : QWidget(parent, f), win(parent_window) {
   main_layout = new QVBoxLayout(this);
   media_layout = new QHBoxLayout;
+  
   QLabel *info_text_label = new QLabel;
   info_text_label->setPixmap(QPixmap(":/add.png"));
   info_text_label->setVisible(false);
+  
   media_layout->addWidget(info_text_label);
   media_layout->addStretch(); //こっちの方が見た目がいいかな
   main_layout->addLayout(media_layout);
+  
   reply_layout = new QHBoxLayout;
   info_text_label = new QLabel;
   info_text_label->setPixmap(QPixmap(":/rp.png"));
   info_text_label->setVisible(false);
   reply_layout->addWidget(info_text_label);
   main_layout->addLayout(reply_layout);
+  
   quote_layout = new QHBoxLayout;
   info_text_label = new QLabel;
   info_text_label->setPixmap(QPixmap(":/bst.png"));
@@ -45,7 +49,7 @@ TootInfo::~TootInfo() {}
  * 概要:ImageLabelのPixmapをとってくる。
  */
 const QPixmap *TootInfo::getImage(const unsigned int index) const {
-  if (countImage() <= index)
+  if (getNumOfImage() <= index)
     return nullptr;
   QLayoutItem *item = media_layout->itemAt(index + 2 /*QLabel + addStretch分*/);
   return item ? (qobject_cast<ImageLabel *>(item->widget()))->pixmap()
@@ -59,12 +63,12 @@ const QPixmap *TootInfo::getImage(const unsigned int index) const {
  * 概要:Pixmapを追加し、必要であればImagelabelを生成する。
  */
 void TootInfo::setImage(const QPixmap &pixmap, const unsigned int index) {
-  unsigned int size = countImage();
-  if (size == 0)
+  unsigned int num_of_img = getNumOfImage();
+  if (num_of_img == 0)
     media_layout->itemAt(0)->widget()->setVisible(true);
-  if (size <= index) {
-    ImageLabel *iml = new ImageLabel(50, 50, size);
-    connect(iml, &ImageLabel::rightClicked, this, &TootInfo::ImageMenu);
+  if (num_of_img <= index) {
+    ImageLabel *iml = new ImageLabel(50, 50, num_of_img);
+    connect(iml, &ImageLabel::rightClicked, this, &TootInfo::showImageMenu);
     iml->setPixmap(pixmap);
     iml->setFixedSize(50, 50);
     media_layout->addWidget(iml);
@@ -81,7 +85,7 @@ void TootInfo::setImage(const QPixmap &pixmap, const unsigned int index) {
  * index(0から始まる数で何番目のImageLabelか指定) 戻値:なし
  * 概要:画像を削除するメニューをだす。
  */
-void TootInfo::ImageMenu(unsigned int index) {
+void TootInfo::showImageMenu(unsigned int index) {
   if (ImageLabel *label = qobject_cast<ImageLabel *>(sender())) {
     QMenu *popup = new QMenu(tr("操作"), this);
     popup->setAttribute(Qt::WA_DeleteOnClose);
@@ -103,14 +107,14 @@ void TootInfo::ImageMenu(unsigned int index) {
  * 概要:Pixmapを削除する。
  */
 void TootInfo::deleteImage(const unsigned int index) {
-  if (countImage() <= index)
+  if (getNumOfImage() <= index)
     return;
   QLayoutItem *old = media_layout->takeAt(
       index +
       2 /*QLabel + addStretch分*/); //一番最初に追加したやつから番号が振られる。
   if (old != nullptr)
     delete old->widget();
-  if (countImage() == 0)
+  if (getNumOfImage() == 0)
     media_layout->itemAt(0)->widget()->setVisible(false);
   else {
     for (int cnt = 0; QLayoutItem *item = media_layout->itemAt(index + 2 + cnt);
@@ -130,7 +134,7 @@ void TootInfo::deleteImage(const unsigned int index) {
  */
 void TootInfo::deleteImageAll() {
   unsigned int i;
-  if ((i = countImage()))
+  if ((i = getNumOfImage()))
     for (i--;; i--) {
       deleteImage(i); // i==0のときも作業しないといけない
       if (!i)
@@ -143,7 +147,7 @@ void TootInfo::deleteImageAll() {
  * 戻値:なし
  * 概要:Imagelabel(Pixmap)の数を返す。
  */
-unsigned int TootInfo::countImage() const {
+unsigned int TootInfo::getNumOfImage() const {
   return media_layout->count() - 2; // QLabel + addStretch分
 }
 
