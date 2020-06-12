@@ -37,7 +37,7 @@ public:
 public slots:
   void deleteQuoteToot();
   void deleteReplyToot();
-  void ImageMenu(TootData *tdata, unsigned int index);
+  void ImageMenu(unsigned int index);
 
 private:
   void closeWhenEmpty();

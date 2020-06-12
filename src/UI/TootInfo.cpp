@@ -81,7 +81,7 @@ void TootInfo::setImage(const QPixmap &pixmap, const unsigned int index) {
  * index(0から始まる数で何番目のImageLabelか指定) 戻値:なし
  * 概要:画像を削除するメニューをだす。
  */
-void TootInfo::ImageMenu(TootData *_tdata, unsigned int index) {
+void TootInfo::ImageMenu(unsigned int index) {
   if (ImageLabel *label = qobject_cast<ImageLabel *>(sender())) {
     QMenu *popup = new QMenu(tr("操作"), this);
     popup->setAttribute(Qt::WA_DeleteOnClose);

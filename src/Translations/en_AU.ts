@@ -4,48 +4,48 @@
 <context>
     <name>ImageViewer</name>
     <message>
-        <location filename="../UI/ImageViewer.cpp" line="25"/>
-        <location filename="../UI/ImageViewer.cpp" line="185"/>
+        <location filename="../UI/ImageViewer.cpp" line="43"/>
+        <location filename="../UI/ImageViewer.cpp" line="196"/>
         <source>画像の詳細 </source>
         <translation>Image details </translation>
     </message>
     <message>
-        <location filename="../UI/ImageViewer.cpp" line="56"/>
+        <location filename="../UI/ImageViewer.cpp" line="72"/>
         <source>次へ(&amp;N)</source>
         <translation>&amp;Next</translation>
     </message>
     <message>
-        <location filename="../UI/ImageViewer.cpp" line="57"/>
+        <location filename="../UI/ImageViewer.cpp" line="73"/>
         <source>前へ(&amp;B)</source>
         <translation>&amp;Back</translation>
     </message>
     <message>
-        <location filename="../UI/ImageViewer.cpp" line="58"/>
+        <location filename="../UI/ImageViewer.cpp" line="74"/>
         <source>名前を付けて保存(&amp;S)</source>
         <translation>&amp;Save image</translation>
     </message>
     <message>
-        <location filename="../UI/ImageViewer.cpp" line="59"/>
+        <location filename="../UI/ImageViewer.cpp" line="75"/>
         <source>コピー(&amp;P)</source>
         <translation>&amp;Copy</translation>
     </message>
     <message>
-        <location filename="../UI/ImageViewer.cpp" line="60"/>
+        <location filename="../UI/ImageViewer.cpp" line="76"/>
         <source>閉じる(&amp;C)</source>
         <translation>&amp;Quit</translation>
     </message>
     <message>
-        <location filename="../UI/ImageViewer.cpp" line="174"/>
+        <location filename="../UI/ImageViewer.cpp" line="185"/>
         <source>画像</source>
         <translation>Image</translation>
     </message>
     <message>
-        <location filename="../UI/ImageViewer.cpp" line="183"/>
+        <location filename="../UI/ImageViewer.cpp" line="194"/>
         <source>名前を付けて保存</source>
         <translation>Save as</translation>
     </message>
     <message>
-        <location filename="../UI/ImageViewer.cpp" line="186"/>
+        <location filename="../UI/ImageViewer.cpp" line="197"/>
         <source>画像の保存に失敗しました。</source>
         <translation>Failed to save the image.</translation>
     </message>
@@ -444,17 +444,17 @@
         <translation> boosted</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="410"/>
+        <location filename="../UI/TootContent.cpp" line="412"/>
         <source>著者:</source>
         <translation>Author:</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="422"/>
+        <location filename="../UI/TootContent.cpp" line="424"/>
         <source>提供者:</source>
         <translation>Provider:</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="471"/>
+        <location filename="../UI/TootContent.cpp" line="489"/>
         <source>トゥートの詳細 </source>
         <translation>Toot details - </translation>
     </message>

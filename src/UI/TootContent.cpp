@@ -274,7 +274,7 @@ void TootContent::drawToot() {
         media_data.getEntry(0).getType() == "gifv") { //動画(一つのみ対応)
       TootMediaDataEntry video_entry = media_data.getEntry(0);
 
-      ImageLabel *iml = new ImageLabel(50, 50, 0, this);
+      ImageLabel *iml = new ImageLabel(50, 50, 0);
       if (!iml->setPixmapByName(video_entry.getPreviewUrl())) { //キャッシュなし
         // if ( tdata->flag & 0x40 ) iml->setPixmap ( style()->standardIcon (
         // QStyle::SP_MessageBoxWarning ).pixmap ( 100, 45 ) );
@@ -297,9 +297,8 @@ void TootContent::drawToot() {
         if (image_entry.getType() != "image") {
           continue;
         }
-        ImageLabel *iml = new ImageLabel(
-            100, 45 /*50にするとMediaBoxにY軸スクロールバーがついて気持ち悪い*/,
-            cnt, this);
+        ImageLabel *iml = new ImageLabel(100, 45, cnt);
+        /*yを50にするとMediaBoxにY軸スクロールバーがついて気持ち悪い*/
 
         if (!iml->setPixmapByName(
                 image_entry.getPreviewUrl())) { //キャッシュなし
@@ -382,65 +381,66 @@ void TootContent::drawQuoteToot(QString full_url, QVBoxLayout *text_box) {
  * 概要:TootCardDataを使ってリンクカード用のQFrameを作成する
  */
 void TootContent::drawCard(QVBoxLayout *text_box) {
-    TootCardData card_data = tdata->getCardData();
-    QFrame *card_frame = new QFrame;
-    QVBoxLayout *card_box = new QVBoxLayout(card_frame);
+  TootCardData card_data = tdata->getCardData();
+  QFrame *card_frame = new QFrame;
+  QVBoxLayout *card_box = new QVBoxLayout(card_frame);
 
-    card_frame->setFrameShape(QFrame::StyledPanel);
-    card_frame->setFrameShadow(QFrame::Sunken);
+  card_frame->setFrameShape(QFrame::StyledPanel);
+  card_frame->setFrameShadow(QFrame::Sunken);
 
-    QLabel *title_label =
-        new QLabel((card_data.getTitle().size() >= 16)
-                       ? card_data.getTitle().left(16 - 3).append("...")
-                       : card_data.getTitle());
-    title_label->setStyleSheet("font-weight:bold;color:white;");
+  QLabel *title_label =
+      new QLabel((card_data.getTitle().size() >= 16)
+                     ? card_data.getTitle().left(16 - 3).append("...")
+                     : card_data.getTitle());
+  title_label->setStyleSheet("font-weight:bold;color:white;");
 
-    card_box->addWidget(title_label);
-    card_box->addWidget(new TextLabel(card_data.getDescription()));
-    if (!card_data.getPreviewUrl().isEmpty()) {
-      ImageLabel *preview_icon = new ImageLabel(80, 45);
-      if (!preview_icon->setPixmapByName(
-              card_data.getPreviewUrl())) { //アイコンのキャッシュがない
-        connect(net.get(card_data.getPreviewUrl()), &QNetworkReply::finished,
-                preview_icon, &ImageLabel::setPixmapByNetwork);
-      }
-      card_box->addWidget(preview_icon);
-      if (!card_data.getAuthorName().isEmpty()) {
-        QLabel *author_label = new QLabel(
-            tr("著者:") + "<a href=\"" + card_data.getAuthorUrl() + "\">" +
-            ((card_data.getAuthorName().size() >= 16)
-                 ? card_data.getAuthorName().left(16 - 3).append("...")
-                 : card_data.getAuthorName()) +
-            "</a>");
-        author_label->setOpenExternalLinks(true);
-        author_label->setWordWrap(true);
-        author_label->setTextFormat(Qt::RichText);
-        card_box->addWidget(author_label);
-      }
-      if (!card_data.getProviderName().isEmpty()) {
-        QLabel *provider_label = new QLabel(
-            tr("提供者:") + "<a href=\"" + card_data.getProviderUrl() + "\">" +
-            ((card_data.getProviderName().size() >= 16)
-                 ? card_data.getProviderName().left(16 - 3).append("...")
-                 : card_data.getProviderName()) +
-            "</a>");
-        provider_label->setOpenExternalLinks(true);
-        provider_label->setWordWrap(true);
-        provider_label->setTextFormat(Qt::RichText);
-        card_box->addWidget(provider_label);
-      }
+  card_box->addWidget(title_label);
+  card_box->addWidget(new TextLabel(card_data.getDescription()));
+  if (!card_data.getPreviewUrl().isEmpty()) {
+    ImageLabel *preview_icon = new ImageLabel(80, 45, 0);
+    if (!preview_icon->setPixmapByName(
+            card_data.getPreviewUrl())) { //アイコンのキャッシュがない
+      connect(net.get(card_data.getPreviewUrl()), &QNetworkReply::finished,
+              preview_icon, &ImageLabel::setPixmapByNetwork);
     }
-    text_box->addWidget(card_frame);
+    connect(preview_icon, &ImageLabel::clicked, this,
+            &TootContent::showCardPicture);
+    card_box->addWidget(preview_icon);
+
+    if (!card_data.getAuthorName().isEmpty()) {
+      QLabel *author_label = new QLabel(
+          tr("著者:") + "<a href=\"" + card_data.getAuthorUrl() + "\">" +
+          ((card_data.getAuthorName().size() >= 16)
+               ? card_data.getAuthorName().left(16 - 3).append("...")
+               : card_data.getAuthorName()) +
+          "</a>");
+      author_label->setOpenExternalLinks(true);
+      author_label->setWordWrap(true);
+      author_label->setTextFormat(Qt::RichText);
+      card_box->addWidget(author_label);
+    }
+    if (!card_data.getProviderName().isEmpty()) {
+      QLabel *provider_label = new QLabel(
+          tr("提供者:") + "<a href=\"" + card_data.getProviderUrl() + "\">" +
+          ((card_data.getProviderName().size() >= 16)
+               ? card_data.getProviderName().left(16 - 3).append("...")
+               : card_data.getProviderName()) +
+          "</a>");
+      provider_label->setOpenExternalLinks(true);
+      provider_label->setWordWrap(true);
+      provider_label->setTextFormat(Qt::RichText);
+      card_box->addWidget(provider_label);
+    }
+  }
+  text_box->addWidget(card_frame);
 }
 
 /*
- * 引数:url(表示する画像のURL)
+ * 引数:index(表示する画像のindex)
  * 戻値:なし
- * 概要:大きい画像を表示する。または動画を再生する。
+ * 概要:大きい画像を表示する。または動画を再生する
  */
-void TootContent::showPicture(TootData *tdata, unsigned int index) {
-  if (tdata == nullptr || !tdata->getMediaData().size())
-    return;
+void TootContent::showPicture(unsigned int index) {
   // if ( tdata->flag & 0x40 && QMessageBox::question ( root_window, APP_NAME,
   // tr (
   // "この画像・動画を表示すると気分を害する可能性があります。表示しますか。" ),
@@ -454,6 +454,24 @@ void TootContent::showPicture(TootData *tdata, unsigned int index) {
         new ImageViewer(tdata, index, root_window, Qt::Window);
     viewer->show();
   }
+}
+
+/*
+ * 引数:index(表示する画像のindex)
+ * 戻値:なし
+ * 概要:カードの大きい画像を表示する
+ */
+void TootContent::showCardPicture(unsigned int index) {
+  // if ( tdata->flag & 0x40 && QMessageBox::question ( root_window, APP_NAME,
+  // tr (
+  // "この画像・動画を表示すると気分を害する可能性があります。表示しますか。" ),
+  // QMessageBox::Yes | QMessageBox::No, QMessageBox::No ) != QMessageBox::Yes )
+  // return;
+
+  ImageViewer *viewer =
+      new ImageViewer(QStringList(tdata->getCardData().getPreviewUrl()), index,
+                      root_window, Qt::Window);
+  viewer->show();
 }
 
 /*

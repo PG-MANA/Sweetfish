@@ -15,11 +15,10 @@ QHash<QString, QPixmap> ImageLabel::images;
 
 ImageLabel::ImageLabel(const unsigned int init_sizex,
                        const unsigned int init_sizey,
-                       const unsigned int init_index,
-                       TootContent *init_parent_content, QWidget *parent,
-                       Qt::WindowFlags f)
-    : QLabel(parent, f), parent_content(init_parent_content), index(init_index),
-      sizex(init_sizex), sizey(init_sizey) {}
+                       const unsigned int init_index, QString init_url,
+                       QWidget *parent, Qt::WindowFlags f)
+    : QLabel(parent, f), index(init_index), sizex(init_sizex),
+      sizey(init_sizey), url(init_url) {}
 
 /*
  * 引数:target_url(画像の名前)
@@ -55,22 +54,6 @@ void ImageLabel::setPixmapByNetwork() {
     images[url] = p;
   }
   setPixmap(p);
-}
-
-/*
- * 引数:なし
- * 戻値:TootContent (親Widget)
- * 概要:親のTootContentを返す
- */
-TootContent *ImageLabel::getParentContent() { return parent_content; }
-
-/*
- * 引数:new_parent_content(新しい親TootContent)
- * 戻値:なし
- * 概要:TootContent を更新するときに使う。
- */
-void ImageLabel::setParentContent(TootContent *new_parent_content) {
-  parent_content = new_parent_content;
 }
 
 /*
@@ -116,12 +99,10 @@ void ImageLabel::setIndex(unsigned int i) { index = i; }
 void ImageLabel::mousePressEvent(QMouseEvent *event) {
   switch (event->button()) {
   case Qt::LeftButton:
-    emit clicked((parent_content) ? parent_content->getTootData() : nullptr,
-                 index);
+    emit clicked(index);
     break;
   case Qt::RightButton:
-    emit rightClicked(
-        (parent_content) ? parent_content->getTootData() : nullptr, index);
+    emit rightClicked(index);
     break;
   default:
     event->ignore();
