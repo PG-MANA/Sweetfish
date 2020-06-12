@@ -49,7 +49,7 @@ private:
   virtual void mousePressEvent(QMouseEvent *event) override;
   void drawToot();
   void drawQuoteToot(QString full_url, QVBoxLayout *text_box);
-  void drawCard(QString full_url, QVBoxLayout *text_box);
+  void drawCard(QVBoxLayout *text_box);
   void redrawToot();
   void createActions();
   Mode mode;
