@@ -807,6 +807,8 @@ void MainWindow::toot() {
           if (!toot_info->getImage(i)->save(buff, "PNG"))
             throw tr("画像の読み込みに失敗しました。");
           mime.push_back(QByteArray("image/png"));
+          buff->close();
+          buff->open(QIODevice::ReadOnly);
           media.append(buff);
         } else {
           QFile *file = new QFile(file_path);

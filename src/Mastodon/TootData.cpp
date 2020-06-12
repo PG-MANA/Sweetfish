@@ -117,7 +117,6 @@ TootData::TootData(const QJsonObject &target) {
   account = TootAccountData(target["account"].toObject());
   media = TootMediaData(target["media_attachments"].toArray());
   if (!target["card"].isNull()) {
-    qDebug() << "OK";
     card = TootCardData(target["card"].toObject());
   }
 
