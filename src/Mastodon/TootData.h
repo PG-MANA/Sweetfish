@@ -76,6 +76,32 @@ private:
   friend class TootMediaData;
 };
 
+class TootCardData {
+public:
+  TootCardData(){};
+  explicit TootCardData(const QJsonObject &target);
+  QString getUrl() const { return url; };
+  QString getTitle() const { return title; };
+  QString getType() const { return type; }
+  QString getAuthorName() const { return author_name; };
+  QString getAuthorUrl() const { return author_url; };
+  QString getProviderName() const { return provider_name; };
+  QString getProviderUrl() const { return provider_url; };
+  QString getPreviewUrl() const { return preview_url; };
+  QString getDescription() const { return description; };
+
+private:
+  QString url;
+  QString title;
+  QString type;
+  QString author_name;
+  QString author_url;
+  QString preview_url;
+  QString description;
+  QString provider_name;
+  QString provider_url;
+};
+
 class TootMediaData {
 public:
   TootMediaData(){};
@@ -124,6 +150,7 @@ public:
   TootData *getBoostedData() const { return reblog; };
   const TootUrlData &getUrlData() const { return url_list; };
   const TootMediaData &getMediaData() const { return media; };
+  const TootCardData &getCardData() const { return card; };
   QDateTime getDateTime() const { return created_at; };
   QString getContent() const { return content; };
 
@@ -142,6 +169,7 @@ private:
   TootAccountData account;
   TootUrlData url_list;
   TootMediaData media;
+  TootCardData card;
   TootData *reblog = nullptr;
 
   void analyzeContent(QString content);

@@ -8,15 +8,18 @@
 #pragma once
 
 #include <QByteArray>
+#include <QList>
 #include <QObject>
 
 class MastodonAPI;
+class QIODevice;
 
 class MediaUpload : public QObject {
   Q_OBJECT
 public:
-  explicit MediaUpload(const QByteArrayList &_list, const QByteArrayList &mime,
-                       MastodonAPI *m, QObject *parent = Q_NULLPTR);
+  explicit MediaUpload(QList<QIODevice *> _list /*upload後にfreeされる*/,
+                       const QByteArrayList &mime, MastodonAPI *m,
+                       QObject *parent = Q_NULLPTR);
   virtual ~MediaUpload();
   bool start();
 
@@ -29,7 +32,7 @@ public slots:
   void retry();
 
 private:
-  QByteArrayList list;
+  QList<QIODevice *> list;
   QByteArrayList mimetype;
   QByteArray id;       //=media_ids
   QByteArray media_id; //操作中のmedia_id

@@ -59,46 +59,31 @@ QNetworkReply *Network::post(QNetworkRequest &req, const QByteArray &data) {
 }
 
 /*
- * 引数:url(送信するURL), data(本体、POSTするデータ)
- * 戻値:データを受け取るためのQNetworkReplyのポインタ
- * 概要:渡されたurlとdataを使ってPOSTリクエストを送る。受信は戻り値であるQNetworkReplyポインタを使う。
- */
-QNetworkReply *Network::upload(const QUrl &url,
-                               const QList<QByteArrayList> &data) {
-  QNetworkRequest req;
-  req.setUrl(url);
-  return upload(req, data);
-}
-
-/*
  * 引数:req(QNetworkRequestで、最低URLは設定しておく),
- * data(本体、POSTするデータ) 戻値:データを受け取るためのQNetworkReplyのポインタ
+ *      info(file_nameやMIMEなどの情報[QByteArrayList])
+ *      data(読み込み用のQIODevice)
  * 概要:渡されたQNetworkRequestlとdataを使ってmultipart/form-data形式のPOSTリクエストを送る。
- * data=>QByteArrayList(0:title, 1:file_name, 2:mime_type, 3:data)
+ * info=>QByteArrayList(0:title, 1:file_name, 2:mime_type)
  */
-QNetworkReply *Network::upload(QNetworkRequest &req,
-                               const QList<QByteArrayList> &data) {
+QNetworkReply *Network::upload(QNetworkRequest &req, const QByteArrayList &info,
+                               QIODevice &data) {
   req.setHeader(QNetworkRequest::UserAgentHeader, getUserAgent());
   QHttpMultiPart *multiformPart =
       new QHttpMultiPart(QHttpMultiPart::FormDataType);
-
-  for (const QByteArrayList &entry : data) {
-    if (entry.size() != 4)
-      continue; //無効
-    QHttpPart dataPart;
-    if (!entry.at(1).isEmpty()) {
-      dataPart.setHeader(QNetworkRequest::ContentDispositionHeader,
-                         QVariant("form-data; name=\"" + entry.at(0) +
-                                  "\"; filename=\"" + entry.at(1) + "\""));
-    } else {
-      dataPart.setHeader(QNetworkRequest::ContentDispositionHeader,
-                         QVariant("form-data; name=\"" + entry.at(0) + "\""));
-    }
-    dataPart.setHeader(QNetworkRequest::ContentTypeHeader,
-                       QVariant(entry.at(2)));
-    dataPart.setBody(entry.at(3));
-    multiformPart->append(dataPart);
+  if (info.size() != 3)
+    return nullptr; //無効
+  QHttpPart dataPart;
+  if (!info.at(1).isEmpty()) {
+    dataPart.setHeader(QNetworkRequest::ContentDispositionHeader,
+                       QVariant("form-data; name=\"" + info.at(0) +
+                                "\"; filename=\"" + info.at(1) + "\""));
+  } else {
+    dataPart.setHeader(QNetworkRequest::ContentDispositionHeader,
+                       QVariant("form-data; name=\"" + info.at(0) + "\""));
   }
+  dataPart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant(info.at(2)));
+  dataPart.setBodyDevice(&data);
+  multiformPart->append(dataPart);
   QNetworkReply *rep = qnet.post(req, multiformPart);
   multiformPart->setParent(rep);
   return rep;

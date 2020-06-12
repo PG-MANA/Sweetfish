@@ -5,9 +5,9 @@
  * ImageViewer クラス
  * 画像を表示する。
  */
+#include "ImageViewer.h"
 #include "../Sweetfish.h"
 #include "ImageLabel.h"
-#include "ImageViewer.h"
 #include <QNetworkReply>
 #include <QtWidgets>
 
@@ -16,8 +16,26 @@ ImageViewer::ImageViewer(TootData *tdata, unsigned int index, QWidget *parent,
     : QWidget(parent, f), now_index(index), first(true) {
   if (tdata == nullptr)
     return;
-  media_data = tdata->getMediaData();
 
+  for (unsigned int cnt = 0, size = tdata->getMediaData().size(); cnt < size;
+       cnt++) {
+    url_list.append(tdata->getMediaData().getEntry(cnt).getUrl());
+  }
+  init();
+}
+
+ImageViewer::ImageViewer(QStringList _url_list, unsigned int index,
+                         QWidget *parent, Qt::WindowFlags f)
+    : QWidget(parent, f), now_index(index), first(true), url_list(_url_list) {
+  init();
+}
+
+/*
+ * 引数:なし
+ * 戻値:なし
+ * 概要:ImageViewerの画面を構成する
+ */
+void ImageViewer::init() {
   QVBoxLayout *main_layout = new QVBoxLayout(this);
   QScrollArea *image_area = new QScrollArea;
   iml = new ImageLabel(0, 0, 0, nullptr);
@@ -25,8 +43,8 @@ ImageViewer::ImageViewer(TootData *tdata, unsigned int index, QWidget *parent,
   setWindowTitle(tr("画像の詳細 ") + APP_NAME);
   setAttribute(Qt::WA_DeleteOnClose);
 
-  int link_size = media_data.size();
-  if (link_size <= index)
+  int link_size = url_list.size();
+  if (link_size <= now_index)
     now_index = 0;
 
   //画像
@@ -36,9 +54,7 @@ ImageViewer::ImageViewer(TootData *tdata, unsigned int index, QWidget *parent,
   //ボタン作成
   createButtons(main_layout);
 
-  TootMediaDataEntry media_entry = media_data.getEntry(now_index);
-  setImage(media_entry.getRemoteUrl().isEmpty() ? media_entry.getUrl()
-                                                : media_entry.getRemoteUrl());
+  setImage(url_list.at(now_index));
   if (now_index == 0)
     back_button->setEnabled(false);
   if (now_index == link_size - 1)
@@ -116,11 +132,10 @@ void ImageViewer::nextImage() {
   if (!save_button->isEnabled())
     return; //作業中
   now_index++;
-  TootMediaDataEntry media_entry = media_data.getEntry(now_index);
-  setImage(media_entry.getRemoteUrl().isEmpty() ? media_entry.getUrl()
-                                                : media_entry.getRemoteUrl());
+  setImage(url_list.at(now_index));
+
   back_button->setEnabled(true);
-  if (now_index == media_data.size() - 1)
+  if (now_index == url_list.size() - 1)
     next_button->setEnabled(false);
 }
 
@@ -133,9 +148,7 @@ void ImageViewer::backImage() {
   if (!save_button->isEnabled())
     return; //作業中
   now_index--;
-  TootMediaDataEntry media_entry = media_data.getEntry(now_index);
-  setImage(media_entry.getRemoteUrl().isEmpty() ? media_entry.getUrl()
-                                                : media_entry.getRemoteUrl());
+  setImage(url_list.at(now_index));
   next_button->setEnabled(true);
   if (now_index == 0)
     back_button->setEnabled(false);
@@ -159,10 +172,8 @@ void ImageViewer::copy() {
  * 概要:ImageLabelにセットされている画像を保存する。
  */
 void ImageViewer::save() {
-  TootMediaDataEntry media_entry = media_data.getEntry(now_index);
-  QString media_link = media_entry.getRemoteUrl().isEmpty()
-                           ? media_entry.getUrl()
-                           : media_entry.getRemoteUrl();
+  QString media_link = url_list.at(now_index);
+
   QString tempname =
       media_link.split("/")
           .constLast(); // http://doc.qt.io/qt-5/qstring.html#split に「If sep

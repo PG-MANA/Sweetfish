@@ -24,6 +24,9 @@ public:
   explicit ImageViewer(TootData *tdata, unsigned int index = 0,
                        QWidget *parent = Q_NULLPTR,
                        Qt::WindowFlags f = Qt::WindowFlags());
+  explicit ImageViewer(QStringList url_list, unsigned int index = 0,
+                       QWidget *parent = Q_NULLPTR,
+                       Qt::WindowFlags f = Qt::WindowFlags());
 
 public slots:
   void nextImage();
@@ -35,9 +38,10 @@ private slots:
   void fit();
 
 private:
+  void init();
   void setImage(const QString &url);
   void createButtons(QVBoxLayout *main_layout);
-  TootMediaData media_data;
+  QStringList url_list;
   ImageLabel *iml;
   QPushButton *next_button;
   QPushButton *back_button;
