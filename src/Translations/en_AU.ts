@@ -241,7 +241,7 @@
         <translation>Media (*.png *.jpg *.gif *.bmp *.pbm *.pgm *.ppm *.xbm *.xpm *.svg)</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="517"/>
+        <location filename="../UI/MainWindow.cpp" line="518"/>
         <source>サポートしていない画像です。</source>
         <translation>File type not supported.</translation>
     </message>
@@ -250,132 +250,132 @@
         <translation type="vanished">File too large.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="521"/>
-        <location filename="../UI/MainWindow.cpp" line="544"/>
+        <location filename="../UI/MainWindow.cpp" line="523"/>
+        <location filename="../UI/MainWindow.cpp" line="547"/>
         <source>４枚以上の画像は投稿できません。</source>
         <translation>You can only post 4 images at a time.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="625"/>
-        <location filename="../UI/MainWindow.cpp" line="633"/>
+        <location filename="../UI/MainWindow.cpp" line="628"/>
+        <location filename="../UI/MainWindow.cpp" line="636"/>
         <source>さんが</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="626"/>
+        <location filename="../UI/MainWindow.cpp" line="629"/>
         <source>以下のトゥートをお気に入りに登録しました。
 </source>
         <translation>added your toot to their favourites:
 </translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="628"/>
-        <location filename="../UI/MainWindow.cpp" line="636"/>
+        <location filename="../UI/MainWindow.cpp" line="631"/>
+        <location filename="../UI/MainWindow.cpp" line="639"/>
         <source>不明</source>
         <translation>Unknown</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="634"/>
+        <location filename="../UI/MainWindow.cpp" line="637"/>
         <source>以下のトゥートをブーストしました。
 </source>
         <translation>boosted the following toot:
 </translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="642"/>
+        <location filename="../UI/MainWindow.cpp" line="645"/>
         <source>さんがあなたに向けてトゥートしました。
 </source>
         <translation>mentioned you
 </translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="649"/>
+        <location filename="../UI/MainWindow.cpp" line="652"/>
         <source>さんがあなたをフォローしました。</source>
         <translation>followed you</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="684"/>
+        <location filename="../UI/MainWindow.cpp" line="687"/>
         <source>トゥートに失敗しました </source>
         <translation>Toot failed </translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="719"/>
+        <location filename="../UI/MainWindow.cpp" line="722"/>
         <source>作業に失敗しました </source>
         <translation>Operation failed </translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="805"/>
-        <location filename="../UI/MainWindow.cpp" line="811"/>
+        <location filename="../UI/MainWindow.cpp" line="808"/>
+        <location filename="../UI/MainWindow.cpp" line="814"/>
         <source>画像の読み込みに失敗しました。</source>
         <translation>Failed to load the image.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="823"/>
+        <location filename="../UI/MainWindow.cpp" line="826"/>
         <source>アップロード中にエラーが発生しました。再試行しますか。</source>
         <translation>Failed to upload. Try again?</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="832"/>
+        <location filename="../UI/MainWindow.cpp" line="835"/>
         <source>アップロードの初期化作業に失敗しました。</source>
         <translation>Failed to start the upload.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="897"/>
+        <location filename="../UI/MainWindow.cpp" line="900"/>
         <source>Qtを使用して製作されているMastodonクライアント。</source>
         <translation>Sweetfish is a Mastodon client written with Qt.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="900"/>
+        <location filename="../UI/MainWindow.cpp" line="903"/>
         <source>本ソフトウェアはQtオープンソース版のLGPLv3を選択しています。詳しくは&lt;a href=&quot;https://www.qt.io/licensing/&quot;&gt;https://www.qt.io/licensing/&lt;/a&gt;をご覧ください。</source>
         <translation>This software has chosen to use the LGPLv3  open source version  of Qt. For details, please see &lt;a href=&quot;https://www.qt.io/licensing/&quot;&gt; https://www.qt.io/licensing/ &lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="906"/>
+        <location filename="../UI/MainWindow.cpp" line="909"/>
         <source>License</source>
         <translation>License</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="923"/>
+        <location filename="../UI/MainWindow.cpp" line="926"/>
         <source>このソフトウェアについてのページを開く</source>
         <translation>Open the Sweetfish homepage.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="936"/>
+        <location filename="../UI/MainWindow.cpp" line="939"/>
         <source>このトゥートはすでにブーストしています。</source>
         <translation>This toot has already been boosted.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="939"/>
+        <location filename="../UI/MainWindow.cpp" line="942"/>
         <source>非公開のトゥートのためブーストできません。</source>
         <translation>Can&apos;t boost a private toot.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="942"/>
+        <location filename="../UI/MainWindow.cpp" line="945"/>
         <source>ダイレクトメッセージのためブーストできません。</source>
         <translation>Can&apos;t boost a personal message.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="959"/>
+        <location filename="../UI/MainWindow.cpp" line="962"/>
         <source>このトゥートはすでにお気に入りに登録しています。</source>
         <translation>You already favourited this toot.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="963"/>
+        <location filename="../UI/MainWindow.cpp" line="966"/>
         <source>さんのトゥートをお気に入りに登録しますか。</source>
         <translation>Favourite this toot?</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="979"/>
+        <location filename="../UI/MainWindow.cpp" line="982"/>
         <source>トゥートを削除しますか。</source>
         <translation>Do you want to delete this toot?</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="997"/>
+        <location filename="../UI/MainWindow.cpp" line="1000"/>
         <source>非公開のトゥートのため引用できません。</source>
         <translation>Cannot quote a private toot.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="1000"/>
+        <location filename="../UI/MainWindow.cpp" line="1003"/>
         <source>ダイレクトメッセージのため引用できません。</source>
         <translation>Cannot quote a personal message.</translation>
     </message>
@@ -462,12 +462,12 @@
 <context>
     <name>TootInfo</name>
     <message>
-        <location filename="../UI/TootInfo.cpp" line="105"/>
+        <location filename="../UI/TootInfo.cpp" line="109"/>
         <source>操作</source>
         <translation>Operation</translation>
     </message>
     <message>
-        <location filename="../UI/TootInfo.cpp" line="109"/>
+        <location filename="../UI/TootInfo.cpp" line="113"/>
         <source>Delete(&amp;D)</source>
         <translation>&amp;Delete</translation>
     </message>

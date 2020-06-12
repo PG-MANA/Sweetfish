@@ -507,6 +507,7 @@ void MainWindow::addMedia() {
     if (file_path.isEmpty())
       return;
     QFileInfo file_info(file_path);
+
     //動画は分岐させる
     QByteArrayList &&supported_formats = QImageReader::supportedImageFormats();
     QByteArray &&suffix = file_info.suffix().toLower().toUtf8();
@@ -516,11 +517,13 @@ void MainWindow::addMedia() {
       if (e == supported_formats.last())
         throw tr("サポートしていない画像です。");
     }
+
     unsigned int counter = toot_info->getNumOfImage();
     if (counter > 4)
       throw tr("４枚以上の画像は投稿できません。");
+
     // toot_infoに追加
-    toot_info->setImage(QPixmap(file_path), file_path, counter);
+    toot_info->setImage(QPixmap(file_path).scaled(50, 50), file_path, counter);
     info_scroll_area->setVisible(true);
   } catch (QString &e) {
     QMessageBox::critical(this, APP_NAME, e);
