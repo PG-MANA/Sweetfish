@@ -16,7 +16,7 @@ TootCardData::TootCardData(const QJsonObject &target) {
   author_name = target["author_name"].toString();
   author_url = target["author_url"].toString();
   provider_name = target["provider_name"].toString();
-  provider_url = target["provider_name"].toString();
+  provider_url = target["provider_url"].toString();
   preview_url = target["image"].toString();
   if (preview_url.isEmpty()) {
     preview_url = target["embed_url"].toString();
