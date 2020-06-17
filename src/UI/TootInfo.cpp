@@ -139,7 +139,7 @@ void TootInfo::deleteImage(const unsigned int index) {
     for (int cnt = 0; QLayoutItem *item = media_layout->itemAt(index + 2 + cnt);
          cnt++) {
       if (ImageLabel *label = qobject_cast<ImageLabel *>(item->widget())) {
-        media_file_path_list.swapItemsAt(label->getIndex(), index + cnt);
+        media_file_path_list[index + cnt] = media_file_path_list[label->getIndex()];
         label->setIndex(index + cnt);
       }
     }
