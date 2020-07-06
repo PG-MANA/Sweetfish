@@ -444,17 +444,17 @@
         <translation> boosted</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="412"/>
+        <location filename="../UI/TootContent.cpp" line="416"/>
         <source>著者:</source>
         <translation>Author:</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="424"/>
+        <location filename="../UI/TootContent.cpp" line="428"/>
         <source>提供者:</source>
         <translation>Provider:</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="489"/>
+        <location filename="../UI/TootContent.cpp" line="493"/>
         <source>トゥートの詳細 </source>
         <translation>Toot details - </translation>
     </message>
