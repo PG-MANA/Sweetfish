@@ -258,8 +258,8 @@ void TootContent::drawToot() {
   text_box->addWidget(display_name);
   QLabel *user_name = new QLabel(
       '@' +
-      ((tdata->getOriginalAccountData().getAcct().size() >= 20)
-           ? tdata->getOriginalAccountData().getAcct().left(20 - 3).append(
+      ((tdata->getOriginalAccountData().getAcct().size() >= 25)
+           ? tdata->getOriginalAccountData().getAcct().left(25 - 3).append(
                  "...")
            : tdata->getOriginalAccountData().getAcct()));
   user_name->setStyleSheet("font-size:10px;color:gray;");
