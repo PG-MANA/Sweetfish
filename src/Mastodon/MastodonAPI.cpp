@@ -139,7 +139,7 @@ QNetworkReply *MastodonAPI::requestToot(const QString &message,
   if (!media_id.isEmpty()) {
     for (const QString &id : media_id.split(',')) {
       if (!id.isEmpty()) {
-        body.append("&media_ids[]=" + id);
+        body.append(QByteArray("&media_ids[]=") + id.toUtf8());
       }
     }
   }

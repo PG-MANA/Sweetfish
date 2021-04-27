@@ -5,7 +5,7 @@
     <name>ImageViewer</name>
     <message>
         <location filename="../UI/ImageViewer.cpp" line="43"/>
-        <location filename="../UI/ImageViewer.cpp" line="196"/>
+        <location filename="../UI/ImageViewer.cpp" line="197"/>
         <source>画像の詳細 </source>
         <translation>Image details </translation>
     </message>
@@ -35,17 +35,17 @@
         <translation>&amp;Quit</translation>
     </message>
     <message>
-        <location filename="../UI/ImageViewer.cpp" line="185"/>
+        <location filename="../UI/ImageViewer.cpp" line="186"/>
         <source>画像</source>
         <translation>Image</translation>
     </message>
     <message>
-        <location filename="../UI/ImageViewer.cpp" line="194"/>
+        <location filename="../UI/ImageViewer.cpp" line="195"/>
         <source>名前を付けて保存</source>
         <translation>Save as</translation>
     </message>
     <message>
-        <location filename="../UI/ImageViewer.cpp" line="197"/>
+        <location filename="../UI/ImageViewer.cpp" line="198"/>
         <source>画像の保存に失敗しました。</source>
         <translation>Failed to save the image.</translation>
     </message>
@@ -294,88 +294,88 @@
         <translation>followed you</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="687"/>
+        <location filename="../UI/MainWindow.cpp" line="688"/>
         <source>トゥートに失敗しました </source>
         <translation>Toot failed </translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="722"/>
+        <location filename="../UI/MainWindow.cpp" line="723"/>
         <source>作業に失敗しました </source>
         <translation>Operation failed </translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="808"/>
-        <location filename="../UI/MainWindow.cpp" line="816"/>
+        <location filename="../UI/MainWindow.cpp" line="809"/>
+        <location filename="../UI/MainWindow.cpp" line="817"/>
         <source>画像の読み込みに失敗しました。</source>
         <translation>Failed to load the image.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="828"/>
+        <location filename="../UI/MainWindow.cpp" line="829"/>
         <source>アップロード中にエラーが発生しました。再試行しますか。</source>
         <translation>Failed to upload. Try again?</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="837"/>
+        <location filename="../UI/MainWindow.cpp" line="838"/>
         <source>アップロードの初期化作業に失敗しました。</source>
         <translation>Failed to start the upload.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="902"/>
+        <location filename="../UI/MainWindow.cpp" line="903"/>
         <source>Qtを使用して製作されているMastodonクライアント。</source>
         <translation>Sweetfish is a Mastodon client written with Qt.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="905"/>
+        <location filename="../UI/MainWindow.cpp" line="906"/>
         <source>本ソフトウェアはQtオープンソース版のLGPLv3を選択しています。詳しくは&lt;a href=&quot;https://www.qt.io/licensing/&quot;&gt;https://www.qt.io/licensing/&lt;/a&gt;をご覧ください。</source>
         <translation>This software has chosen to use the LGPLv3  open source version  of Qt. For details, please see &lt;a href=&quot;https://www.qt.io/licensing/&quot;&gt; https://www.qt.io/licensing/ &lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="911"/>
+        <location filename="../UI/MainWindow.cpp" line="912"/>
         <source>License</source>
         <translation>License</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="928"/>
+        <location filename="../UI/MainWindow.cpp" line="929"/>
         <source>このソフトウェアについてのページを開く</source>
         <translation>Open the Sweetfish homepage.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="941"/>
+        <location filename="../UI/MainWindow.cpp" line="942"/>
         <source>このトゥートはすでにブーストしています。</source>
         <translation>This toot has already been boosted.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="944"/>
+        <location filename="../UI/MainWindow.cpp" line="945"/>
         <source>非公開のトゥートのためブーストできません。</source>
         <translation>Can&apos;t boost a private toot.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="947"/>
+        <location filename="../UI/MainWindow.cpp" line="948"/>
         <source>ダイレクトメッセージのためブーストできません。</source>
         <translation>Can&apos;t boost a personal message.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="964"/>
+        <location filename="../UI/MainWindow.cpp" line="965"/>
         <source>このトゥートはすでにお気に入りに登録しています。</source>
         <translation>You already favourited this toot.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="968"/>
+        <location filename="../UI/MainWindow.cpp" line="969"/>
         <source>さんのトゥートをお気に入りに登録しますか。</source>
         <translation>Favourite this toot?</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="984"/>
+        <location filename="../UI/MainWindow.cpp" line="985"/>
         <source>トゥートを削除しますか。</source>
         <translation>Do you want to delete this toot?</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="1002"/>
+        <location filename="../UI/MainWindow.cpp" line="1003"/>
         <source>非公開のトゥートのため引用できません。</source>
         <translation>Cannot quote a private toot.</translation>
     </message>
     <message>
-        <location filename="../UI/MainWindow.cpp" line="1005"/>
+        <location filename="../UI/MainWindow.cpp" line="1006"/>
         <source>ダイレクトメッセージのため引用できません。</source>
         <translation>Cannot quote a personal message.</translation>
     </message>
@@ -444,17 +444,17 @@
         <translation> boosted</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="416"/>
+        <location filename="../UI/TootContent.cpp" line="415"/>
         <source>著者:</source>
         <translation>Author:</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="428"/>
+        <location filename="../UI/TootContent.cpp" line="427"/>
         <source>提供者:</source>
         <translation>Provider:</translation>
     </message>
     <message>
-        <location filename="../UI/TootContent.cpp" line="493"/>
+        <location filename="../UI/TootContent.cpp" line="492"/>
         <source>トゥートの詳細 </source>
         <translation>Toot details - </translation>
     </message>

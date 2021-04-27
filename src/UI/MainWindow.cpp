@@ -662,8 +662,9 @@ void MainWindow::showNotification(TootNotificationData *nfdata) {
   ImageLabel icon_search;
 
   if (icon_search.setPixmapByName(nfdata->getAccount().getAvatar())) {
-    if (const QPixmap *icon_pixmap = icon_search.pixmap()) {
-      icon.addPixmap(*icon_pixmap);
+    const QPixmap icon_pixmap = icon_search.pixmap();
+    if (!icon_pixmap.isNull()) {
+      icon.addPixmap(icon_pixmap);
     }
   } else {
     icon = qApp->windowIcon();
@@ -804,7 +805,7 @@ void MainWindow::toot() {
           //クリップボードなどの画像
           QBuffer *buff = new QBuffer;
           buff->open(QIODevice::WriteOnly);
-          if (!toot_info->getImage(i)->save(buff, "PNG"))
+          if (!toot_info->getImage(i).save(buff, "PNG"))
             throw tr("画像の読み込みに失敗しました。");
           mime.push_back(QByteArray("image/png"));
           buff->close();

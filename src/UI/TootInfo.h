@@ -23,7 +23,7 @@ public:
   explicit TootInfo(MainWindow *parent_wiQndow, QWidget *parent = Q_NULLPTR,
                     Qt::WindowFlags f = Qt::WindowFlags());
   virtual ~TootInfo();
-  const QPixmap *getImage(const unsigned int index) const;
+  QPixmap getImage(const unsigned int index) const;
   QString getImagePath(const unsigned int index) const;
   void setImage(const QPixmap &pixmap, QString file_path,
                 const unsigned int index);

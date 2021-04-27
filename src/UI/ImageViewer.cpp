@@ -162,8 +162,9 @@ void ImageViewer::backImage() {
 void ImageViewer::copy() {
   if (!save_button->isEnabled())
     return; //作業中
-  if (const QPixmap *pixmap = iml->pixmap())
-    QApplication::clipboard()->setPixmap(*pixmap);
+  const QPixmap pixmap = iml->pixmap();
+  if (!pixmap.isNull())
+    QApplication::clipboard()->setPixmap(pixmap);
 }
 
 /*
@@ -192,7 +193,7 @@ void ImageViewer::save() {
   filter.append(")");
   QString filename = QFileDialog::getSaveFileName(
       this, tr("名前を付けて保存"), templocation + "/" + tempname, filter);
-  if (filename.isEmpty() || !iml->pixmap()->save(filename))
+  if (filename.isEmpty() || !iml->pixmap().save(filename))
     QMessageBox::critical(this, tr("画像の詳細 ") + APP_NAME,
                           tr("画像の保存に失敗しました。"));
 }

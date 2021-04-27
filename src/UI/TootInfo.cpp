@@ -48,12 +48,12 @@ TootInfo::~TootInfo() {}
  * 戻値:QPixmap
  * 概要:ImageLabelのPixmapをとってくる。
  */
-const QPixmap *TootInfo::getImage(const unsigned int index) const {
+QPixmap TootInfo::getImage(const unsigned int index) const {
   if (getNumOfImage() <= index)
-    return nullptr;
+    return QPixmap();
   QLayoutItem *item = media_layout->itemAt(index + 2 /*QLabel + addStretch分*/);
   return item ? (qobject_cast<ImageLabel *>(item->widget()))->pixmap()
-              : nullptr;
+              : QPixmap();
 }
 
 /*
@@ -139,7 +139,8 @@ void TootInfo::deleteImage(const unsigned int index) {
     for (int cnt = 0; QLayoutItem *item = media_layout->itemAt(index + 2 + cnt);
          cnt++) {
       if (ImageLabel *label = qobject_cast<ImageLabel *>(item->widget())) {
-        media_file_path_list[index + cnt] = media_file_path_list[label->getIndex()];
+        media_file_path_list[index + cnt] =
+            media_file_path_list[label->getIndex()];
         label->setIndex(index + cnt);
       }
     }
