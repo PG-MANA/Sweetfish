@@ -9,13 +9,13 @@
  */
 #pragma once
 
+#include "../Mastodon/Streamer.h"
 #include "../Network/Network.h"
 #include <QMainWindow>
 
 class MastodonAPI;
 class TootData;
 class TootNotificationData;
-class Streamer;
 class TootInfo;
 class Setting;
 class QCloseEvent;
@@ -55,7 +55,7 @@ public slots:
   void abortedTimeLine(unsigned int error);
   void setAlwayTop(bool checked);
   void setListsMenu();
-  void changeStatusStream(bool checked);
+  void changeStreamStatus(bool checked);
 
 protected:
   virtual void closeEvent(QCloseEvent *event) override;
@@ -70,6 +70,7 @@ private:
   void createMenus();
   void createTimeLine();
   void createTootBox();
+  void clearToots();
 
   void authorizeMastodon();
   bool addMediaByClipboard();
@@ -92,4 +93,6 @@ private:
   QSystemTrayIcon *
       tray_info; //これだとMainWindowが複数できたときにそれごとにトレイに追加されるのでstaticで管理するか、Sweetfish.cppが管理する必要が出てくるかもしれない。ただし、show()=>showMessage()=>hide()であたかもメッセージだけ表示された感じになる。これもヒープ上に作るのが世の常らしい(QtドキュメントもHeap上に作ってる。)。
   QMenu *list_menu;
+  Streamer::StreamType stream_type = Streamer::StreamType::UserStream;
+  QByteArray stream_id = QByteArray();
 };

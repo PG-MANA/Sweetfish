@@ -17,7 +17,7 @@ Streamer::Streamer(QObject *parent)
     : QObject(parent), mastodon_api(nullptr), reply(nullptr) {}
 
 Streamer::~Streamer() {
-  stopUserStream();
+  stopStream();
   delete mastodon_api;
 }
 
@@ -35,16 +35,28 @@ void Streamer::setMastodonAPI(const MastodonAPI *original_mastodon) {
 }
 
 /*
- * 引数:なし
- * 戻値:なし
- * 概要:user_streamを開始する。reply->closeするか、deleteするまで永遠と動く。
+ * 引数:type(接続するStreamの種別), id(MastodonAPIに渡すid,
+ * typeによって意味が異なる) 戻値:なし
+ * 概要:指定したStreamに再接続する。reply->closeするか、deleteするまで永遠と動く。
  */
-void Streamer::startUserStream() {
+void Streamer::startStream(const Streamer::StreamType stream_type,
+                           const QByteArray &id) {
+
   if (mastodon_api == nullptr)
     return emit abort(BadPointer);
   if (reply != nullptr && reply->isRunning())
     return;
-  reply = mastodon_api->requestUserStream();
+  switch (stream_type) {
+  case UserStream: {
+    reply = mastodon_api->requestUserStream();
+    break;
+  }
+  case ListStream: {
+    reply = mastodon_api->requestListStream(id);
+    break;
+  }
+  }
+
   if (reply->error() != QNetworkReply::NoError) {
     delete reply;
     reply = nullptr;
@@ -58,9 +70,9 @@ void Streamer::startUserStream() {
 /*
  * 引数:なし
  * 戻値:なし
- * 概要:user_streamを停止する。スレッドは削除されない。なおこのときfinishedシグナルが出される。
+ * 概要:Streamを停止する。スレッドは削除されない。なおこのときfinishedシグナルが出される。
  */
-void Streamer::stopUserStream() {
+void Streamer::stopStream() {
   if (reply != nullptr) {
     reply->close();
     delete reply;
@@ -153,7 +165,7 @@ void Streamer::finishedStream() {
   if (reply) {
     QNetworkReply::NetworkError error = reply->error();
     if (reply->isRunning())
-      stopUserStream();
+      stopStream();
     if (error != QNetworkReply::OperationCanceledError)
       emit abort(NetworkError);
   }

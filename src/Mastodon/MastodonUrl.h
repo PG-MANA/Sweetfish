@@ -15,10 +15,12 @@ static const QString authorize("/oauth/authorize/?");
 static const QString token("/oauth/token");
 // TimeLine関係
 static const QString home_timeline("/api/v1/timelines/home");
+static const QString list_timeline("/api/v1/timelines/list/");
 
 //ストリーム関係
 // static const QString local_stream("/api/v1/streaming/public/local");
 static const QString user_stream("/api/v1/streaming/user");
+static const QString list_stream("/api/v1/streaming/list?list=");
 
 //トゥート関係
 static const QString statuses("/api/v1/statuses");

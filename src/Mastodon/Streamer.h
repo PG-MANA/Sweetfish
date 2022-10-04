@@ -25,6 +25,8 @@ public:
     BadPointer         /*不正なポインタがあった*/
   };
 
+  enum StreamType : unsigned int { UserStream = 0, ListStream };
+
 signals:
   void newToot(TootData *twdata);
   void deleteToot(const QString &id);
@@ -33,8 +35,14 @@ signals:
 
 public slots:
   void setMastodonAPI(const MastodonAPI *original_mastodon);
-  void startUserStream();
-  void stopUserStream();
+  void startStream(const StreamType stream_type,
+                   const QByteArray &id = QByteArray());
+  void startStream(const unsigned int stream_type,
+                   const QByteArray &id = QByteArray()) {
+    /* For invokeMethod */
+    return startStream(static_cast<StreamType>(stream_type), id);
+  };
+  void stopStream();
   void readStream();
   void finishedStream();
 

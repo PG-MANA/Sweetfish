@@ -40,7 +40,9 @@ public:
   QNetworkReply *requestFavourite(const QByteArray &id);
   //取得関係
   QNetworkReply *requestHomeTimeLine(const QByteArray &since_id = QByteArray());
+  QNetworkReply *requestListTimeLine(const QByteArray &list_id, const QByteArray &since_id = QByteArray());
   QNetworkReply *requestUserStream();
+  QNetworkReply *requestListStream(const QByteArray &list_id);
   //メディア関係
   QNetworkReply *requestMediaUpload(QIODevice &data,
                                     const QByteArray &mime_type);

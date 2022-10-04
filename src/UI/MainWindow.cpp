@@ -125,7 +125,7 @@ void MainWindow::createMenus() {
   setting_menu->setToolTipsVisible(true);
   stream_status = setting_menu->addAction(
       style()->standardIcon(QStyle::SP_BrowserReload), tr("ストリーム接続(&S)"),
-      this, &MainWindow::changeStatusStream); //アイコンの意図が違っていて微妙
+      this, &MainWindow::changeStreamStatus); //アイコンの意図が違っていて微妙
   stream_status->setCheckable(true);
   stream_status->setChecked(true);
   stream_status->setToolTip(
@@ -139,7 +139,15 @@ void MainWindow::createMenus() {
   //表示
   QMenu *timeline_menu = menuBar()->addMenu(tr("表示(&V)"));
   timeline_menu->setToolTipsVisible(true);
-  timeline_menu->addAction(tr("ホーム(&H)"), this, [] {});
+  timeline_menu->addAction(tr("ホーム(&H)"), this, [this] {
+    if (stream_status->isChecked())
+      changeStreamStatus(false);
+    stream_type = Streamer::StreamType::UserStream;
+    stream_id = QByteArray();
+    clearToots();
+    connect(mstdn->requestHomeTimeLine(), &QNetworkReply::finished, this,
+            &MainWindow::showTimeLine);
+  });
   list_menu = timeline_menu->addMenu(tr("リスト(&L)"));
 
   //ウィンドウ
@@ -395,23 +403,24 @@ void MainWindow::abortedTimeLine(unsigned int error) {
   }
   if (mes_box.exec() == QMessageBox::Yes) {
     stream_status->setChecked(true);
-    QMetaObject::invokeMethod(timeline_streamer, "startUserStream",
-                              Qt::QueuedConnection);
+    changeStreamStatus(true);
   }
 }
 
 /*
  * 引数:なし
  * 戻値:なし
- * 概要:メニューでストリームから切断がクリックされた時呼ばれる。
+ * 概要:Streamの接続状態を変更する。メニューでストリームから切断がクリックされた時などで呼ばれる。
  */
-void MainWindow::changeStatusStream(bool checked) {
-  //この処理ではいつか問題が生じるのでもっと細かく制御すべき
+void MainWindow::changeStreamStatus(bool checked) {
   if (checked)
-    QMetaObject::invokeMethod(timeline_streamer, "startUserStream",
-                              Qt::QueuedConnection);
+    QMetaObject::invokeMethod(
+        timeline_streamer, "startStream", Qt::QueuedConnection,
+        Q_ARG(unsigned int, static_cast<unsigned int>(stream_type)),
+        Q_ARG(QByteArray, stream_id));
   else
-    timeline_streamer->stopUserStream();
+    QMetaObject::invokeMethod(timeline_streamer, "stopStream",
+                              Qt::QueuedConnection);
 }
 
 /*
@@ -447,16 +456,29 @@ void MainWindow::setListsMenu() {
        QJsonDocument::fromJson(rep->readAll()).array()) {
     QJsonObject list_entry_object = list_entry.toObject();
     list_menu
-        ->addAction(list_entry_object["title"].toString(), this,
-                    [] { /*Temporary*/ })
-        ->setData(list_entry_object["id"].toString());
+        ->addAction(
+            list_entry_object["title"].toString(), this,
+            [this] {
+              QByteArray list_id =
+                  (qobject_cast<QAction *>(sender()))->data().toByteArray();
+
+              if (stream_status->isChecked())
+                changeStreamStatus(false);
+              stream_type = Streamer::StreamType::ListStream;
+              stream_id = list_id;
+              clearToots();
+              connect(mstdn->requestListTimeLine(list_id),
+                      &QNetworkReply::finished, this,
+                      &MainWindow::showTimeLine);
+            })
+        ->setData(list_entry_object["id"].toString().toUtf8());
   }
 }
 
 /*
  * 引数:なし
  * 戻値:なし
- * 概要:QNetworkReplyによって呼ばれる。requestHomeTimeLineの処理を行う。
+ * 概要:QNetworkReplyによって呼ばれる。Tootを画面に表示する。
  */
 void MainWindow::showTimeLine() {
   QNetworkReply *rep = qobject_cast<QNetworkReply *>(sender());
@@ -472,24 +494,34 @@ void MainWindow::showTimeLine() {
   }
   rep->deleteLater();
   if (stream_status->isChecked())
-    QMetaObject::invokeMethod(timeline_streamer, "startUserStream",
-                              Qt::QueuedConnection); //ストリームスタート
+    changeStreamStatus(true);
   return;
 }
 
 /*
  * 引数:なし
  * 戻値:なし
- * 概要:ホームタイムラインの更新を行う。
+ * 概要:各種タイムラインの更新を行う。
  */
 void MainWindow::updateTimeLine() {
+  using StreamType = Streamer::StreamType;
   if (const int count = timeline_layout->count(); count > 0) {
-    connect(mstdn->requestHomeTimeLine(
-                (qobject_cast<TootContent *>(
-                     timeline_layout->itemAt(count - 1)->widget()))
-                    ->getTootData()
-                    ->getId()),
-            &QNetworkReply::finished, this, &MainWindow::showTimeLine);
+    QByteArray since_id = (qobject_cast<TootContent *>(
+                               timeline_layout->itemAt(count - 1)->widget()))
+                              ->getTootData()
+                              ->getId();
+    switch (stream_type) {
+    case StreamType::UserStream: {
+      connect(mstdn->requestHomeTimeLine(since_id), &QNetworkReply::finished,
+              this, &MainWindow::showTimeLine);
+      break;
+    }
+    case StreamType::ListStream: {
+      connect(mstdn->requestListTimeLine(stream_id, since_id),
+              &QNetworkReply::finished, this, &MainWindow::showTimeLine);
+      break;
+    }
+    }
   }
 }
 
@@ -588,6 +620,20 @@ void MainWindow::showToot(TootData *tdata) {
   //追加
   timeline_layout->addWidget(content);
   return;
+}
+
+/*
+ * 引数:なし
+ * 戻値:なし
+ * 概要:画面に表示されているTootを全て消す。
+ */
+void MainWindow::clearToots(void) {
+  while (timeline_layout->count()) {
+    QLayoutItem *toot =
+        timeline_layout->takeAt(0); //一番最初に追加したやつから番号が振られる。
+    if (toot)
+      delete toot->widget();
+  }
 }
 
 /*
@@ -764,7 +810,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event) {
       keyPressEvent(static_cast<QKeyEvent *>(event));
       break;
     default: //警告回避
-             ;
+        ;
     }
   }
   return event->isAccepted(); //意味ない気も..

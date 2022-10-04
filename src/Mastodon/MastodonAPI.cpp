@@ -114,6 +114,26 @@ QNetworkReply *MastodonAPI::requestHomeTimeLine(const QByteArray &since_id) {
 }
 
 /*
+ * 引数:list_id(取得するListのid), since_id(since_id以降のトゥートを持ってくる)
+ * 戻値:getしたあとのQNetworkReply
+ * 概要:指定したListのTimeLineを取得。
+ */
+QNetworkReply *MastodonAPI::requestListTimeLine(const QByteArray &list_id,
+                                                const QByteArray &since_id) {
+  QNetworkRequest req;
+  QUrl qurl(MastodonUrl::scheme + domain + MastodonUrl::list_timeline +
+            list_id);
+  QUrlQuery qurl_query;
+
+  if (!since_id.isEmpty()) {
+    qurl_query.addQueryItem("since_id", since_id);
+  }
+  qurl.setQuery(qurl_query);
+  req.setUrl(qurl);
+  return get(req);
+}
+
+/*
  * 引数:なし
  * 戻値:getしたあとのQNetworkReply
  * 概要:user_Stream、いわゆるタイムラインのストリーム。
@@ -122,6 +142,18 @@ QNetworkReply *MastodonAPI::requestUserStream() {
   QNetworkRequest req;
 
   req.setUrl(MastodonUrl::scheme + domain + MastodonUrl::user_stream);
+  return get(req);
+}
+
+/*
+ * 引数:list_id(Streaming対象のlist id)
+ * 戻値:getしたあとのQNetworkReply
+ * 概要:指定したListのストリーム。
+ */
+QNetworkReply *MastodonAPI::requestListStream(const QByteArray &list_id) {
+  QNetworkRequest req;
+
+  req.setUrl(MastodonUrl::scheme + domain + MastodonUrl::list_stream + list_id);
   return get(req);
 }
 
