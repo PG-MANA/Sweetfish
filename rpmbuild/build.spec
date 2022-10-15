@@ -7,7 +7,7 @@
 #
 
 %define APP_NAME        sweetfish
-%define APP_VERSION     0.0.7
+%define APP_VERSION     0.0.8
 %define APP_HOMEPAGE    https://soft.taprix.org/product/sweetfish.html
 %define APP_LICENCE     Apache License, Version 2.0
 
