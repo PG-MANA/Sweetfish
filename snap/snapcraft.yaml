@@ -22,7 +22,6 @@ apps:
       - home
       - network
       - pulseaudio
-      - pipewire
       - wayland
       - x11
       - unity7
