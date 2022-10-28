@@ -15,7 +15,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)#独自拡張のライブラリリンク防止
 # Find the Qt library
 find_package(Qt5 CONFIG REQUIRED Core Widgets Network LinguistTools)
 
-add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x050F00)
 
 #Make libraries
 add_subdirectory(src/Network)

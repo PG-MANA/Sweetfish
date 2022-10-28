@@ -23,7 +23,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Prefix: %{_prefix}
 
 #ビルド時に必要なもの
-BuildRequires:cmake >= 3.1.0
+BuildRequires:cmake >= 3.15.0
 
 %define INSTALLDIR %{buildroot}/usr/local/bin
 
