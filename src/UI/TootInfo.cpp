@@ -48,12 +48,12 @@ TootInfo::~TootInfo() {}
  * 戻値:QPixmap
  * 概要:ImageLabelのPixmapをとってくる。
  */
-QPixmap TootInfo::getImage(const unsigned int index) const {
+const QPixmap *TootInfo::getImage(const unsigned int index) const {
   if (getNumOfImage() <= index)
-    return QPixmap();
+    return nullptr;
   QLayoutItem *item = media_layout->itemAt(index + 2 /*QLabel + addStretch分*/);
   return item ? (qobject_cast<ImageLabel *>(item->widget()))->pixmap()
-              : QPixmap();
+              : nullptr;
 }
 
 /*
