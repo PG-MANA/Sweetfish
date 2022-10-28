@@ -32,36 +32,21 @@ parts:
     source:         https://github.com/PG-MANA/Sweetfish.git
     source-type:    git
     plugin:         cmake
-    build-packages: [g++, qtbase5-dev, qttools5-dev, libphonon4qt5-dev]
+    build-packages: 
+      - g++
+      - qtbase5-dev
+      - qttools5-dev
+      - qttools5-dev-tools
+      - libphonon4qt5-dev
+      - libphonon4qt5experimental-dev
     after:          [desktop-qt]
     stage-packages:
-      - libasyncns0
-      - libdouble-conversion1
-      - libflac8
-      - libfreetype6
-      - libgl1
-      - libglvnd0
-      - libglx0
-      - libgraphite2-3
-      - libharfbuzz0b
-      - libicu60
-      - libogg0
-      - libphonon4qt5-4
-      - libpng16-16
-      - libpulse-mainloop-glib0
-      - libpulse0
       - libqt5core5a
       - libqt5dbus5
       - libqt5gui5
       - libqt5network5
       - libqt5widgets5
-      - libsndfile1
-      - libvorbis0a
-      - libvorbisenc2
-      - libx11-6
-      - libxau6
-      - libxcb1
-      - libxdmcp6
+      - libphonon4qt5-4
 
   desktop-qt:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
