@@ -24,29 +24,29 @@
 // MEMO:MainWindowを閉じたときにQApplication::closeAllWindowsを呼ばないのはMainWindowを複数出せるようにする計画が少なからずあるから。ただしメニューの終了は除く。
 // MEMO:ウィジットはヒープ上に作らないと破棄時にバグる
 MainWindow::MainWindow() : QMainWindow() {
-  //ウィンドウ準備
-  QWidget *center = new QWidget;         //センターウィジット
-  main_layout = new QVBoxLayout(center); //メインレイアウト
+  // ウィンドウ準備
+  QWidget *center = new QWidget;         // センターウィジット
+  main_layout = new QVBoxLayout(center); // メインレイアウト
   QPalette Palette = center->palette();
-  Palette.setColor(QPalette::Window, Qt::black); //背景を黒く
+  Palette.setColor(QPalette::Window, Qt::black); // 背景を黒く
   Palette.setColor(QPalette::WindowText, Qt::white);
   center->setAutoFillBackground(true);
   center->setPalette(Palette);
   setCentralWidget(center);
 
-  //メニュー
+  // メニュー
   createMenus();
   // TimeLine
   createTimeLine();
-  //トゥートボックス
+  // トゥートボックス
   createTootBox();
-  //通知
+  // 通知
   tray_info = new QSystemTrayIcon(qApp->windowIcon(), this);
 
   // Stream APIのスレッド
-  timeline_streamer = new Streamer; //親がいるとスレッドが動かせない。
+  timeline_streamer = new Streamer; // 親がいるとスレッドが動かせない。
   timeline_thread = new QThread(this);
-  timeline_streamer->moveToThread(timeline_thread); //動作スレッドを移動する。
+  timeline_streamer->moveToThread(timeline_thread); // 動作スレッドを移動する。
   timeline_thread->start();
   // connect祭り
   connect(timeline_streamer, &Streamer::newToot, this, &MainWindow::showToot);
@@ -57,12 +57,12 @@ MainWindow::MainWindow() : QMainWindow() {
   connect(timeline_streamer, &Streamer::abort, this,
           &MainWindow::abortedTimeLine);
   connect(timeline_thread, &QThread::finished, timeline_streamer,
-          &QObject::deleteLater); //意外と重要
+          &QObject::deleteLater); // 意外と重要
 }
 
 MainWindow::~MainWindow() {
   timeline_thread->quit(); // timeline_streamerはdeleteLaterにより削除される。
-  timeline_thread->wait(); //呼ばれても動かないようにする。
+  timeline_thread->wait(); // 呼ばれても動かないようにする。
   delete mstdn;
   delete setting;
 }
@@ -73,7 +73,7 @@ MainWindow::~MainWindow() {
  * 概要:渡された設定ファイルから設定を読み込み、基本設定を行う。初期化のあとに呼ぶ。
  */
 bool MainWindow::init(const QString setting_file_name) {
-  //設定読み込み
+  // 設定読み込み
   setting = new Setting(setting_file_name);
   restoreGeometry(setting->getGeometry());
   mstdn = new MastodonAPI;
@@ -100,15 +100,12 @@ bool MainWindow::init(const QString setting_file_name) {
     TootData::addOwnerUserId(setting->getUserId());
   }
 
-  //タイトル
+  // タイトル
   setWindowTitle(setting->getUserName() + "@" + setting->getInstanceDomain() +
                  " - " APP_NAME);
   QMetaObject::invokeMethod(
       timeline_streamer, "setMastodonAPI", Qt::BlockingQueuedConnection,
-      QGenericReturnArgument(nullptr),
-      Q_ARG(
-          const MastodonAPI *,
-          mstdn)); //別スレッドでMastodonAPIクラスを作らないといろいろ怒られる。
+      mstdn); // 別スレッドでMastodonAPIクラスを作らないといろいろ怒られる。
   return true;
 }
 
@@ -120,12 +117,12 @@ bool MainWindow::init(const QString setting_file_name) {
 void MainWindow::createMenus() {
   menuBar()->setNativeMenuBar(true);
 
-  //設定
+  // 設定
   QMenu *setting_menu = menuBar()->addMenu(tr("設定(&S)"));
   setting_menu->setToolTipsVisible(true);
   stream_status = setting_menu->addAction(
       style()->standardIcon(QStyle::SP_BrowserReload), tr("ストリーム接続(&S)"),
-      this, &MainWindow::changeStreamStatus); //アイコンの意図が違っていて微妙
+      this, &MainWindow::changeStreamStatus); // アイコンの意図が違っていて微妙
   stream_status->setCheckable(true);
   stream_status->setChecked(true);
   stream_status->setToolTip(
@@ -136,7 +133,7 @@ void MainWindow::createMenus() {
       ->setToolTip(
           tr("すべてのウィンドウを閉じ、アプリケーションを終了します。"));
 
-  //表示
+  // 表示
   QMenu *timeline_menu = menuBar()->addMenu(tr("表示(&V)"));
   timeline_menu->setToolTipsVisible(true);
   timeline_menu->addAction(tr("ホーム(&H)"), this, [this] {
@@ -150,7 +147,7 @@ void MainWindow::createMenus() {
   });
   list_menu = timeline_menu->addMenu(tr("リスト(&L)"));
 
-  //ウィンドウ
+  // ウィンドウ
   QMenu *window_menu = menuBar()->addMenu(tr("ウィンドウ(&W)"));
   window_menu->setToolTipsVisible(true);
   QAction *always_top_action = window_menu->addAction(
@@ -162,7 +159,7 @@ void MainWindow::createMenus() {
          "ウィンドウマネージャで設定できる場合はそちらで設定してください。)"));
   always_top_action->setCheckable(true);
 
-  //ヘルプ
+  // ヘルプ
   QMenu *help_menu = menuBar()->addMenu(tr("ヘルプ(&H)"));
   help_menu->setToolTipsVisible(true);
   help_menu
@@ -189,15 +186,15 @@ void MainWindow::createTimeLine() {
   QPalette palette = timeline_area->palette();
   palette.setColor(QPalette::Window, Qt::black);
   timeline_area->setPalette(palette);
-  timeline_area->setFrameShape(QFrame::NoFrame); //枠線をなくす
+  timeline_area->setFrameShape(QFrame::NoFrame); // 枠線をなくす
   // timeline_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);//表示しない
-  timeline_area->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn); //常に表示
-  timeline_area->setWidgetResizable(true); //先にこれを設定する。
+  timeline_area->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn); // 常に表示
+  timeline_area->setWidgetResizable(true); // 先にこれを設定する。
 
-  //トゥートを並べていくスクロールエリア
+  // トゥートを並べていくスクロールエリア
   QWidget *timeline_center = new QWidget;
   timeline_layout =
-      new QBoxLayout(QBoxLayout::BottomToTop, timeline_center); //下から上
+      new QBoxLayout(QBoxLayout::BottomToTop, timeline_center); // 下から上
   timeline_area->setWidget(timeline_center);
   main_layout->addWidget(timeline_area);
   return;
@@ -209,24 +206,24 @@ void MainWindow::createTimeLine() {
  * 概要:トゥートボックス(入力欄とボタンなど)を作って設定する。ウィンドウ初期化用。
  */
 void MainWindow::createTootBox() {
-  //入力ボックス
+  // 入力ボックス
   toot_editer = new QPlainTextEdit; // HTMLが扱えないようにする
   toot_editer->setFixedHeight(100); // Editボックスのサイズ固定(サイズは適当)
   toot_editer->installEventFilter(this);
   main_layout->addWidget(toot_editer);
 
-  //色々トゥートに関する情報を出すためのスクロールエリア
+  // 色々トゥートに関する情報を出すためのスクロールエリア
   info_scroll_area = new QScrollArea;
-  info_scroll_area->setFixedHeight(100); //サイズ固定(サイズは適当)
+  info_scroll_area->setFixedHeight(100); // サイズ固定(サイズは適当)
   info_scroll_area->setWidgetResizable(true);
   toot_info = new TootInfo(this);
-  info_scroll_area->setWidget(toot_info); //ここの順序大切
+  info_scroll_area->setWidget(toot_info); // ここの順序大切
   info_scroll_area->setVisible(false);
   main_layout->addWidget(info_scroll_area);
 
-  //トゥートボタンボックス
+  // トゥートボタンボックス
   QHBoxLayout *toot_button_layout =
-      new QHBoxLayout; //将来ボタンを増やした時のために
+      new QHBoxLayout; // 将来ボタンを増やした時のために
   toot_button_layout->addStretch();
 
   // Home Time Line更新
@@ -238,7 +235,7 @@ void MainWindow::createTootBox() {
           &MainWindow::updateTimeLine);
   toot_button_layout->addWidget(ReloadButton);
 
-  //メディア追加ボタン
+  // メディア追加ボタン
   QPushButton *MediaButton = new QPushButton;
   MediaButton->setIcon(QIcon(":/add.png"));
   MediaButton->setToolTip(tr("写真・動画を追加します。"));
@@ -246,7 +243,7 @@ void MainWindow::createTootBox() {
   connect(MediaButton, &QPushButton::clicked, this, &MainWindow::addMedia);
   toot_button_layout->addWidget(MediaButton);
 
-  //トゥート送信ボタン
+  // トゥート送信ボタン
   toot_button = new QPushButton;
   toot_button->setIcon(QIcon(":/send.png"));
   toot_button->setStyleSheet("background-color: #255080;");
@@ -266,7 +263,7 @@ void MainWindow::createTootBox() {
  */
 void MainWindow::authorizeMastodon() {
   /*throwしまくりである...(throw時のmstdnの削除は他でするので気にしなくてよい*/
-  QEventLoop event; //ここだけ同期処理
+  QEventLoop event; // ここだけ同期処理
 
   QString &&domain = showInstanceDomainInputDialog();
 
@@ -416,8 +413,7 @@ void MainWindow::changeStreamStatus(bool checked) {
   if (checked)
     QMetaObject::invokeMethod(
         timeline_streamer, "startStream", Qt::QueuedConnection,
-        Q_ARG(unsigned int, static_cast<unsigned int>(stream_type)),
-        Q_ARG(QByteArray, stream_id));
+        static_cast<unsigned int>(stream_type), stream_id);
   else
     QMetaObject::invokeMethod(timeline_streamer, "stopStream",
                               Qt::QueuedConnection);
@@ -535,12 +531,12 @@ void MainWindow::addMedia() {
     QString &&file_path = QFileDialog::getOpenFileName(
         this, tr("メディア追加"), "",
         tr("メディア (*.png *.jpg *.gif *.bmp *.pbm *.pgm *.ppm *.xbm *.xpm "
-           "*.svg)")); //対応拡張子はImageViewer参考にして動的に作るべき
+           "*.svg)")); // 対応拡張子はImageViewer参考にして動的に作るべき
     if (file_path.isEmpty())
       return;
     QFileInfo file_info(file_path);
 
-    //動画は分岐させる
+    // 動画は分岐させる
     QByteArrayList &&supported_formats = QImageReader::supportedImageFormats();
     QByteArray &&suffix = file_info.suffix().toLower().toUtf8();
     for (const QByteArray &e : supported_formats) {
@@ -605,19 +601,19 @@ void MainWindow::showToot(TootData *tdata) {
     return;
   TootContent *content = new TootContent(
       tdata, TootContent::Normal,
-      this); //クリックの検出などをするため(Layoutを直接噛ませるのとどちらがいいんだろう)
+      this); // クリックの検出などをするため(Layoutを直接噛ませるのとどちらがいいんだろう)
 
   connect(content, &TootContent::action, this, &MainWindow::contentAction);
 
-  //古いものを削除
+  // 古いものを削除
   if (timeline_layout->count() >= setting->getTootLimit()) {
-    QLayoutItem *old =
-        timeline_layout->takeAt(0); //一番最初に追加したやつから番号が振られる。
+    QLayoutItem *old = timeline_layout->takeAt(
+        0); // 一番最初に追加したやつから番号が振られる。
     if (old)
       delete old->widget();
   }
 
-  //追加
+  // 追加
   timeline_layout->addWidget(content);
   return;
 }
@@ -629,8 +625,8 @@ void MainWindow::showToot(TootData *tdata) {
  */
 void MainWindow::clearToots(void) {
   while (timeline_layout->count()) {
-    QLayoutItem *toot =
-        timeline_layout->takeAt(0); //一番最初に追加したやつから番号が振られる。
+    QLayoutItem *toot = timeline_layout->takeAt(
+        0); // 一番最初に追加したやつから番号が振られる。
     if (toot)
       delete toot->widget();
   }
@@ -699,18 +695,18 @@ void MainWindow::showNotification(TootNotificationData *nfdata) {
     break;
 
   default:
-    return delete nfdata; //未対応
+    return delete nfdata; // 未対応
   }
   tray_info->show();
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
-  //もしアイコンが取得済みならアイコンを表示(ネットから取ってくるのには手間がかかる)(beta)
+  // もしアイコンが取得済みならアイコンを表示(ネットから取ってくるのには手間がかかる)(beta)
   QIcon icon;
   ImageLabel icon_search;
 
   if (icon_search.setPixmapByName(nfdata->getAccount().getAvatar())) {
-    const QPixmap *icon_pixmap = icon_search.pixmap();
-    if (icon_pixmap != nullptr) {
-      icon.addPixmap(*icon_pixmap);
+    const QPixmap icon_pixmap = icon_search.pixmap();
+    if (!icon_pixmap.isNull()) {
+      icon.addPixmap(icon_pixmap);
     }
   } else {
     icon = qApp->windowIcon();
@@ -719,7 +715,7 @@ void MainWindow::showNotification(TootNotificationData *nfdata) {
 #else
   tray_info->showMessage(APP_NAME, message);
 #endif
-  tray_info->hide(); //これで一応メッセージだけ出る。
+  tray_info->hide(); // これで一応メッセージだけ出る。
   delete nfdata;
 }
 
@@ -741,7 +737,7 @@ void MainWindow::finishedToot() {
     info_scroll_area->setVisible(false);
   }
   setEnabledToot(true);
-  rep->deleteLater(); //成功時、本来は読むべきだが...特に読む必要もないので静かに閉じる
+  rep->deleteLater(); // 成功時、本来は読むべきだが...特に読む必要もないので静かに閉じる
   return;
 }
 
@@ -754,7 +750,7 @@ void MainWindow::setEnabledToot(bool enable) {
   toot_button->setEnabled(enable);
   toot_editer->setEnabled(enable);
   if (enable)
-    toot_editer->setFocus(); //こうしとくと便利
+    toot_editer->setFocus(); // こうしとくと便利
   return;
 }
 
@@ -809,11 +805,11 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event) {
     case QEvent::KeyPress:
       keyPressEvent(static_cast<QKeyEvent *>(event));
       break;
-    default: //警告回避
+    default: // 警告回避
         ;
     }
   }
-  return event->isAccepted(); //意味ない気も..
+  return event->isAccepted(); // 意味ない気も..
 }
 
 /*
@@ -822,7 +818,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event) {
  * 概要:ウィンドウを閉じる時に呼ばれる。ウィンドウ位置の保存を行う。
  */
 void MainWindow::closeEvent(QCloseEvent *event) {
-  //ウィンドウ状態保存
+  // ウィンドウ状態保存
   setting->setGeometry(saveGeometry());
   QMainWindow::closeEvent(event);
   tray_info->hide();
@@ -836,11 +832,11 @@ void MainWindow::closeEvent(QCloseEvent *event) {
  */
 void MainWindow::toot() {
   if (!toot_button->isEnabled())
-    return; //作業中
+    return; // 作業中
   setEnabledToot(false);
   try {
     if (unsigned int c = toot_info->getNumOfImage()) {
-      //画像あり
+      // 画像あり
       QList<QIODevice *> media;
       QByteArrayList mime;
       media.reserve(c);
@@ -848,11 +844,11 @@ void MainWindow::toot() {
       for (unsigned int i = 0; i < c; i++) {
         QString file_path = toot_info->getImagePath(i);
         if (file_path.isEmpty()) {
-          //クリップボードなどの画像
+          // クリップボードなどの画像
           QBuffer *buff = new QBuffer;
           buff->open(QIODevice::WriteOnly);
-          const QPixmap *image = toot_info->getImage(i);
-          if (image == nullptr || image->save(buff, "PNG"))
+          const QPixmap image = toot_info->getImage(i);
+          if (image.isNull() || image.save(buff, "PNG"))
             throw tr("画像の読み込みに失敗しました。");
           mime.push_back(QByteArray("image/png"));
           buff->close();
@@ -954,7 +950,7 @@ void MainWindow::showAbout() {
              "くは<a "
              "href=\"https://www.qt.io/licensing/\">https://www.qt.io/"
              "licensing/</a>をご覧ください。") +
-          "</p>" //ここは<a>で区切ると訳しにくいはず
+          "</p>" // ここは<a>で区切ると訳しにくいはず
           "<b>" +
           tr("License") +
           "</b>"
@@ -1073,6 +1069,6 @@ void MainWindow::contentAction(TootData *tdata, unsigned char act) {
   case 'd':
     deleteToot(tdata);
     break;
-  default:; //とりあえず今の所何もしない
+  default:; // とりあえず今の所何もしない
   }
 }

@@ -19,7 +19,7 @@ class MainWindow;
 class TootContent : public QFrame {
   Q_OBJECT
 public:
-  enum Mode { //主にメニューの表示内容の制御
+  enum Mode { // 主にメニューの表示内容の制御
     Normal,
     Reply = 1 << 1,
     Info = 1 << 2,

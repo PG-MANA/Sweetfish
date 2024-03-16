@@ -30,7 +30,7 @@ public:
 
 public slots:
   void show();
-  void save(){}; //未実装
+  void save(){}; // 未実装
 private:
   void createButtons(QVBoxLayout *main_layout);
   TootMediaData media_data;

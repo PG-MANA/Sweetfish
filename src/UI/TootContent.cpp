@@ -62,7 +62,7 @@ void TootContent::mousePressEvent(QMouseEvent *event) {
                         this); // Title表示されない...
       createActions();
     }
-    popup->popup(event->globalPos());
+    popup->popup(event->globalPosition().toPoint());
     break;
   default:
     event->ignore();
@@ -84,36 +84,36 @@ void TootContent::createActions() {
                 QStyle::SP_TitleBarCloseButton) /*少し意図がずれてる気が*/,
             tr("Delete(&D)"), this, &TootContent::triggeredAction)
         ->setData('d');
-    return; //最低限の表示のみ
+    return; // 最低限の表示のみ
   }
-  //リトゥート
+  // リトゥート
   popup->addSection((tdata->getContent().size() >= 16)
                         ? tdata->getContent().left(16 - 3).append("...")
-                        : tdata->getContent()); //使い方合ってるんかいな...
+                        : tdata->getContent()); // 使い方合ってるんかいな...
   popup
       ->addAction(QIcon(":/bst.png"), tr("Boost(&B)"), this,
                   &TootContent::triggeredAction)
       ->setData('b');
 
-  //引用トゥート
+  // 引用トゥート
   popup
       ->addAction(QIcon(":/bst.png"), tr("Quote Toot(&Q)"), this,
                   &TootContent::triggeredAction)
       ->setData('q');
 
-  //リプライ
+  // リプライ
   popup
       ->addAction(QIcon(":/rp.png"), tr("Reply(&R)"), this,
                   &TootContent::triggeredAction)
       ->setData('r');
 
-  //お気に入り(今はいいねだが...)
+  // お気に入り(今はいいねだが...)
   popup
       ->addAction(QIcon(":/fav.png"), tr("Favourite(&F)"), this,
                   &TootContent::triggeredAction)
       ->setData('f');
 
-  //削除(権限がある場合)
+  // 削除(権限がある場合)
   if (tdata->isTootOwner())
     popup
         ->addAction(
@@ -121,7 +121,7 @@ void TootContent::createActions() {
                 QStyle::SP_TitleBarCloseButton) /*少し意図がずれてる気が*/,
             tr("Delete(&D)"), this, &TootContent::triggeredAction)
         ->setData('d');
-  //新しいウィンドウで開く(取っておきたいなど)
+  // 新しいウィンドウで開く(取っておきたいなど)
   popup->addAction(style()->standardIcon(QStyle::SP_TitleBarMaxButton),
                    tr("Open in new window(&W)"), this,
                    &TootContent::openWindow);
@@ -227,7 +227,7 @@ void TootContent::drawToot() {
   ImageLabel *icon = new ImageLabel(40, 40);
   icon->setFixedSize(40, 40);
   if (!icon->setPixmapByName(tdata->getOriginalAccountData()
-                                 .getAvatar())) { //アイコンのキャッシュがない
+                                 .getAvatar())) { // アイコンのキャッシュがない
     connect(net.get(tdata->getOriginalAccountData().getAvatar()),
             &QNetworkReply::finished, icon, &ImageLabel::setPixmapByNetwork);
   }
@@ -275,11 +275,12 @@ void TootContent::drawToot() {
   if (tdata->getMediaData().size() && !(mode & Mode::Info)) {
     TootMediaData media_data = tdata->getMediaData();
     if (media_data.getEntry(0).getType() == "video" ||
-        media_data.getEntry(0).getType() == "gifv") { //動画(一つのみ対応)
+        media_data.getEntry(0).getType() == "gifv") { // 動画(一つのみ対応)
       TootMediaDataEntry video_entry = media_data.getEntry(0);
 
       ImageLabel *iml = new ImageLabel(50, 50, 0);
-      if (!iml->setPixmapByName(video_entry.getPreviewUrl())) { //キャッシュなし
+      if (!iml->setPixmapByName(
+              video_entry.getPreviewUrl())) { // キャッシュなし
         // if ( tdata->flag & 0x40 ) iml->setPixmap ( style()->standardIcon (
         // QStyle::SP_MessageBoxWarning ).pixmap ( 100, 45 ) );
         /*else*/ connect(net.get(video_entry.getPreviewUrl()),
@@ -287,9 +288,9 @@ void TootContent::drawToot() {
                          &ImageLabel::setPixmapByNetwork);
       }
       connect(iml, &ImageLabel::clicked, this, &TootContent::showPicture);
-      iml->setStyleSheet("border:3px solid blue;"); //動画かどうかの判別(Beta)
+      iml->setStyleSheet("border:3px solid blue;"); // 動画かどうかの判別(Beta)
       text_box->addWidget(iml);
-    } else { //画像
+    } else { // 画像
       QScrollArea *media_box = new QScrollArea;
       media_box->setWidgetResizable(true);
       QWidget *center = new QWidget;
@@ -305,7 +306,7 @@ void TootContent::drawToot() {
         /*yを50にするとMediaBoxにY軸スクロールバーがついて気持ち悪い*/
 
         if (!iml->setPixmapByName(
-                image_entry.getPreviewUrl())) { //キャッシュなし
+                image_entry.getPreviewUrl())) { // キャッシュなし
           /* iml->setPixmap(style()->standardIcon(QStyle::SP_MessageBoxWarning).pixmap(100,
            * 45));*/
           connect(net.get(image_entry.getPreviewUrl()),
@@ -318,8 +319,8 @@ void TootContent::drawToot() {
       text_box->addWidget(media_box);
     }
   }
-  //引用(独自機能)
-  // BETTER: Mastodon本体の改造を促すべき
+  // 引用(独自機能)
+  //  BETTER: Mastodon本体の改造を促すべき
   for (unsigned int cnt = 0, size = tdata->getUrlData().size(); cnt < size;
        cnt++) {
     QString full_url = tdata->getUrlData().getFullUrl(cnt);
@@ -327,12 +328,12 @@ void TootContent::drawToot() {
     // drawQuoteNoteOfMisskey(full_url, text_box);
   }
 
-  //リンクカード
+  // リンクカード
   if (!tdata->getCardData().getUrl().isEmpty() && !(mode & Mode::Info)) {
     drawCard(text_box);
   }
 
-  //その他情報
+  // その他情報
   QLabel *info_text = new QLabel(QLocale::system().toString(
       tdata->getDateTime().toTimeSpec(Qt::LocalTime), QLocale::ShortFormat));
   info_text->setWordWrap(true);
@@ -360,8 +361,15 @@ void TootContent::drawQuoteToot(QString full_url, QVBoxLayout *text_box) {
   } else if (url[2].at(0) == '@') {
     id = url[3];
   }
-  if (!QRegExp("^\\d+$").exactMatch(id))
+
+  if (id.size() == 0) {
     return;
+  }
+  for (unsigned int i = 0; i < id.size(); i++) {
+    if (!(QChar('0') <= id.at(i) && id.at(i) <= QChar('9'))) {
+      return;
+    }
+  }
 
   TootContent *quote = new TootContent;
   quote->setFrameShape(QFrame::StyledPanel);
@@ -402,7 +410,7 @@ void TootContent::drawCard(QVBoxLayout *text_box) {
   if (!card_data.getPreviewUrl().isEmpty()) {
     ImageLabel *preview_icon = new ImageLabel(80, 45, 0);
     if (!preview_icon->setPixmapByName(
-            card_data.getPreviewUrl())) { //アイコンのキャッシュがない
+            card_data.getPreviewUrl())) { // アイコンのキャッシュがない
       connect(net.get(card_data.getPreviewUrl()), &QNetworkReply::finished,
               preview_icon, &ImageLabel::setPixmapByNetwork);
     }
@@ -449,10 +457,10 @@ void TootContent::showPicture(unsigned int index) {
   // "この画像・動画を表示すると気分を害する可能性があります。表示しますか。" ),
   // QMessageBox::Yes | QMessageBox::No, QMessageBox::No ) != QMessageBox::Yes )
   // return;
-  if (tdata->getMediaData().getEntry(0).getType() == "video") { //動画
+  if (tdata->getMediaData().getEntry(0).getType() == "video") { // 動画
     VideoPlayer *player = new VideoPlayer(tdata, root_window, Qt::Window);
     player->show();
-  } else { //画像
+  } else { // 画像
     ImageViewer *viewer =
         new ImageViewer(tdata, index, root_window, Qt::Window);
     viewer->show();
@@ -490,7 +498,7 @@ void TootContent::openWindow() {
   QPalette Palette = window->palette();
   window->setAttribute(Qt::WA_DeleteOnClose);
   window->setWindowTitle(tr("トゥートの詳細 ") + APP_NAME);
-  Palette.setColor(QPalette::Window, Qt::black); //背景を黒く
+  Palette.setColor(QPalette::Window, Qt::black); // 背景を黒く
   Palette.setColor(QPalette::WindowText, Qt::white);
   window->setAutoFillBackground(true);
   window->setPalette(Palette);

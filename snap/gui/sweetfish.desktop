@@ -3,10 +3,10 @@
 Categories=KDE;Qt;Network;InstantMessaging;
 Encoding=UTF-8
 Name=Sweetfish for Linux
-GenericName=Mastodon Client for Linux.
-GenericName[ja_JP]=Linux/X11を対象としたMastodon Client
-Comment=Mastodon Client for Linux
-Comment[ja_JP]=Linux/X11を対象としたMastodon Client
+GenericName=Mastodon Client with Qt
+GenericName[ja_JP]=Linuxを対象としたMastodon Client
+Comment=Mastodon Client with Qt
+Comment[ja_JP]=Linuxを対象としたMastodon Client
 Exec=sweetfish
 Icon=${SNAP}/meta/gui/sweetfish.png
 Terminal=false

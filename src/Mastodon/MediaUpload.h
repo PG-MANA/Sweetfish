@@ -35,7 +35,7 @@ private:
   QList<QIODevice *> list;
   QByteArrayList mimetype;
   QByteArray id;       //=media_ids
-  QByteArray media_id; //操作中のmedia_id
+  QByteArray media_id; // 操作中のmedia_id
   MastodonAPI *mastodon_api;
   unsigned int counter;
 };

@@ -7,11 +7,11 @@
 #
 
 %define APP_NAME        sweetfish
-%define APP_VERSION     0.0.7
+%define APP_VERSION     0.7.1
 %define APP_HOMEPAGE    https://soft.taprix.org/product/sweetfish.html
 %define APP_LICENCE     Apache License, Version 2.0
 
-Summary:Mastodon client for Linux
+Summary:Mastodon client with Qt
 Name: %{APP_NAME}
 Source0: %{APP_NAME}-%{APP_VERSION}.tar.gz
 Version: %{APP_VERSION}
@@ -22,14 +22,12 @@ Group: Applications/Internet
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Prefix: %{_prefix}
 
-#ビルド時に必要なもの
-BuildRequires:cmake >= 3.15.0
+BuildRequires:cmake >= 3.28.0
 
 %define INSTALLDIR %{buildroot}/usr/local/bin
 
 %description
-The Mastodon client for linux/X11.
-This software uses qt.So it may be possible to work on macOS or Windows.
+The Mastodon client with Qt.
 
 %prep
 %setup -q

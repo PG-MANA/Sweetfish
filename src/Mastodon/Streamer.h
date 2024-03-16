@@ -34,7 +34,7 @@ signals:
   void abort(unsigned int err);
 
 public slots:
-  void setMastodonAPI(const MastodonAPI *original_mastodon);
+  void setMastodonAPI(MastodonAPI *original_mastodon);
   void startStream(const StreamType stream_type,
                    const QByteArray &id = QByteArray());
   void startStream(const unsigned int stream_type,

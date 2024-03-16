@@ -2,11 +2,11 @@
 # This software is Licensed under the Apache License Version 2.0
 # See LICENSE
 #
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.20)
 
-set(TS_FILES en_AU.ts)
+set(TS_FILES en_AU.ts en_US.ts en_GB.ts)
 set_directory_properties(PROPERTIES CLEAN_NO_CUSTOM 1)# For Clean
-qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR}/src/UI/ ${TS_FILES})
+qt6_create_translation(QM_FILES ${CMAKE_SOURCE_DIR}/src/UI/ ${TS_FILES})
 add_custom_target(translations DEPENDS ${QM_FILES})
 
 add_custom_command(

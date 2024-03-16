@@ -41,6 +41,6 @@ protected:
   static QHash<QString, QPixmap> images; // C++でいう、unordered_map
 
   QString url;
-  unsigned int index;        //何番目か(0から始まる)
-  unsigned int sizex, sizey; //縮小サイズ(0なら縮小しない)
+  unsigned int index;        // 何番目か(0から始まる)
+  unsigned int sizex, sizey; // 縮小サイズ(0なら縮小しない)
 };

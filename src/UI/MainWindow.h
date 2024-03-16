@@ -79,10 +79,10 @@ private:
 
   QString showAuthCodeInputDialog();
   QString showInstanceDomainInputDialog();
-  MastodonAPI *mstdn; //将来複数持てるかも
+  MastodonAPI *mstdn; // 将来複数持てるかも
   Setting *setting;
   QVBoxLayout *main_layout;
-  QScrollArea *info_scroll_area; //ツイートに画像などを添付する時表示されるもの
+  QScrollArea *info_scroll_area; // ツイートに画像などを添付する時表示されるもの
   QPushButton *toot_button;
   TootInfo *toot_info;
   QPlainTextEdit *toot_editer;
@@ -91,7 +91,7 @@ private:
   QThread *timeline_thread;
   QAction *stream_status;
   QSystemTrayIcon *
-      tray_info; //これだとMainWindowが複数できたときにそれごとにトレイに追加されるのでstaticで管理するか、Sweetfish.cppが管理する必要が出てくるかもしれない。ただし、show()=>showMessage()=>hide()であたかもメッセージだけ表示された感じになる。これもヒープ上に作るのが世の常らしい(QtドキュメントもHeap上に作ってる。)。
+      tray_info; // これだとMainWindowが複数できたときにそれごとにトレイに追加されるのでstaticで管理するか、Sweetfish.cppが管理する必要が出てくるかもしれない。ただし、show()=>showMessage()=>hide()であたかもメッセージだけ表示された感じになる。これもヒープ上に作るのが世の常らしい(QtドキュメントもHeap上に作ってる。)。
   QMenu *list_menu;
   Streamer::StreamType stream_type = Streamer::StreamType::UserStream;
   QByteArray stream_id = QByteArray();

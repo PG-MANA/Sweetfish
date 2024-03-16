@@ -23,7 +23,7 @@ TootInfo::TootInfo(MainWindow *parent_window, QWidget *parent,
   info_text_label->setVisible(false);
 
   media_layout->addWidget(info_text_label);
-  media_layout->addStretch(); //こっちの方が見た目がいいかな
+  media_layout->addStretch(); // こっちの方が見た目がいいかな
   main_layout->addLayout(media_layout);
 
   reply_layout = new QHBoxLayout;
@@ -48,12 +48,12 @@ TootInfo::~TootInfo() {}
  * 戻値:QPixmap
  * 概要:ImageLabelのPixmapをとってくる。
  */
-const QPixmap *TootInfo::getImage(const unsigned int index) const {
+const QPixmap TootInfo::getImage(const unsigned int index) const {
   if (getNumOfImage() <= index)
-    return nullptr;
+    return QPixmap();
   QLayoutItem *item = media_layout->itemAt(index + 2 /*QLabel + addStretch分*/);
   return item ? (qobject_cast<ImageLabel *>(item->widget()))->pixmap()
-              : nullptr;
+              : QPixmap();
 }
 
 /*
@@ -130,7 +130,7 @@ void TootInfo::deleteImage(const unsigned int index) {
     return;
   QLayoutItem *old = media_layout->takeAt(
       index +
-      2 /*QLabel + addStretch分*/); //一番最初に追加したやつから番号が振られる。
+      2 /*QLabel + addStretch分*/); // 一番最初に追加したやつから番号が振られる。
   if (old != nullptr)
     delete old->widget();
   if (getNumOfImage() == 0)
@@ -198,7 +198,7 @@ void TootInfo::setQuoteToot(TootContent *data) {
   data->setFrameShadow(QFrame::Sunken);
   quote_layout->addWidget(data);
   connect(data, &TootContent::action, this,
-          &TootInfo::deleteQuoteToot); //現在は削除以外ないのでこの実装
+          &TootInfo::deleteQuoteToot); // 現在は削除以外ないのでこの実装
   quote_layout->itemAt(0)->widget()->setVisible(true);
 }
 
@@ -243,7 +243,7 @@ void TootInfo::setReplyToot(TootContent *data) {
   data->setFrameShadow(QFrame::Sunken);
   reply_layout->addWidget(data);
   connect(data, &TootContent::action, this,
-          &TootInfo::deleteReplyToot); //現在は削除以外ないのでこの実装
+          &TootInfo::deleteReplyToot); // 現在は削除以外ないのでこの実装
   reply_layout->itemAt(0)->widget()->setVisible(true);
   return;
 }

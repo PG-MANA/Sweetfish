@@ -30,7 +30,7 @@ bool ImageLabel::setPixmapByName(const QString &target_url) {
   const QHash<QString, QPixmap>::iterator image = images.find(url);
   if (image == images.end()) {
     if (images.size() > 256)
-      images.clear(); //ここらで一回全部消してメモリの使用を減らす
+      images.clear(); // ここらで一回全部消してメモリの使用を減らす
     return false;
   }
   setPixmap(image.value());
@@ -50,7 +50,7 @@ void ImageLabel::setPixmapByNetwork() {
   if (rep->error() != QNetworkReply::NoError || !p.loadFromData(rep->readAll()))
     return;
   if (sizex && sizey) {
-    p = p.scaled(sizex, sizey, Qt::KeepAspectRatio); //縮小
+    p = p.scaled(sizex, sizey, Qt::KeepAspectRatio); // 縮小
     images[url] = p;
   }
   setPixmap(p);

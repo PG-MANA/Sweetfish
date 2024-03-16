@@ -6,6 +6,7 @@
  * 各ユーザーの詳細を表示する。
  */
 
+#include "UserInfoBox.h"
 #include "../Mastodon/MastodonAPI.h"
 #include "../Mastodon/TootData.h"
 #include "../Network/Network.h"
@@ -13,7 +14,6 @@
 #include "MainWindow.h"
 #include "TextLabel.h"
 #include "TootContent.h"
-#include "UserInfoBox.h"
 #include <QNetworkReply>
 #include <QtWidgets>
 
@@ -22,17 +22,17 @@ UserInfoBox::UserInfoBox(const TootAccountData &user_data, MainWindow *rw,
     : QMainWindow(rw, f), root_window(rw), user(user_data), mstdn(nullptr),
       menu(nullptr) {
 
-  //ウィンドウ準備
+  // ウィンドウ準備
   setWindowTitle(tr("ユーザー情報"));
   setAttribute(Qt::WA_DeleteOnClose);
   QScrollArea *main_scroll_area = new QScrollArea;
-  main_scroll_area->setFrameShape(QFrame::NoFrame); //枠線をなくす
+  main_scroll_area->setFrameShape(QFrame::NoFrame); // 枠線をなくす
   main_scroll_area->setVerticalScrollBarPolicy(
-      Qt::ScrollBarAlwaysOn);                 //常に表示
-  main_scroll_area->setWidgetResizable(true); //先にこれを設定する。
+      Qt::ScrollBarAlwaysOn);                 // 常に表示
+  main_scroll_area->setWidgetResizable(true); // 先にこれを設定する。
   QWidget *center = new QWidget;
   QPalette palette = main_scroll_area->palette();
-  palette.setColor(QPalette::Window, Qt::black); //背景を黒く
+  palette.setColor(QPalette::Window, Qt::black); // 背景を黒く
   palette.setColor(QPalette::WindowText, Qt::white);
   main_scroll_area->setPalette(palette);
   main_scroll_area->setAutoFillBackground(true);
@@ -56,7 +56,7 @@ UserInfoBox::UserInfoBox(const TootAccountData &user_data, MainWindow *rw,
     mstdn = new MastodonAPI;
   }
 
-  //基本情報を表示
+  // 基本情報を表示
   createNameBox();
   createInfoBox();
 }
@@ -74,7 +74,7 @@ void UserInfoBox::createNameBox() {
   QVBoxLayout *name_box = new QVBoxLayout;
   ImageLabel *icon = new ImageLabel(40, 40);
   icon->setFixedSize(40, 40);
-  if (!icon->setPixmapByName(user.getAvatar())) { //アイコンのキャッシュがない
+  if (!icon->setPixmapByName(user.getAvatar())) { // アイコンのキャッシュがない
     connect(net.get(user.getAvatar()), &QNetworkReply::finished, icon,
             &ImageLabel::setPixmapByNetwork);
   }
@@ -97,7 +97,7 @@ void UserInfoBox::createNameBox() {
  * 概要:ユーザの主な情報を表示する。
  */
 void UserInfoBox::createInfoBox() {
-  //ユーザー説明
+  // ユーザー説明
   QLabel *user_description = new QLabel(user.getDescription());
   user_description->setStyleSheet("color:white;");
   user_description->setWordWrap(true);
@@ -162,16 +162,16 @@ void UserInfoBox::showRelationship() {
 void UserInfoBox::showTimeLine() {
   QNetworkReply *rep = qobject_cast<QNetworkReply *>(sender());
   if (rep->error() == QNetworkReply::NoError) {
-    //こうしてるのは将来ストリームに対応するかもしれないから
-    //水平線作成
+    // こうしてるのは将来ストリームに対応するかもしれないから
+    // 水平線作成
     QFrame *horizontal_line = new QFrame;
     horizontal_line->setFrameShape(QFrame::HLine);
     horizontal_line->setFrameShadow(QFrame::Sunken);
     main_layout->addWidget(horizontal_line);
 
     QBoxLayout *timeline_layout =
-        new QBoxLayout(QBoxLayout::BottomToTop); //下から上
-    //一個づつ表示する
+        new QBoxLayout(QBoxLayout::BottomToTop); // 下から上
+    // 一個づつ表示する
     QJsonArray toots = QJsonDocument::fromJson(rep->readAll()).array();
     for (int i = toots.size() - 1; i >= 0; i--) {
       QJsonObject obj = toots[i].toObject();
@@ -202,7 +202,7 @@ void UserInfoBox::mousePressEvent(QMouseEvent *event) {
                        this); // Title表示されない...
       createMenu();
     }
-    menu->popup(event->globalPos());
+    menu->popup(event->globalPosition().toPoint());
     break;
   default:
     event->ignore();
@@ -304,7 +304,7 @@ void UserInfoBox::resetRelationInfo() {
   if (rep->error() == QNetworkReply::NoError) {
     relation =
         TootRelationshipData(QJsonDocument::fromJson(rep->readAll())
-                                 .object()); //ここがshowRelationshipと違う
+                                 .object()); // ここがshowRelationshipと違う
     if (relation.isfollowing()) {
       relationinfo_layout->addWidget(new QLabel(tr("フォローしてます")));
     }

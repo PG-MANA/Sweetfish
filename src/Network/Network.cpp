@@ -71,7 +71,7 @@ QNetworkReply *Network::upload(QNetworkRequest &req, const QByteArrayList &info,
   QHttpMultiPart *multiformPart =
       new QHttpMultiPart(QHttpMultiPart::FormDataType);
   if (info.size() != 3)
-    return nullptr; //無効
+    return nullptr; // 無効
   QHttpPart dataPart;
   if (!info.at(1).isEmpty()) {
     dataPart.setHeader(QNetworkRequest::ContentDispositionHeader,

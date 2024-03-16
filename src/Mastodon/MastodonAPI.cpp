@@ -191,7 +191,7 @@ QNetworkReply *MastodonAPI::requestDeleteToot(const QByteArray &id) {
   QNetworkRequest req;
 
   req.setUrl(MastodonUrl::scheme + domain + MastodonUrl::statuses + "/" + id);
-  //送信(Delete)
+  // 送信(Delete)
   return del(req);
 }
 
@@ -205,7 +205,7 @@ QNetworkReply *MastodonAPI::requestBoost(const QByteArray &id) {
 
   req.setUrl(MastodonUrl::scheme + domain + MastodonUrl::statuses + "/" + id +
              MastodonUrl::reblog);
-  //送信(Delete)
+  // 送信(Delete)
   return post(req, QByteArray());
 }
 
@@ -219,7 +219,7 @@ QNetworkReply *MastodonAPI::requestFavourite(const QByteArray &id) {
 
   req.setUrl(MastodonUrl::scheme + domain + MastodonUrl::statuses + "/" + id +
              MastodonUrl::favourite);
-  //送信(Delete)
+  // 送信(Delete)
   return post(req, QByteArray());
 }
 
@@ -321,8 +321,8 @@ QNetworkReply *MastodonAPI::requestMediaUpload(QIODevice &data,
   QList<QByteArrayList> upload_data;
 
   req.setUrl(MastodonUrl::scheme + domain + MastodonUrl::media_upload);
-  //アップロードリスト作成
-  //送信
+  // アップロードリスト作成
+  // 送信
   return upload(req, QByteArrayList({"file", "upload" /*暫定*/, mime_type}),
                 data);
 }

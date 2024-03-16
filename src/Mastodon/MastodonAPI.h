@@ -19,7 +19,7 @@ public:
   MastodonAPI(const MastodonAPI &other);
   virtual ~MastodonAPI();
 
-  //認証関係
+  // 認証関係
   QNetworkReply *registerApp(const QString &domain);
   QUrl getAuthorizeUrl(const QString &domain, const QString &client_id) const;
   QNetworkReply *requestAccessToken(const QString &domain,
@@ -30,7 +30,7 @@ public:
   void setInstanceDomain(const QString &instance_domain);
   void setUserId(const QByteArray &id);
   QByteArray getUserId() const;
-  //トゥート関係
+  // トゥート関係
   QNetworkReply *requestToot(
       const QString &message,
       const QByteArray &media_id = QByteArray() /*ポインタのほうがいいかな...*/,
@@ -38,17 +38,18 @@ public:
   QNetworkReply *requestDeleteToot(const QByteArray &id);
   QNetworkReply *requestBoost(const QByteArray &id);
   QNetworkReply *requestFavourite(const QByteArray &id);
-  //取得関係
+  // 取得関係
   QNetworkReply *requestHomeTimeLine(const QByteArray &since_id = QByteArray());
-  QNetworkReply *requestListTimeLine(const QByteArray &list_id, const QByteArray &since_id = QByteArray());
+  QNetworkReply *requestListTimeLine(const QByteArray &list_id,
+                                     const QByteArray &since_id = QByteArray());
   QNetworkReply *requestUserStream();
   QNetworkReply *requestListStream(const QByteArray &list_id);
-  //メディア関係
+  // メディア関係
   QNetworkReply *requestMediaUpload(QIODevice &data,
                                     const QByteArray &mime_type);
-  //リスト関係
+  // リスト関係
   QNetworkReply *requestGetLists();
-  //ユーザ関係
+  // ユーザ関係
   QNetworkReply *requestCurrentAccountInfo();
   QNetworkReply *requestUserStatuses(const QByteArray &user_id);
   QNetworkReply *requestUserRelationship(const QByteArray &user_id);

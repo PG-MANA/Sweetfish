@@ -26,7 +26,7 @@ Streamer::~Streamer() {
  * 戻値:なし
  * 概要:Mastodonクラス生成。動作するスレッドでよぶ。(QMetaObject::invokeMethodを使ってQt::ConnectionTypeはQt::BlockingQueuedConnection)
  */
-void Streamer::setMastodonAPI(const MastodonAPI *original_mastodon) {
+void Streamer::setMastodonAPI(MastodonAPI *original_mastodon) {
   if (original_mastodon != nullptr) {
     mastodon_api = new MastodonAPI(*original_mastodon);
   } else {
@@ -89,7 +89,7 @@ void Streamer::stopStream() {
 void Streamer::readStream() {
   // https://developer.mozilla.org/ja/docs/Server-sent_events/Using_server-sent_events#Event_stream_format
   buffer += reply->readAll();
-  //もうちょっといい実装ありそう
+  // もうちょっといい実装ありそう
   QList<QByteArray> &&message_list = buffer.split('\n');
   unsigned int cnt;
   unsigned int size = message_list.size();
@@ -100,7 +100,7 @@ void Streamer::readStream() {
   for (cnt = 0; cnt < size; cnt++) {
     if (message_list.at(cnt).startsWith("event:")) {
       if (cnt + 2 >= size || !message_list.at(cnt + 2).isEmpty()) {
-        break; //まだ読み込み途中
+        break; // まだ読み込み途中
       }
       // switch使いたい
       QByteArray &&event_type =
@@ -136,7 +136,7 @@ void Streamer::readStream() {
   }
   buffer.clear();
   if (cnt < size) {
-    //遅そう
+    // 遅そう
     for (; cnt < size; cnt++) {
       if (!buffer.isEmpty()) {
         buffer += '\n';

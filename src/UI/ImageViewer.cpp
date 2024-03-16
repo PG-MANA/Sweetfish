@@ -47,11 +47,11 @@ void ImageViewer::init() {
   if (link_size <= now_index)
     now_index = 0;
 
-  //画像
+  // 画像
   image_area->setWidgetResizable(true);
-  image_area->setWidget(iml); //先に追加しておいてボタンを下に持ってくる
+  image_area->setWidget(iml); // 先に追加しておいてボタンを下に持ってくる
   main_layout->addWidget(image_area);
-  //ボタン作成
+  // ボタン作成
   createButtons(main_layout);
 
   setImage(url_list.at(now_index));
@@ -74,20 +74,20 @@ void ImageViewer::createButtons(QVBoxLayout *main_layout) {
   save_button = new QPushButton(tr("名前を付けて保存(&S)"));
   QPushButton *copy_button = new QPushButton(tr("コピー(&P)"));
   QPushButton *close_button = new QPushButton(tr("閉じる(&C)"));
-  //アイコン設定
+  // アイコン設定
   close_button->setIcon(style()->standardIcon(
-      QStyle::SP_TitleBarCloseButton)); //直感的に操作できるように
+      QStyle::SP_TitleBarCloseButton)); // 直感的に操作できるように
   next_button->setIcon(style()->standardIcon(QStyle::SP_ArrowRight));
   save_button->setIcon(style()->standardIcon(QStyle::SP_DialogSaveButton));
   copy_button->setIcon(style()->standardIcon(QStyle::SP_FileIcon));
   back_button->setIcon(style()->standardIcon(QStyle::SP_ArrowLeft));
-  //イベント接続
+  // イベント接続
   connect(close_button, &QPushButton::clicked, this, &ImageViewer::close);
   connect(next_button, &QPushButton::clicked, this, &ImageViewer::nextImage);
   connect(back_button, &QPushButton::clicked, this, &ImageViewer::backImage);
   connect(copy_button, &QPushButton::clicked, this, &ImageViewer::copy);
   connect(save_button, &QPushButton::clicked, this, &ImageViewer::save);
-  //格納
+  // 格納
   button_layout->addWidget(back_button);
   button_layout->addWidget(next_button);
   button_layout->addWidget(save_button);
@@ -102,7 +102,7 @@ void ImageViewer::createButtons(QVBoxLayout *main_layout) {
  * 概要:ImageLabelに画像をセットする。
  */
 void ImageViewer::setImage(const QString &url) {
-  QNetworkReply *rep = net.get(url); //:origをつけると原寸大だが時間がかかる
+  QNetworkReply *rep = net.get(url); //: origをつけると原寸大だが時間がかかる
   connect(rep, &QNetworkReply::finished, iml, &ImageLabel::setPixmapByNetwork);
   connect(rep, &QNetworkReply::finished, this, &ImageViewer::fit);
   connect(this, &ImageViewer::destroyed, rep,
@@ -118,7 +118,7 @@ void ImageViewer::setImage(const QString &url) {
 void ImageViewer::fit() {
   save_button->setEnabled(true);
   if (first) {
-    resize(iml->sizeHint()); //関数名の由来(たまにでかすぎることが...)
+    resize(iml->sizeHint()); // 関数名の由来(たまにでかすぎることが...)
     first = false;
   }
 }
@@ -130,7 +130,7 @@ void ImageViewer::fit() {
  */
 void ImageViewer::nextImage() {
   if (!save_button->isEnabled())
-    return; //作業中
+    return; // 作業中
   now_index++;
   setImage(url_list.at(now_index));
 
@@ -146,7 +146,7 @@ void ImageViewer::nextImage() {
  */
 void ImageViewer::backImage() {
   if (!save_button->isEnabled())
-    return; //作業中
+    return; // 作業中
   now_index--;
   setImage(url_list.at(now_index));
   next_button->setEnabled(true);
@@ -161,10 +161,10 @@ void ImageViewer::backImage() {
  */
 void ImageViewer::copy() {
   if (!save_button->isEnabled())
-    return; //作業中
-  const QPixmap *pixmap = iml->pixmap();
-  if (pixmap != nullptr)
-    QApplication::clipboard()->setPixmap(*pixmap);
+    return; // 作業中
+  const QPixmap pixmap = iml->pixmap();
+  if (!pixmap.isNull())
+    QApplication::clipboard()->setPixmap(pixmap);
 }
 
 /*
@@ -189,12 +189,12 @@ void ImageViewer::save() {
 
   for (int cnt = spfilters.size() - 1; cnt >= 0;
        filter.append(" *." + spfilters.at(cnt)), cnt--)
-    ; //順序は逆になるけどすっきりするから別にいいや
+    ; // 順序は逆になるけどすっきりするから別にいいや
   filter.append(")");
   QString filename = QFileDialog::getSaveFileName(
       this, tr("名前を付けて保存"), templocation + "/" + tempname, filter);
-  const QPixmap *image = iml->pixmap();
-  if (filename.isEmpty() || image == nullptr || !image->save(filename))
+  const QPixmap image = iml->pixmap();
+  if (filename.isEmpty() || image.isNull() || !image.save(filename))
     QMessageBox::critical(this, tr("画像の詳細 ") + APP_NAME,
                           tr("画像の保存に失敗しました。"));
 }

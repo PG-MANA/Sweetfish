@@ -8,10 +8,10 @@
  * どこでも折り返せるラベル。
  */
 #include "TextLabel.h"
+#include <QDebug>
 #include <QPainter>
 #include <QTextLayout>
 #include <QTextOption>
-#include <QDebug>
 
 TextLabel::TextLabel(const QString &text, QWidget *parent, Qt::WindowFlags f)
     : QFrame(parent, f), string(text.split('\n')) {}
@@ -51,7 +51,7 @@ void TextLabel::paintEvent(QPaintEvent *event) {
       h += Line.height();
     }
   }
-  setFixedHeight(total_height); //これ肝
+  setFixedHeight(total_height); // これ肝
   return;
 }
 

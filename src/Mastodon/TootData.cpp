@@ -5,7 +5,7 @@
 #include "TootData.h"
 #include <QtCore>
 
-//自分の使用しているアカウントのidリスト
+// 自分の使用しているアカウントのidリスト
 QByteArrayList TootData::static_owner_user_id_list;
 
 TootCardData::TootCardData(const QJsonObject &target) {
@@ -33,7 +33,7 @@ TootAccountData::TootAccountData(const QJsonObject &target) {
     display_name = user_name;
   }
   acct = target["acct"].toString();
-  avatar = target["avatar"].toString(); //アイコン
+  avatar = target["avatar"].toString(); // アイコン
   following_count = target["following_count"].toInt();
   followers_count = target["followers_count"].toInt();
   locked = target["locked"].toBool();
@@ -122,7 +122,7 @@ TootData::TootData(const QJsonObject &target) {
 
   flag = 0;
   if (target["reblogged"].toBool()) {
-    flag |= 1 << 0; //一般化
+    flag |= 1 << 0; // 一般化
   }
   if (target["favourited"].toBool()) {
     flag |= 1 << 1;
@@ -140,10 +140,10 @@ TootData::TootData(const QJsonObject &target) {
   if (QJsonValue reblog_status = target["reblog"]; reblog_status.isObject()) {
     QJsonObject reblog_object = reblog_status.toObject(); // constならいらない
     reblog = new TootData(reblog_object);
-    media = reblog->getMediaData(); //扱いやすいように
+    media = reblog->getMediaData(); // 扱いやすいように
     content = reblog->getContent();
   }
-  //製作中
+  // 製作中
 }
 
 TootData::~TootData() { delete reblog; }
@@ -207,11 +207,11 @@ void TootData::analyzeContent(QString c /*remove使うため参照ではない*/
   c.replace("</p><p>", "\n\n")
       .replace("<br>", "\n")
       .replace("<br />", "\n")
-      .remove(QRegExp("<\\/?(span|p)[^>]*>"))
+      .remove(QRegularExpression("<\\/?(span|p)[^>]*>"))
       .replace("&gt;", ">")
       .replace("&lt;", "<")
       .replace("&amp;", "&")
-      .replace("&quot;", "\""); //見やすいように連結した。
+      .replace("&quot;", "\""); // 見やすいように連結した。
 
   QRegularExpressionMatchIterator &&link_tags =
       QRegularExpression("<a[^>]* href=\"([^\"]*)\"[^>]*>([^<]*)<\\/a>")
@@ -220,7 +220,8 @@ void TootData::analyzeContent(QString c /*remove使うため参照ではない*/
     QRegularExpressionMatch entry = link_tags.next();
     url_list.addUrlPair(entry.captured(2), entry.captured(1));
   }
-  c.replace(QRegExp("<a[^>]* href=\"[^\"]*\"[^>]*>([^<]*)<\\/a>"), "\\1");
+  c.replace(QRegularExpression("<a[^>]* href=\"[^\"]*\"[^>]*>([^<]*)<\\/a>"),
+            "\\1");
   content = c;
 }
 

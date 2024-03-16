@@ -29,10 +29,10 @@ public:
 
 private:
   QByteArray id;
-  QString user_name; //スクリーンネーム(ABC)
-  QString acct;      //インスタンス名を含むユーザ名
+  QString user_name; // スクリーンネーム(ABC)
+  QString acct;      // インスタンス名を含むユーザ名
   QString display_name;
-  QString avatar; //ユーザアイコン
+  QString avatar; // ユーザアイコン
   QString description;
   unsigned int following_count;
   unsigned int followers_count;
@@ -175,12 +175,12 @@ private:
   void analyzeContent(QString content);
 
   static QByteArrayList
-      static_owner_user_id_list; //あまりいい方法ではない気もする...
+      static_owner_user_id_list; // あまりいい方法ではない気もする...
 };
 
 class TootNotificationData {
 public:
-  enum Event { //使いそうなやつだけ
+  enum Event { // 使いそうなやつだけ
     NoEvent,
     Mention,
     Boost,
