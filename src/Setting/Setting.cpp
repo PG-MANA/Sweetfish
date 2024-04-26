@@ -47,6 +47,25 @@ void Setting::setGeometry(const QByteArray &geo) {
 
 /*
  * 引数:なし
+ * 戻値:Windowの状態
+ * 概要:Windowの状態を読み取る
+ */
+QByteArray Setting::getState() const {
+    return setting.value("Window/state").toByteArray();
+}
+
+/*
+ * 引数:state(QByteArray化したState)
+ * 戻値:なし
+ * 概要:WindowStateを書き込む
+ */
+void Setting::setState(const QByteArray &state) {
+    setting.setValue("Window/state", state);
+}
+
+
+/*
+ * 引数:なし
  * 戻値:uint(画面に表示する最大トゥート数)
  * 概要:画面に表示する最大のメッセージ数を返す。これ以上の数の表示は行わず、画面から削除すべき。
  */

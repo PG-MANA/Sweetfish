@@ -1,52 +1,52 @@
 name:               sweetfish
-version:            0.7.1
+version:            0.7.2
 base:               core24
-icon:               snap/gui/sweetfish.png
+icon:               src/Resources/icon/icon-normal.png
 license:            Apache-2.0
 summary:            Mastodon client for Linux
 description:        The Mastodon client for Linux
 confinement:        strict
 grade:              stable
 
-architectures:
-  - build-on:       amd64
-  - build-on:       arm64
-
 apps:
   sweetfish:
-    command:        bin/desktop-launch sweetfish
+    command:        usr/bin/sweetfish
+    desktop:        usr/share/applications/sweetfish.desktop
     plugs:
       - audio-playback
       - desktop-legacy
       - desktop
       - home
       - network
-      - pulseaudio
       - wayland
       - x11
-      - unity7
-    extensions:     [kde-neon]
+    extensions:
+      - kde-neon-6
 
 parts:
   sweetfish:
     source:         https://github.com/PG-MANA/Sweetfish.git
     source-type:    git
     plugin:         cmake
-    build-packages: 
-      - g++
-      - libglx-dev
+    build-packages:
       - libgl1-mesa-dev
+      - libglx-dev
+      - libjxl-dev
+      - libphonon4qt6-dev
+      - libxkbcommon-dev
       - qt6-base-dev
-      - qt6-tools-dev
-      - qt6-tools-dev-tools
       - qt6-l10n-tools
       - qt6-multimedia-dev
-      - libphonon4qt6-dev
+      - qt6-tools-dev
+      - qt6-tools-dev-tools
     stage-packages:
+      - libphonon4qt6-4
       - libqt6core6
       - libqt6dbus6
       - libqt6gui6
       - libqt6network6
-      - libqt6widgets6
       - libqt6multimedia6
-      - libphonon4qt6-4
+      - libqt6widgets6
+    cmake-parameters:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DCMAKE_INSTALL_PREFIX=/usr

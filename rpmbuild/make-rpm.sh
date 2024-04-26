@@ -7,7 +7,7 @@ COPY_PATH=~/rpmbuild/SOURCES/
 
 mkdir ${APP_NAME}-${APP_VERSION}
 cd ${APP_NAME}-${APP_VERSION}
-ln -s  ../${APP_NAME}.desktop ../../CMakeLists.txt ../../src ./
+ln -s  ../../${APP_NAME}.desktop ../../CMakeLists.txt ../../src ./
 cd ../
 tar zchvf ${APP_NAME}-${APP_VERSION}.tar.gz ${APP_NAME}-${APP_VERSION} 
 rm -rf  ${APP_NAME}-${APP_VERSION}

@@ -103,7 +103,7 @@ TootData::TootData(const QJsonObject &target) {
   if (target.find("id") == target.end())
     return;
   id = target["id"].toString().toLatin1();
-  created_at.setTimeSpec(Qt::UTC);
+
   created_at =
       QDateTime::fromString(target["created_at"].toString(), Qt::ISODateWithMs);
 

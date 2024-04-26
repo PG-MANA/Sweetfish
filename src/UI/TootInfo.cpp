@@ -73,7 +73,7 @@ QString TootInfo::getImagePath(const unsigned int index) const {
  * 戻値:なし
  * 概要:Pixmapを追加し、必要であればImagelabelを生成する。
  */
-void TootInfo::setImage(const QPixmap &pixmap, QString file_path,
+void TootInfo::setImage(const QPixmap &pixmap, const QString& file_path,
                         const unsigned int index) {
   unsigned int num_of_img = getNumOfImage();
   if (num_of_img == 0)

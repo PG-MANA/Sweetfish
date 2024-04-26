@@ -76,6 +76,7 @@ bool MainWindow::init(const QString setting_file_name) {
   // 設定読み込み
   setting = new Setting(setting_file_name);
   restoreGeometry(setting->getGeometry());
+  restoreState(setting->getState());
   mstdn = new MastodonAPI;
 
   if (setting->getAccessToken().isEmpty()) {
@@ -562,7 +563,7 @@ void MainWindow::addMedia() {
 /*
  * 引数:なし
  * 戻値:クリップボードから設定できたか。
- * 概要:画像をクリップボードから設定する。toot_editerの右クリックメニューで設定できたら面白そう。
+ * 概要:画像をクリップボードから設定する。toot_editorの右クリックメニューで設定できたら面白そう。
  */
 bool MainWindow::addMediaByClipboard() {
   QPixmap &&pic = QApplication::clipboard()->pixmap();
@@ -820,9 +821,9 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event) {
 void MainWindow::closeEvent(QCloseEvent *event) {
   // ウィンドウ状態保存
   setting->setGeometry(saveGeometry());
-  QMainWindow::closeEvent(event);
+  setting->setState(saveState());
   tray_info->hide();
-  return;
+  QMainWindow::closeEvent(event);
 }
 
 /*
@@ -848,7 +849,7 @@ void MainWindow::toot() {
           QBuffer *buff = new QBuffer;
           buff->open(QIODevice::WriteOnly);
           const QPixmap image = toot_info->getImage(i);
-          if (image.isNull() || image.save(buff, "PNG"))
+          if (image.isNull() || !image.save(buff, "PNG"))
             throw tr("画像の読み込みに失敗しました。");
           mime.push_back(QByteArray("image/png"));
           buff->close();

@@ -26,5 +26,6 @@ target_link_libraries(sweetfish UI)
 
 add_dependencies(sweetfish translations)
 
-install(TARGETS sweetfish DESTINATION bin)
-install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/locales DESTINATION lib/sweetfish)
+install(TARGETS sweetfish DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(PROGRAMS sweetfish.desktop DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications)
+install(FILES src/Resources/icon/icon-normal.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pixmaps RENAME ${CMAKE_PROJECT_NAME}.png)

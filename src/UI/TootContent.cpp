@@ -335,7 +335,7 @@ void TootContent::drawToot() {
 
   // その他情報
   QLabel *info_text = new QLabel(QLocale::system().toString(
-      tdata->getDateTime().toTimeSpec(Qt::LocalTime), QLocale::ShortFormat));
+      tdata->getDateTime().toLocalTime(), QLocale::ShortFormat));
   info_text->setWordWrap(true);
   info_text->setStyleSheet("font-size:10px;color:gray;");
   text_box->addWidget(info_text, 0, Qt::AlignRight);

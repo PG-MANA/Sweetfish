@@ -19,6 +19,9 @@ public:
   QByteArray getGeometry() const;
   void setGeometry(const QByteArray &geo);
 
+  QByteArray getState() const;
+  void setState(const QByteArray &state);
+
   unsigned int getTootLimit() const;
   void setTootLimit(unsigned int limit);
 

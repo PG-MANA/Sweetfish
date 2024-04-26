@@ -25,7 +25,7 @@ public:
   virtual ~TootInfo();
   const QPixmap getImage(const unsigned int index) const;
   QString getImagePath(const unsigned int index) const;
-  void setImage(const QPixmap &pixmap, QString file_path,
+  void setImage(const QPixmap &pixmap, const QString& file_path,
                 const unsigned int index);
   void deleteImage(const unsigned int index);
   void deleteImageAll();
