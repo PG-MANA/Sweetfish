@@ -25,7 +25,7 @@ apps:
       - wayland
       - x11
       - unity7
-    extensions:     [kde-neon]
+    extensions:     [kde-neon-6]
 
 parts:
   sweetfish:
