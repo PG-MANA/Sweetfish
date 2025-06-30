@@ -10,7 +10,6 @@
 #include <QtWidgets>
 #ifdef USE_MULTIMEDIA
 #include <QMediaPlayer>
-#include <QMediaPlaylist>
 #include <QVideoWidget>
 #else
 #include <phonon/VideoPlayer>
@@ -29,12 +28,12 @@ VideoPlayer::VideoPlayer(TootData *tdata, QWidget *parent, Qt::WindowFlags f)
 #ifdef USE_MULTIMEDIA
   video_player = new QMediaPlayer;
   QVideoWidget *video_widget = new QVideoWidget;
-  video_player->setMedia(QUrl(media_url)); // 先に読んでおく
+  video_player->setSource(QUrl(media_url));
   video_player->setVideoOutput(video_widget);
   main_layout->addWidget(video_widget);
 #else
   video_player = new Phonon::VideoPlayer(Phonon::VideoCategory);
-  video_player->load(QUrl(media_url)); // 先に読んでおく
+  video_player->load(QUrl(media_url));
   connect(video_player, &Phonon::VideoPlayer::finished, video_player,
           static_cast<void (Phonon::VideoPlayer::*)(void)>(
               &Phonon::VideoPlayer::play)); // Loop
