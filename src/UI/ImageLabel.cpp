@@ -43,7 +43,7 @@ bool ImageLabel::setPixmapByName(const QString &target_url) {
  * 概要:QNetworkReplyのfinishedによって呼ばれる。画像の設定、キャッシュへ登録を行う。
  */
 void ImageLabel::setPixmapByNetwork() {
-  QNetworkReply *rep = qobject_cast<QNetworkReply *>(sender());
+  auto *rep = qobject_cast<QNetworkReply *>(sender());
   QPixmap p;
 
   rep->deleteLater(); // returnしたあとに削除される
@@ -71,7 +71,8 @@ void ImageLabel::setSize(unsigned int new_sizex, unsigned int new_sizey) {
  * 戻値:なし
  * 概要:縮小サイズを取得するときに使う。
  */
-void ImageLabel::getSize(unsigned int &ref_sizex, unsigned int &ref_sizey) {
+void ImageLabel::getSize(unsigned int &ref_sizex,
+                         unsigned int &ref_sizey) const {
   ref_sizex = sizex;
   ref_sizey = sizey;
 }
@@ -81,7 +82,7 @@ void ImageLabel::getSize(unsigned int &ref_sizex, unsigned int &ref_sizey) {
  * 戻値:index(画像が何番目か)
  * 概要:Layoutなどで画像が何番目かを返す。
  */
-unsigned int ImageLabel::getIndex() { return index; }
+unsigned int ImageLabel::getIndex() const { return index; }
 
 /*
  * 引数:index(画像が何番目か)

@@ -13,11 +13,12 @@ int main(int argc, char *argv[]) {
   // Load Translations
   QTranslator translator;
   QString locale_file =
-      QString("translations/") + QLocale::system().name() + QString(".qm");
+      QString("translations/lang_") + QLocale::system().name() + QString(".qm");
   QString locale_path =
       QStandardPaths::locate(QStandardPaths::AppDataLocation, locale_file);
   if (locale_path.isEmpty() || !translator.load(locale_path)) {
-    qDebug() << "Failed to load translation file:  " << locale_path;
+    qDebug() << "Failed to load translation file:  " << locale_path << "("
+             << locale_file << ")";
   }
   app.installTranslator(&translator);
   app.setWindowIcon(QIcon(":/icon-normal.png")); // 埋め込み

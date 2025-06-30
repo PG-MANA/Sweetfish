@@ -72,7 +72,7 @@ MainWindow::~MainWindow() {
  * 戻値:成功はtrue、失敗はfalse
  * 概要:渡された設定ファイルから設定を読み込み、基本設定を行う。初期化のあとに呼ぶ。
  */
-bool MainWindow::init(const QString setting_file_name) {
+bool MainWindow::init(const QString &setting_file_name) {
   // 設定読み込み
   setting = new Setting(setting_file_name);
   restoreGeometry(setting->getGeometry());
@@ -81,16 +81,8 @@ bool MainWindow::init(const QString setting_file_name) {
 
   if (setting->getAccessToken().isEmpty()) {
     try {
-      (QMessageBox::question(this, APP_NAME,
-                             tr("マストドンアプリの認証を行いますか。"),
-                             QMessageBox::Yes | QMessageBox::No,
-                             QMessageBox::Yes) == QMessageBox::Yes)
-          ? authorizeMastodon() /*エラーはthrowされて下に行く*/
-          : throw tr(
-                "マストドンアプリの認証を行わなければこのソフトウェアは使用でき"
-                "ません。");
+      authorizeMastodon();
     } catch (QString &error) {
-      // delete mstdn;<=~MainWindowで呼ばれる。
       QMessageBox::critical(this, APP_NAME, error);
       return false;
     }
@@ -104,9 +96,9 @@ bool MainWindow::init(const QString setting_file_name) {
   // タイトル
   setWindowTitle(setting->getUserName() + "@" + setting->getInstanceDomain() +
                  " - " APP_NAME);
-  QMetaObject::invokeMethod(
-      timeline_streamer, "setMastodonAPI", Qt::BlockingQueuedConnection,
-      mstdn); // 別スレッドでMastodonAPIクラスを作らないといろいろ怒られる。
+  QMetaObject::invokeMethod(timeline_streamer, "setMastodonAPI",
+                            Qt::BlockingQueuedConnection,
+                            Q_ARG(MastodonAPI *, mstdn));
   return true;
 }
 
@@ -119,25 +111,24 @@ void MainWindow::createMenus() {
   menuBar()->setNativeMenuBar(true);
 
   // 設定
-  QMenu *setting_menu = menuBar()->addMenu(tr("設定(&S)"));
+  QMenu *setting_menu = menuBar()->addMenu(tr("Settings(&S)"));
   setting_menu->setToolTipsVisible(true);
   stream_status = setting_menu->addAction(
-      style()->standardIcon(QStyle::SP_BrowserReload), tr("ストリーム接続(&S)"),
-      this, &MainWindow::changeStreamStatus); // アイコンの意図が違っていて微妙
+      style()->standardIcon(QStyle::SP_BrowserReload), tr("Streaming(&S)"),
+      this,
+      &MainWindow::changeStreamStatus); // アイコンの意図が違っていて微妙
   stream_status->setCheckable(true);
   stream_status->setChecked(true);
-  stream_status->setToolTip(
-      tr("チェックされるとストリームに接続し、外されると切断します。"));
+  stream_status->setToolTip(tr("Enable streaming the timeline"));
   setting_menu
       ->addAction(style()->standardIcon(QStyle::SP_TitleBarCloseButton),
-                  tr("終了(&E)"), qApp, &QApplication::closeAllWindows)
-      ->setToolTip(
-          tr("すべてのウィンドウを閉じ、アプリケーションを終了します。"));
+                  tr("Exit(&X)"), qApp, &QApplication::closeAllWindows)
+      ->setToolTip(tr("Close all windows and exit the application"));
 
   // 表示
-  QMenu *timeline_menu = menuBar()->addMenu(tr("表示(&V)"));
+  QMenu *timeline_menu = menuBar()->addMenu(tr("View(&V)"));
   timeline_menu->setToolTipsVisible(true);
-  timeline_menu->addAction(tr("ホーム(&H)"), this, [this] {
+  timeline_menu->addAction(tr("Home(&H)"), this, [this] {
     if (stream_status->isChecked())
       changeStreamStatus(false);
     stream_type = Streamer::StreamType::UserStream;
@@ -146,35 +137,30 @@ void MainWindow::createMenus() {
     connect(mstdn->requestHomeTimeLine(), &QNetworkReply::finished, this,
             &MainWindow::showTimeLine);
   });
-  list_menu = timeline_menu->addMenu(tr("リスト(&L)"));
+  list_menu = timeline_menu->addMenu(tr("List(&L)"));
 
   // ウィンドウ
-  QMenu *window_menu = menuBar()->addMenu(tr("ウィンドウ(&W)"));
+  QMenu *window_menu = menuBar()->addMenu(tr("Window(&W)"));
   window_menu->setToolTipsVisible(true);
   QAction *always_top_action = window_menu->addAction(
       style()->standardIcon(
           QStyle::SP_ArrowUp /*QStyle::SP_TitleBarShadeButton*/),
-      tr("常に最前面に表示(&A)"), this, &MainWindow::setAlwayTop);
+      tr("Keep Above others(&A)"), this, &MainWindow::setAlwayTop);
   always_top_action->setToolTip(
-      tr("常にこのウィンドウを手前に表示します。("
-         "ウィンドウマネージャで設定できる場合はそちらで設定してください。)"));
+      tr("Keep this window floating above other windows"));
   always_top_action->setCheckable(true);
 
   // ヘルプ
-  QMenu *help_menu = menuBar()->addMenu(tr("ヘルプ(&H)"));
+  QMenu *help_menu = menuBar()->addMenu(tr("Help(&H)"));
   help_menu->setToolTipsVisible(true);
   help_menu
-      ->addAction(
-          QIcon(":/icon-normal.png"),
-          tr("このソフトウェアについて(&A)" /*分離すると翻訳しづらそう*/), this,
-          &MainWindow::showAbout)
-      ->setToolTip(
-          tr("バージョンやライセンスについてのダイアログを表示します。"));
+      ->addAction(QIcon(":/icon-normal.png"), tr("About this software(&A)"),
+                  this, &MainWindow::showAbout)
+      ->setToolTip(tr("Show information of this application"));
   help_menu
       ->addAction(style()->standardIcon(QStyle::SP_TitleBarMenuButton),
-                  tr("Qtについて(&Q)"), qApp, &QApplication::aboutQt)
-      ->setToolTip(tr("使用されているQtのライブラリのバージョンやライセンスにつ"
-                      "いてのダイアログを表示します。"));
+                  tr("About Qt(&Q)"), qApp, &QApplication::aboutQt)
+      ->setToolTip(tr("Show Qt information"));
 }
 
 /*
@@ -198,7 +184,6 @@ void MainWindow::createTimeLine() {
       new QBoxLayout(QBoxLayout::BottomToTop, timeline_center); // 下から上
   timeline_area->setWidget(timeline_center);
   main_layout->addWidget(timeline_area);
-  return;
 }
 
 /*
@@ -230,7 +215,7 @@ void MainWindow::createTootBox() {
   // Home Time Line更新
   QPushButton *ReloadButton = new QPushButton;
   ReloadButton->setIcon(style()->standardIcon(QStyle::SP_BrowserReload));
-  ReloadButton->setToolTip(tr("タイムラインを更新します。"));
+  ReloadButton->setToolTip(tr("Update the timeline"));
   ReloadButton->setStyleSheet("background-color: #255080;");
   connect(ReloadButton, &QPushButton::clicked, this,
           &MainWindow::updateTimeLine);
@@ -239,7 +224,7 @@ void MainWindow::createTootBox() {
   // メディア追加ボタン
   QPushButton *MediaButton = new QPushButton;
   MediaButton->setIcon(QIcon(":/add.png"));
-  MediaButton->setToolTip(tr("写真・動画を追加します。"));
+  MediaButton->setToolTip(tr("Add images"));
   MediaButton->setStyleSheet("background-color: #255080;");
   connect(MediaButton, &QPushButton::clicked, this, &MainWindow::addMedia);
   toot_button_layout->addWidget(MediaButton);
@@ -248,7 +233,7 @@ void MainWindow::createTootBox() {
   toot_button = new QPushButton;
   toot_button->setIcon(QIcon(":/send.png"));
   toot_button->setStyleSheet("background-color: #255080;");
-  toot_button->setToolTip(tr("トゥートを送信します。"));
+  toot_button->setToolTip(tr("Send the toot"));
   connect(toot_button, &QPushButton::clicked, this, &MainWindow::toot);
   toot_button_layout->addWidget(toot_button);
 
@@ -269,7 +254,7 @@ void MainWindow::authorizeMastodon() {
   QString &&domain = showInstanceDomainInputDialog();
 
   if (domain.isEmpty()) {
-    throw tr("無効なドメイン名です。");
+    throw tr("Invalid domain name");
   }
   QNetworkReply *rep = mstdn->registerApp(domain);
   connect(rep, &QNetworkReply::finished, &event, &QEventLoop::quit);
@@ -277,7 +262,7 @@ void MainWindow::authorizeMastodon() {
 
   if (rep->error() != QNetworkReply::NoError) {
     delete rep;
-    throw tr("アプリケーションの登録に失敗しました。");
+    throw tr("Failed to register the application");
   }
   QJsonObject &&result = QJsonDocument::fromJson(rep->readAll()).object();
   delete rep;
@@ -286,11 +271,11 @@ void MainWindow::authorizeMastodon() {
   QByteArray &&client_secret = result["client_secret"].toString().toLatin1();
 
   if (!QDesktopServices::openUrl(mstdn->getAuthorizeUrl(domain, client_id)))
-    throw tr("ブラウザの起動に失敗しました。");
+    throw tr("Failed to open the browser");
 
   QString &&auth_code = showAuthCodeInputDialog();
   if (auth_code.isEmpty())
-    throw tr("認証がキャンセルされました。");
+    throw tr("The authorization was cancelled");
 
   rep = mstdn->requestAccessToken(domain, client_id, client_secret, auth_code);
   connect(rep, &QNetworkReply::finished, &event, &QEventLoop::quit);
@@ -298,7 +283,7 @@ void MainWindow::authorizeMastodon() {
 
   if (rep->error() != QNetworkReply::NoError) {
     delete rep;
-    throw tr("アクセストークンの取得に失敗しました。");
+    throw tr("Failed to get the access token");
   }
   QByteArray &&access_token = QJsonDocument::fromJson(rep->readAll())
                                   .object()["access_token"]
@@ -315,7 +300,7 @@ void MainWindow::authorizeMastodon() {
 
   if (rep->error() != QNetworkReply::NoError) {
     delete rep;
-    throw tr("ユーザ情報の取得に失敗しました。");
+    throw tr("Failed to get the user information");
   }
   TootAccountData user_info(QJsonDocument::fromJson(rep->readAll()).object());
   rep->deleteLater();
@@ -338,17 +323,17 @@ void MainWindow::authorizeMastodon() {
 QString MainWindow::showInstanceDomainInputDialog() {
   QDialog dialog;
   QVBoxLayout *layout = new QVBoxLayout(&dialog);
-  QLineEdit *domain_editer = new QLineEdit;
+  QLineEdit *domain_editor = new QLineEdit;
   QPushButton *ok_button = new QPushButton(tr("OK"));
 
   connect(ok_button, &QPushButton::clicked, &dialog, &QWidget::close);
   layout->addWidget(
-      new QLabel(tr("認証するインスタンスのドメイン名を入力してください。("
-                    "https://は不要です。)\n例) don.taprix.org")));
-  layout->addWidget(domain_editer);
+      new QLabel(tr("Enter the Mastodon server name without \"https://\"") +
+                 tr("Ex)") + "mastodon.social"));
+  layout->addWidget(domain_editor);
   layout->addWidget(ok_button);
   dialog.exec();
-  return domain_editer->text();
+  return domain_editor->text();
 }
 
 /*
@@ -359,17 +344,15 @@ QString MainWindow::showInstanceDomainInputDialog() {
 QString MainWindow::showAuthCodeInputDialog() {
   QDialog dialog;
   QVBoxLayout *layout = new QVBoxLayout(&dialog);
-  QLineEdit *pincode_editer = new QLineEdit;
+  QLineEdit *pincode_editor = new QLineEdit;
   QPushButton *ok_button = new QPushButton(tr("OK"));
 
   connect(ok_button, &QPushButton::clicked, &dialog, &QWidget::close);
-  layout->addWidget(
-      new QLabel(tr("表示されたブラウザでMastodonの認証して、表示された認証コー"
-                    "ドを入力してください。")));
-  layout->addWidget(pincode_editer);
+  layout->addWidget(new QLabel(tr("Enter the authorization code")));
+  layout->addWidget(pincode_editor);
   layout->addWidget(ok_button);
   dialog.exec();
-  return pincode_editer->text();
+  return pincode_editor->text();
 }
 
 /*
@@ -386,18 +369,20 @@ void MainWindow::abortedTimeLine(unsigned int error) {
 
   switch (static_cast<Streamer::Error>(error)) {
   case Streamer::CannotConnect:
-    mes_box.setText(tr("タイムラインに接続できませんでした。再接続しますか。"));
+    mes_box.setText(
+        tr("Failed to connect the timeline. Do you want to retry?"));
     mes_box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     break;
   case Streamer::NetworkError:
-    mes_box.setText(tr("タイムラインから切断されました。再接続しますか。"));
+    mes_box.setText(
+        tr("Failed to connect the timeline. Do you want to retry?"));
     mes_box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     break;
   case Streamer::BadPointer:
-    mes_box.setText(tr("メモリアクセス違反が発生しました。"));
+    mes_box.setText(tr("Invalid memory access was occurred"));
     break;
   default:
-    mes_box.setText(tr("不明なエラーが発生しました。"));
+    mes_box.setText(tr("Unknown error was occurred"));
   }
   if (mes_box.exec() == QMessageBox::Yes) {
     stream_status->setChecked(true);
@@ -414,9 +399,9 @@ void MainWindow::changeStreamStatus(bool checked) {
   if (checked)
     QMetaObject::invokeMethod(
         timeline_streamer, "startStream", Qt::QueuedConnection,
-        static_cast<unsigned int>(stream_type), stream_id);
+        Q_ARG(Streamer::StreamType, stream_type), Q_ARG(QByteArray, stream_id));
   else
-    QMetaObject::invokeMethod(timeline_streamer, "stopStream",
+    QMetaObject::invokeMethod(timeline_streamer, &Streamer::stopStream,
                               Qt::QueuedConnection);
 }
 
@@ -530,9 +515,10 @@ void MainWindow::updateTimeLine() {
 void MainWindow::addMedia() {
   try {
     QString &&file_path = QFileDialog::getOpenFileName(
-        this, tr("メディア追加"), "",
-        tr("メディア (*.png *.jpg *.gif *.bmp *.pbm *.pgm *.ppm *.xbm *.xpm "
-           "*.svg)")); // 対応拡張子はImageViewer参考にして動的に作るべき
+        this, tr("Attach media"), "",
+        tr("Media") +
+            "(*.png *.jpg *.gif *.bmp *.pbm *.pgm *.ppm *.xbm *.xpm "
+            "*.svg)"); // 対応拡張子はImageViewer参考にして動的に作るべき
     if (file_path.isEmpty())
       return;
     QFileInfo file_info(file_path);
@@ -544,12 +530,12 @@ void MainWindow::addMedia() {
       if (e == suffix)
         break;
       if (e == supported_formats.last())
-        throw tr("サポートしていない画像です。");
+        throw tr("Unsupported images");
     }
 
     unsigned int counter = toot_info->getNumOfImage();
     if (counter > 4)
-      throw tr("４枚以上の画像は投稿できません。");
+      throw tr("Cannot post more than 4 images");
 
     // toot_infoに追加
     toot_info->setImage(QPixmap(file_path).scaled(50, 50), file_path, counter);
@@ -557,7 +543,6 @@ void MainWindow::addMedia() {
   } catch (QString &e) {
     QMessageBox::critical(this, APP_NAME, e);
   }
-  return;
 }
 
 /*
@@ -572,8 +557,7 @@ bool MainWindow::addMediaByClipboard() {
 
   unsigned int counter = toot_info->getNumOfImage();
   if (counter > 4) {
-    QMessageBox::critical(this, APP_NAME,
-                          tr("４枚以上の画像は投稿できません。"));
+    QMessageBox::critical(this, APP_NAME, tr("Cannot post more than 4 images"));
     return false;
   }
   // toot_infoに追加
@@ -636,7 +620,7 @@ void MainWindow::clearToots(void) {
 /*
  * 引数:Id(削除されたトゥートのid)
  * 戻値:なし
- * 概要:主にStreamerのDeletetootシグナルによって呼ばれる。削除されたトゥートのTootContentを消す。
+ * 概要:主にStreamerのdeleteTootシグナルによって呼ばれる。削除されたトゥートのTootContentを消す。
  */
 void MainWindow::removeToot(const QString &id) {
   for (unsigned int c = timeline_layout->count() - 1; c; c--) {
@@ -668,31 +652,29 @@ void MainWindow::showNotification(TootNotificationData *nfdata) {
   QString message;
   switch (nfdata->getType()) {
   case TootNotificationData::Event::Favourite:
-    message = nfdata->getAccount().getDisplayName() + tr("さんが") +
-              tr("以下のトゥートをお気に入りに登録しました。\n") +
+    message = nfdata->getAccount().getDisplayName() + " " +
+              tr("liked the toot") + ": " +
               ((nfdata->getStatus().getContent().isEmpty())
-                   ? tr("不明")
+                   ? tr("Unknown")
                    : nfdata->getStatus().getContent());
     break;
 
   case TootNotificationData::Event::Boost:
-    message = nfdata->getAccount().getDisplayName() + tr("さんが") +
-              tr("以下のトゥートをブーストしました。\n") +
+    message = nfdata->getAccount().getDisplayName() + " " +
+              tr("boosted the toot") + ": " +
               ((nfdata->getStatus().getContent().isEmpty())
-                   ? tr("不明")
+                   ? tr("Unknown")
                    : nfdata->getStatus().getContent());
     break;
 
   case TootNotificationData::Event::Mention:
-    message = nfdata->getAccount().getDisplayName() +
-              tr("さんがあなたに向けてトゥートしました。\n") +
-              nfdata->getStatus().getContent();
+    message = nfdata->getAccount().getDisplayName() + " " +
+              tr("mentioned you") + ": " + nfdata->getStatus().getContent();
     break;
 
   case TootNotificationData::Event::Follow:
     message = nfdata->getAccount().getDisplayName() + "(" +
-              nfdata->getAccount().getAcct() + ")" +
-              tr("さんがあなたをフォローしました。");
+              nfdata->getAccount().getAcct() + ")" + " " + tr("followed you");
     break;
 
   default:
@@ -728,8 +710,7 @@ void MainWindow::showNotification(TootNotificationData *nfdata) {
 void MainWindow::finishedToot() {
   QNetworkReply *rep = qobject_cast<QNetworkReply *>(sender());
   if (rep->error() != QNetworkReply::NoError) {
-    QMessageBox::critical(this, tr("トゥートに失敗しました ") + APP_NAME,
-                          rep->errorString());
+    QMessageBox::critical(this, APP_NAME, rep->errorString());
   } else {
     toot_editer->clear();
     toot_info->deleteImageAll();
@@ -763,8 +744,7 @@ void MainWindow::setEnabledToot(bool enable) {
 void MainWindow::finishedRequest() {
   QNetworkReply *rep = qobject_cast<QNetworkReply *>(sender());
   if (rep->error() != QNetworkReply::NoError) {
-    QMessageBox::critical(this, tr("作業に失敗しました ") + APP_NAME,
-                          rep->errorString());
+    QMessageBox::critical(this, APP_NAME, rep->errorString());
   }
   rep->deleteLater();
   return;
@@ -850,7 +830,7 @@ void MainWindow::toot() {
           buff->open(QIODevice::WriteOnly);
           const QPixmap image = toot_info->getImage(i);
           if (image.isNull() || !image.save(buff, "PNG"))
-            throw tr("画像の読み込みに失敗しました。");
+            throw tr("Failed to load the image");
           mime.push_back(QByteArray("image/png"));
           buff->close();
           buff->open(QIODevice::ReadOnly);
@@ -858,7 +838,7 @@ void MainWindow::toot() {
         } else {
           QFile *file = new QFile(file_path);
           if (!file->open(QIODevice::ReadOnly)) {
-            throw tr("画像の読み込みに失敗しました。");
+            throw tr("Failed to load the image");
           }
           mime.push_back(QMimeDatabase().mimeTypeForData(file).name().toUtf8());
           media.append(file);
@@ -868,9 +848,9 @@ void MainWindow::toot() {
       connect(upload, &MediaUpload::finished, this, &MainWindow::tootWithMedia);
       connect(upload, &MediaUpload::aborted, this, [this] {
         MediaUpload *upload = qobject_cast<MediaUpload *>(sender());
-        if (QMessageBox::question(
-                this, APP_NAME,
-                tr("アップロード中にエラーが発生しました。再試行しますか。")) ==
+        if (QMessageBox::question(this, APP_NAME,
+                                  tr("Failed to upload images") + "\n" +
+                                      tr("Do you want to retry?")) ==
             QMessageBox::Yes)
           upload->retry();
         else
@@ -879,7 +859,7 @@ void MainWindow::toot() {
       });
       if (!upload->start()) {
         delete upload;
-        throw tr("アップロードの初期化作業に失敗しました。");
+        throw tr("Failed to upload images");
       }
       return;
     }
@@ -944,14 +924,14 @@ void MainWindow::showAbout() {
       "<b>" APP_NAME_LONG "</b>"
       "<p>Ver " APP_VERSION "</p>"
       "<p>" +
-          tr("Qtを使用して製作されているMastodonクライアント。") +
+          tr("The Mastodon Client with Qt") +
           "</p>"
           "<p>" +
-          tr("本ソフトウェアはQtオープンソース版のLGPLv3を選択しています。詳し"
-             "くは<a "
-             "href=\"https://www.qt.io/licensing/\">https://www.qt.io/"
-             "licensing/</a>をご覧ください。") +
-          "</p>" // ここは<a>で区切ると訳しにくいはず
+          tr("This software uses Qt licenced under LGPLv3") +
+          "(<a "
+          "href=\"https://www.qt.io/licensing/\">https://www.qt.io/licensing/</"
+          "a>)" +
+          "</p>"
           "<b>" +
           tr("License") +
           "</b>"
@@ -970,7 +950,7 @@ void MainWindow::showAbout() {
           "See the License for the specific language governing permissions and"
           "limitations under the License.</p>"
           "<a href=\"" APP_HOMEPAGE "\">" +
-          tr("このソフトウェアについてのページを開く") + "</a>");
+          tr("Homepage") + "</a>");
 }
 
 /*
@@ -983,13 +963,14 @@ void MainWindow::boost(TootData *tdata) {
     ;
   } else if (tdata->isBoosted()) {
     QMessageBox::information(this, APP_NAME,
-                             tr("このトゥートはすでにブーストしています。"));
+                             tr("This toot was boosted already"));
   } else if (tdata->isPrivateToot()) {
-    QMessageBox::information(this, APP_NAME,
-                             tr("非公開のトゥートのためブーストできません。"));
+    QMessageBox::information(
+        this, APP_NAME, tr("You cannot boost this toot because it is private"));
   } else if (tdata->iSDirectMessage()) {
     QMessageBox::information(
-        this, APP_NAME, tr("ダイレクトメッセージのためブーストできません。"));
+        this, APP_NAME,
+        tr("You cannot boost this toot because it is a direct message"));
   } else {
     connect(mstdn->requestBoost(tdata->getId()), &QNetworkReply::finished, this,
             &MainWindow::finishedRequest);
@@ -1005,12 +986,9 @@ void MainWindow::favourite(TootData *tdata) {
   if (tdata == nullptr) {
     ;
   } else if (tdata->isFavourited()) {
-    QMessageBox::information(
-        this, APP_NAME, tr("このトゥートはすでにお気に入りに登録しています。"));
-  } else if (QMessageBox::question(
-                 this, APP_NAME,
-                 tdata->getOriginalAccountData().getDisplayName() +
-                     tr("さんのトゥートをお気に入りに登録しますか。")) ==
+    QMessageBox::information(this, APP_NAME, tr("You liked this toot already"));
+  } else if (QMessageBox::question(this, APP_NAME,
+                                   tr("Do you want to like this toot?")) ==
              QMessageBox::Yes) {
     connect(mstdn->requestFavourite(tdata->getId()), &QNetworkReply::finished,
             this, &MainWindow::finishedRequest);
@@ -1026,7 +1004,8 @@ void MainWindow::deleteToot(TootData *tdata) {
   if (tdata == nullptr) {
     return;
   }
-  if (QMessageBox::question(this, APP_NAME, tr("トゥートを削除しますか。")) ==
+  if (QMessageBox::question(this, APP_NAME,
+                            tr("Do you want to delete this toot?")) ==
       QMessageBox::Yes) {
     connect(mstdn->requestDeleteToot(tdata->getId()), &QNetworkReply::finished,
             this, &MainWindow::finishedRequest);
@@ -1037,17 +1016,20 @@ void MainWindow::contentAction(TootData *tdata, unsigned char act) {
   if (tdata == nullptr) {
     return;
   }
-  switch (act) { // TODO: enum化
+  switch (act) {
+  // TODO: enum化
   case 'b':
     boost(tdata);
     break;
   case 'q':
     if (tdata->isPrivateToot()) {
-      QMessageBox::information(this, APP_NAME,
-                               tr("非公開のトゥートのため引用できません。"));
+      QMessageBox::information(
+          this, APP_NAME,
+          tr("You cannot quote this toot because it is private"));
     } else if (tdata->iSDirectMessage()) {
       QMessageBox::information(
-          this, APP_NAME, tr("ダイレクトメッセージのため引用できません。"));
+          this, APP_NAME,
+          tr("You cannot quote this toot because it is a direct message"));
     } else {
       TootContent *content =
           new TootContent(new TootData(*tdata), TootContent::Info);

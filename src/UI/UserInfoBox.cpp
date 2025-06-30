@@ -21,9 +21,8 @@ UserInfoBox::UserInfoBox(const TootAccountData &user_data, MainWindow *rw,
                          Qt::WindowFlags f)
     : QMainWindow(rw, f), root_window(rw), user(user_data), mstdn(nullptr),
       menu(nullptr) {
-
   // ウィンドウ準備
-  setWindowTitle(tr("ユーザー情報"));
+  setWindowTitle(tr("User Info"));
   setAttribute(Qt::WA_DeleteOnClose);
   QScrollArea *main_scroll_area = new QScrollArea;
   main_scroll_area->setFrameShape(QFrame::NoFrame); // 枠線をなくす
@@ -74,7 +73,8 @@ void UserInfoBox::createNameBox() {
   QVBoxLayout *name_box = new QVBoxLayout;
   ImageLabel *icon = new ImageLabel(40, 40);
   icon->setFixedSize(40, 40);
-  if (!icon->setPixmapByName(user.getAvatar())) { // アイコンのキャッシュがない
+  if (!icon->setPixmapByName(user.getAvatar())) {
+    // アイコンのキャッシュがない
     connect(net.get(user.getAvatar()), &QNetworkReply::finished, icon,
             &ImageLabel::setPixmapByNetwork);
   }
@@ -103,13 +103,13 @@ void UserInfoBox::createInfoBox() {
   user_description->setWordWrap(true);
   user_description->setTextFormat(Qt::RichText);
   infobox_layout->addWidget(user_description);
-  QLabel *following_info =
-      new QLabel(tr("フォロー中:") + QString::number(user.getFollowingCount()));
+  QLabel *following_info = new QLabel(
+      tr("Following") + ": " + QString::number(user.getFollowingCount()));
   following_info->setStyleSheet("color:white;");
   following_info->setWordWrap(true);
   infobox_layout->addWidget(following_info);
-  QLabel *followers_info =
-      new QLabel(tr("フォロワー:") + QString::number(user.getFollowersCount()));
+  QLabel *followers_info = new QLabel(
+      tr("Followers") + ": " + QString::number(user.getFollowersCount()));
   followers_info->setStyleSheet("color:white;");
   followers_info->setWordWrap(true);
   infobox_layout->addWidget(followers_info);
@@ -142,13 +142,13 @@ void UserInfoBox::showRelationship() {
     relation = TootRelationshipData(
         QJsonDocument::fromJson(rep->readAll()).array()[0].toObject());
     if (relation.isfollowing()) {
-      relationinfo_layout->addWidget(new QLabel(tr("フォローしてます")));
+      relationinfo_layout->addWidget(new QLabel(tr("Following")));
     }
     if (relation.isfollowed()) {
-      relationinfo_layout->addWidget(new QLabel(tr("フォローされてます")));
+      relationinfo_layout->addWidget(new QLabel(tr("Followed you")));
     }
     if (relation.isblocking()) {
-      relationinfo_layout->addWidget(new QLabel(tr("ブロックしてます")));
+      relationinfo_layout->addWidget(new QLabel(tr("Blocking")));
     }
   }
   rep->deleteLater();
@@ -221,35 +221,33 @@ void UserInfoBox::createMenu() {
   // TODO: サブユニットとして分離
   if (mstdn->getUserId() != user.getId()) {
     if (relation.isfollowing()) {
-      menu->addAction(tr("Unfollow(&F)"), this, [this] {
+      menu->addAction(tr("Unfollow(&U)"), this, [this] {
         connect(mstdn->requestUnfollow(user.getId()), &QNetworkReply::finished,
                 this, [this] {
                   QNetworkReply *rep = qobject_cast<QNetworkReply *>(sender());
                   if (rep->error() != QNetworkReply::NoError) {
                     QMessageBox::critical(this, APP_NAME,
-                                          tr("フォロー解除できませんでした。"));
+                                          tr("Failed to unfollow"));
                     rep->deleteLater();
                   } else {
                     resetRelationInfo();
                   }
                 });
       });
-
     } else if (relation.isblocking()) {
-      menu->addAction(tr("Unblock(&B)"), this, [this] {
+      menu->addAction(tr("Unblock(&U)"), this, [this] {
         connect(mstdn->requestUnblock(user.getId()), &QNetworkReply::finished,
                 this, [this] {
                   QNetworkReply *rep = qobject_cast<QNetworkReply *>(sender());
                   if (rep->error() != QNetworkReply::NoError) {
                     QMessageBox::critical(this, APP_NAME,
-                                          tr("ブロック解除できませんでした。"));
+                                          tr("Failed to unblock"));
                     rep->deleteLater();
                   } else {
                     resetRelationInfo();
                   }
                 });
       });
-
     } else {
       menu->addAction(tr("Follow(&F)"), this, [this] {
         connect(mstdn->requestFollow(user.getId()), &QNetworkReply::finished,
@@ -257,7 +255,7 @@ void UserInfoBox::createMenu() {
                   QNetworkReply *rep = qobject_cast<QNetworkReply *>(sender());
                   if (rep->error() != QNetworkReply::NoError) {
                     QMessageBox::critical(this, APP_NAME,
-                                          tr("フォローできませんでした。"));
+                                          tr("Failed to follow"));
                     rep->deleteLater();
                   } else {
                     resetRelationInfo();
@@ -267,22 +265,21 @@ void UserInfoBox::createMenu() {
     }
     if (!relation.isblocking()) {
       menu->addAction(tr("Block(&B)"), this, [this] {
-        if (QMessageBox::question(this, APP_NAME,
-                                  tr("本当にブロックしますか。"),
-                                  QMessageBox::Yes | QMessageBox::No,
-                                  QMessageBox::No) == QMessageBox::Yes) {
-          connect(mstdn->requestBlock(user.getId()), &QNetworkReply::finished,
-                  this, [this] {
-                    QNetworkReply *rep =
-                        qobject_cast<QNetworkReply *>(sender());
-                    if (rep->error() != QNetworkReply::NoError) {
-                      QMessageBox::critical(this, APP_NAME,
-                                            tr("ブロックできませんでした。"));
-                      rep->deleteLater();
-                    } else {
-                      resetRelationInfo();
-                    }
-                  });
+        if (QMessageBox::question(
+                this, APP_NAME, tr("Do you want to really block this account?"),
+                QMessageBox::Yes | QMessageBox::No,
+                QMessageBox::No) == QMessageBox::Yes) {
+          connect(
+              mstdn->requestBlock(user.getId()), &QNetworkReply::finished, this,
+              [this] {
+                QNetworkReply *rep = qobject_cast<QNetworkReply *>(sender());
+                if (rep->error() != QNetworkReply::NoError) {
+                  QMessageBox::critical(this, APP_NAME, tr("Failed to block"));
+                  rep->deleteLater();
+                } else {
+                  resetRelationInfo();
+                }
+              });
         }
       });
     }
@@ -306,13 +303,13 @@ void UserInfoBox::resetRelationInfo() {
         TootRelationshipData(QJsonDocument::fromJson(rep->readAll())
                                  .object()); // ここがshowRelationshipと違う
     if (relation.isfollowing()) {
-      relationinfo_layout->addWidget(new QLabel(tr("フォローしてます")));
+      relationinfo_layout->addWidget(new QLabel(tr("Following")));
     }
     if (relation.isfollowed()) {
-      relationinfo_layout->addWidget(new QLabel(tr("フォローされてます")));
+      relationinfo_layout->addWidget(new QLabel(tr("Followed you")));
     }
     if (relation.isblocking()) {
-      relationinfo_layout->addWidget(new QLabel(tr("ブロックしてます")));
+      relationinfo_layout->addWidget(new QLabel(tr("Blocking")));
     }
   }
 

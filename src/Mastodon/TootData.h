@@ -11,7 +11,8 @@
 
 class TootAccountData {
 public:
-  TootAccountData(){};
+  TootAccountData() {};
+
   explicit TootAccountData(const QJsonObject &target);
 
   bool isEmpty() const { return id.isEmpty(); };
@@ -42,7 +43,8 @@ private:
 
 class TootRelationshipData {
 public:
-  TootRelationshipData(){};
+  TootRelationshipData() {};
+
   explicit TootRelationshipData(const QJsonObject &target);
 
   bool isfollowing() const { return following; };
@@ -78,8 +80,10 @@ private:
 
 class TootCardData {
 public:
-  TootCardData(){};
+  TootCardData() {};
+
   explicit TootCardData(const QJsonObject &target);
+
   QString getUrl() const { return url; };
   QString getTitle() const { return title; };
   QString getType() const { return type; }
@@ -104,9 +108,12 @@ private:
 
 class TootMediaData {
 public:
-  TootMediaData(){};
+  TootMediaData() {};
+
   explicit TootMediaData(const QJsonArray &target);
+
   unsigned int size() const { return media_list.size(); };
+
   TootMediaDataEntry getEntry(unsigned int index) const {
     return media_list.at(index);
   };
@@ -117,11 +124,15 @@ private:
 
 class TootUrlData {
 public:
-  TootUrlData(){};
+  TootUrlData() {};
+
   void addUrlPair(const QString &display_url, const QString &full_url);
+
   unsigned int count() const { return data.count(); };
   unsigned int size() const { return count(); };
+
   QString getDisplayUrl(unsigned int index) const;
+
   QString getFullUrl(unsigned int index) const;
 
 private:
@@ -130,23 +141,35 @@ private:
 
 class TootData {
 public:
-  TootData(){};
+  TootData() {};
+
   explicit TootData(const QJsonObject &target);
+
   virtual ~TootData();
 
   bool isEmpty() const { return id.isEmpty(); };
+
   bool isBoosted() const;
+
   bool isFavourited() const;
+
   bool isTootOwner() const;
+
   bool isPrivateToot() const;
+
   bool iSDirectMessage() const;
 
   // getter
   QByteArray getId() const { return id; };
+
   QString getApplicationName() const;
+
   QString getApplicationSite() const;
+
   const TootAccountData &getAccountData() const { return account; };
+
   const TootAccountData &getOriginalAccountData() const;
+
   TootData *getBoostedData() const { return reblog; };
   const TootUrlData &getUrlData() const { return url_list; };
   const TootMediaData &getMediaData() const { return media; };
@@ -180,7 +203,8 @@ private:
 
 class TootNotificationData {
 public:
-  enum Event { // 使いそうなやつだけ
+  enum Event {
+    // 使いそうなやつだけ
     NoEvent,
     Mention,
     Boost,
@@ -195,7 +219,9 @@ public:
     // ListMemberAdded,
     // ListMemberRemoved
   };
-  TootNotificationData(){};
+
+  TootNotificationData() {};
+
   explicit TootNotificationData(const QJsonObject &target);
 
   bool isEmpty() const { return (type == Event::NoEvent); };

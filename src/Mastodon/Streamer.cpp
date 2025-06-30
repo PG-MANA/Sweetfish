@@ -39,9 +39,7 @@ void Streamer::setMastodonAPI(MastodonAPI *original_mastodon) {
  * typeによって意味が異なる) 戻値:なし
  * 概要:指定したStreamに再接続する。reply->closeするか、deleteするまで永遠と動く。
  */
-void Streamer::startStream(const Streamer::StreamType stream_type,
-                           const QByteArray &id) {
-
+void Streamer::startStream(const StreamType stream_type, const QByteArray &id) {
   if (mastodon_api == nullptr)
     return emit abort(BadPointer);
   if (reply != nullptr && reply->isRunning())

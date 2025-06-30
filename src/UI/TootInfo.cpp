@@ -73,7 +73,7 @@ QString TootInfo::getImagePath(const unsigned int index) const {
  * 戻値:なし
  * 概要:Pixmapを追加し、必要であればImagelabelを生成する。
  */
-void TootInfo::setImage(const QPixmap &pixmap, const QString& file_path,
+void TootInfo::setImage(const QPixmap &pixmap, const QString &file_path,
                         const unsigned int index) {
   unsigned int num_of_img = getNumOfImage();
   if (num_of_img == 0)
@@ -106,7 +106,7 @@ void TootInfo::setImage(const QPixmap &pixmap, const QString& file_path,
  */
 void TootInfo::showImageMenu(unsigned int index) {
   if (ImageLabel *label = qobject_cast<ImageLabel *>(sender())) {
-    QMenu *popup = new QMenu(tr("操作"), this);
+    QMenu *popup = new QMenu(tr("Action"), this);
     popup->setAttribute(Qt::WA_DeleteOnClose);
     popup
         ->addAction(style()->standardIcon(QStyle::SP_TrashIcon),

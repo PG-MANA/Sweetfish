@@ -40,7 +40,7 @@ void ImageViewer::init() {
   QScrollArea *image_area = new QScrollArea;
   iml = new ImageLabel(0, 0, 0, nullptr);
 
-  setWindowTitle(tr("画像の詳細 ") + APP_NAME);
+  setWindowTitle(tr("Image detail") + " " + APP_NAME);
   setAttribute(Qt::WA_DeleteOnClose);
 
   int link_size = url_list.size();
@@ -69,11 +69,11 @@ void ImageViewer::init() {
 void ImageViewer::createButtons(QVBoxLayout *main_layout) {
   QHBoxLayout *button_layout = new QHBoxLayout;
 
-  next_button = new QPushButton(tr("次へ(&N)"));
-  back_button = new QPushButton(tr("前へ(&B)"));
-  save_button = new QPushButton(tr("名前を付けて保存(&S)"));
-  QPushButton *copy_button = new QPushButton(tr("コピー(&P)"));
-  QPushButton *close_button = new QPushButton(tr("閉じる(&C)"));
+  next_button = new QPushButton(tr("Next(&N)"));
+  back_button = new QPushButton(tr("Back(&B)"));
+  save_button = new QPushButton(tr("Save(&S)"));
+  QPushButton *copy_button = new QPushButton(tr("Copy(&C)"));
+  QPushButton *close_button = new QPushButton(tr("Close(&Q)"));
   // アイコン設定
   close_button->setIcon(style()->standardIcon(
       QStyle::SP_TitleBarCloseButton)); // 直感的に操作できるように
@@ -178,13 +178,12 @@ void ImageViewer::save() {
   QString tempname =
       media_link.split("/")
           .constLast(); // http://doc.qt.io/qt-5/qstring.html#split に「If sep
-                        // does not match anywhere in the string, split()
-                        // returns a single-element list containing this
-                        // string.」とあるのでsplitが返すQStringListは空であることはない...はず
+  // does not match anywhere in the string, split()
+  // returns a single-element list containing this
+  // string.」とあるのでsplitが返すQStringListは空であることはない...はず
   QString templocation =
       QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
-  QString filter(tr("画像") +
-                 "("); // stream使っても良い(翻訳しやすいようにわざと分離する)
+  QString filter(tr("Image") + "(");
   QByteArrayList spfilters = QImageWriter::supportedImageFormats();
 
   for (int cnt = spfilters.size() - 1; cnt >= 0;
@@ -192,9 +191,9 @@ void ImageViewer::save() {
     ; // 順序は逆になるけどすっきりするから別にいいや
   filter.append(")");
   QString filename = QFileDialog::getSaveFileName(
-      this, tr("名前を付けて保存"), templocation + "/" + tempname, filter);
+      this, tr("Save as"), templocation + "/" + tempname, filter);
   const QPixmap image = iml->pixmap();
   if (filename.isEmpty() || image.isNull() || !image.save(filename))
-    QMessageBox::critical(this, tr("画像の詳細 ") + APP_NAME,
-                          tr("画像の保存に失敗しました。"));
+    QMessageBox::critical(this, tr("Image detail") + " " + APP_NAME,
+                          tr("Failed to save the image"));
 }

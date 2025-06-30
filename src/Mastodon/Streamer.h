@@ -16,9 +16,12 @@ class TootNotificationData;
 
 class Streamer : public QObject {
   Q_OBJECT
+
 public:
   explicit Streamer(QObject *parent = nullptr);
-  ~Streamer();
+
+  virtual ~Streamer();
+
   enum Error : unsigned int {
     CannotConnect = 1, /*接続不可能*/
     NetworkError,      /*切断、APIエラー*/
@@ -29,21 +32,22 @@ public:
 
 signals:
   void newToot(TootData *twdata);
+
   void deleteToot(const QString &id);
+
   void newNotification(TootNotificationData *nfdata);
+
   void abort(unsigned int err);
 
 public slots:
   void setMastodonAPI(MastodonAPI *original_mastodon);
-  void startStream(const StreamType stream_type,
-                   const QByteArray &id = QByteArray());
-  void startStream(const unsigned int stream_type,
-                   const QByteArray &id = QByteArray()) {
-    /* For invokeMethod */
-    return startStream(static_cast<StreamType>(stream_type), id);
-  };
+
+  void startStream(StreamType stream_type, const QByteArray &id = QByteArray());
+
   void stopStream();
+
   void readStream();
+
   void finishedStream();
 
 protected:

@@ -1,5 +1,5 @@
 name:               sweetfish
-version:            0.7.2
+version:            0.8.0
 base:               core24
 icon:               src/Resources/icon/icon-normal.png
 license:            Apache-2.0

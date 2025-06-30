@@ -43,7 +43,7 @@ VideoPlayer::VideoPlayer(TootData *tdata, QWidget *parent, Qt::WindowFlags f)
 
   // ボタン作成
   createButtons(main_layout);
-  setWindowTitle(tr("動画 ") + APP_NAME);
+  setWindowTitle(tr("Video") + " " + APP_NAME);
   setAttribute(Qt::WA_DeleteOnClose);
 }
 
@@ -64,10 +64,10 @@ void VideoPlayer::show() {
  */
 void VideoPlayer::createButtons(QVBoxLayout *main_layout) {
   QHBoxLayout *button_layout = new QHBoxLayout;
-  QPushButton *start = new QPushButton(tr("再生(&S)"));
-  QPushButton *pause = new QPushButton(tr("一時停止(&P)"));
-  QPushButton *back = new QPushButton(tr("最初に戻る(&B)")); // 最初に戻る
-  QPushButton *close = new QPushButton(tr("閉じる(&C)"));
+  QPushButton *start = new QPushButton(tr("Play(&P)"));
+  QPushButton *pause = new QPushButton(tr("Stop(&S)"));
+  QPushButton *back = new QPushButton(tr("Replay(&R)"));
+  QPushButton *close = new QPushButton(tr("Close(&C)"));
   start->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
   pause->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
   back->setIcon(style()->standardIcon(QStyle::SP_MediaSkipBackward));

@@ -51,7 +51,7 @@ void Setting::setGeometry(const QByteArray &geo) {
  * 概要:Windowの状態を読み取る
  */
 QByteArray Setting::getState() const {
-    return setting.value("Window/state").toByteArray();
+  return setting.value("Window/state").toByteArray();
 }
 
 /*
@@ -60,9 +60,8 @@ QByteArray Setting::getState() const {
  * 概要:WindowStateを書き込む
  */
 void Setting::setState(const QByteArray &state) {
-    setting.setValue("Window/state", state);
+  setting.setValue("Window/state", state);
 }
-
 
 /*
  * 引数:なし
