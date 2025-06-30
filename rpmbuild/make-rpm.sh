@@ -13,6 +13,7 @@ tar zchvf ${APP_NAME}-${APP_VERSION}.tar.gz ${APP_NAME}-${APP_VERSION}
 rm -rf  ${APP_NAME}-${APP_VERSION}
 if [ ! -e ${COPY_PATH} ]; then
 rpmbuild
+mkdir -p $COPY_PATH
 fi
 mv ${APP_NAME}-${APP_VERSION}.tar.gz $COPY_PATH
 rpmbuild -bb build.spec $*
