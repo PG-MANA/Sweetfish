@@ -6,4 +6,4 @@ cmake_minimum_required(VERSION 3.20)
 
 add_library(Network STATIC Network.cpp)
 
-target_link_libraries(Network Qt6::Network)
+target_link_libraries(Network PRIVATE Qt6::Network)

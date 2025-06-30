@@ -6,4 +6,4 @@ cmake_minimum_required(VERSION 3.20)
 
 add_library(Setting STATIC Setting.cpp)
 
-target_link_libraries(Setting Qt6::Core)
+target_link_libraries(Setting PRIVATE Qt6::Core)

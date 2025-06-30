@@ -32,7 +32,6 @@ parts:
       - libgl1-mesa-dev
       - libglx-dev
       - libjxl-dev
-      - libphonon4qt6-dev
       - libxkbcommon-dev
       - qt6-base-dev
       - qt6-l10n-tools
@@ -40,7 +39,6 @@ parts:
       - qt6-tools-dev
       - qt6-tools-dev-tools
     stage-packages:
-      - libphonon4qt6-4
       - libqt6core6
       - libqt6dbus6
       - libqt6gui6
@@ -50,3 +48,4 @@ parts:
     cmake-parameters:
       - -DCMAKE_BUILD_TYPE=Release
       - -DCMAKE_INSTALL_PREFIX=/usr
+      - -DUSE_MULTIMEDIA=TRUE

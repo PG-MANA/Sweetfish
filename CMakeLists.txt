@@ -23,7 +23,7 @@ add_subdirectory(src/UI)
 
 add_executable(${CMAKE_PROJECT_NAME} src/Sweetfish.cpp src/Resources/icon/icon.qrc src/Resources/ui/ui-icon.qrc)
 
-target_link_libraries(${CMAKE_PROJECT_NAME} UI)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt6::Core Qt6::Network Qt6::Widgets UI)
 
 qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES ja_JP I18N_SOURCE_LANGUAGE en)
 qt_add_translations(${CMAKE_PROJECT_NAME} TS_FILE_BASE src/Resources/translation/lang QM_FILES_OUTPUT_VARIABLE QM_FILES)
