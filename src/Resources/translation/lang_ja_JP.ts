@@ -110,7 +110,7 @@
     <message>
         <location filename="../../UI/MainWindow.cpp" line="154"/>
         <source>Help(&amp;H)</source>
-        <translation>ヘルプ(&amp;)</translation>
+        <translation>ヘルプ(&amp;H)</translation>
     </message>
     <message>
         <location filename="../../UI/MainWindow.cpp" line="157"/>
