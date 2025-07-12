@@ -12,40 +12,47 @@ apps:
   sweetfish:
     command:        usr/bin/sweetfish
     desktop:        usr/share/applications/sweetfish.desktop
+    common-id:      org.taprix.soft.sweetfish
     plugs:
-      - audio-playback
-      - desktop-legacy
       - desktop
-      - home
-      - network
+      - opengl
       - wayland
       - x11
+      - audio-playback
+      - unity7
+      - network
     extensions:
       - kde-neon-6
+
+build-packages:
+  - libssl-dev
+  - qt6-base-dev
+  - qt6-l10n-tools
+  - qt6-multimedia-dev
+  - qt6-tools-dev
+  - qt6-tools-dev-tools
 
 parts:
   sweetfish:
     source:         https://github.com/PG-MANA/Sweetfish.git
     source-type:    git
     plugin:         cmake
-    build-packages:
-      - libgl1-mesa-dev
-      - libglx-dev
-      - libjxl-dev
-      - libxkbcommon-dev
-      - qt6-base-dev
-      - qt6-l10n-tools
-      - qt6-multimedia-dev
-      - qt6-tools-dev
-      - qt6-tools-dev-tools
-    stage-packages:
-      - libqt6core6
-      - libqt6dbus6
-      - libqt6gui6
-      - libqt6network6
-      - libqt6multimedia6
-      - libqt6widgets6
     cmake-parameters:
       - -DCMAKE_BUILD_TYPE=Release
       - -DCMAKE_INSTALL_PREFIX=/usr
       - -DUSE_MULTIMEDIA=TRUE
+      - -DCMAKE_BUILD_TYPE=Release
+    build-environment:
+      - QT_PLUGIN_PATH: "$CRAFT_STAGE/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/plugins:/snap/kf6-core24/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/plugins:/snap/kde-qt6-core24-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/plugins"
+      - LD_LIBRARY_PATH: "$CRAFT_STAGE/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:/snap/kde-qt6-core24-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libproxy:$LD_LIBRARY_PATH"
+  cleanup:
+    after:
+      - sweetfish
+    plugin: nil
+    build-snaps:
+      - core24
+      - kf6-core24
+    override-prime: |
+      for snap in "core24" "kf6-core24"; do
+        cd "/snap/$snap/current" && find . -type f,l -print | sed 's|^./|/root/prime/|' | xargs rm -f
+      done
