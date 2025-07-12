@@ -52,7 +52,7 @@ public slots:
   void contentAction(TootData *tdata, unsigned char act);
   void finishedToot();
   void finishedRequest();
-  void abortedTimeLine(unsigned int error);
+  void abortedTimeLine(Streamer::Error error);
   void setAlwayTop(bool checked);
   void setListsMenu();
   void changeStreamStatus(bool checked);

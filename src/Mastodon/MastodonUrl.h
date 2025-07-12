@@ -24,7 +24,7 @@ static const QString list_stream("/api/v1/streaming/list?list=");
 
 // トゥート関係
 static const QString statuses("/api/v1/statuses");
-static const QString reblog("/reblog"); // statusesとidを組み合わせる。
+static const QString reblog("/reblog");       // statusesとidを組み合わせる。
 static const QString favourite("/favourite"); // statusesとidを組み合わせる。
 // お気に入り関係
 

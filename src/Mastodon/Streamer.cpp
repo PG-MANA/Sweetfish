@@ -41,15 +41,15 @@ void Streamer::setMastodonAPI(MastodonAPI *original_mastodon) {
  */
 void Streamer::startStream(const StreamType stream_type, const QByteArray &id) {
   if (mastodon_api == nullptr)
-    return emit abort(BadPointer);
+    return emit abort(Error::BadPointer);
   if (reply != nullptr && reply->isRunning())
     return;
   switch (stream_type) {
-  case UserStream: {
+  case StreamType::UserStream: {
     reply = mastodon_api->requestUserStream();
     break;
   }
-  case ListStream: {
+  case StreamType::ListStream: {
     reply = mastodon_api->requestListStream(id);
     break;
   }
@@ -58,7 +58,7 @@ void Streamer::startStream(const StreamType stream_type, const QByteArray &id) {
   if (reply->error() != QNetworkReply::NoError) {
     delete reply;
     reply = nullptr;
-    return emit abort(CannotConnect);
+    return emit abort(Error::CannotConnect);
   }
   connect(reply, &QNetworkReply::readyRead, this, &Streamer::readStream);
   // qnet->getの前にconnectしたい(ただQtのサンプルを見る限り間違った実装ではなさそう)
@@ -165,6 +165,6 @@ void Streamer::finishedStream() {
     if (reply->isRunning())
       stopStream();
     if (error != QNetworkReply::OperationCanceledError)
-      emit abort(NetworkError);
+      emit abort(Error::NetworkError);
   }
 }

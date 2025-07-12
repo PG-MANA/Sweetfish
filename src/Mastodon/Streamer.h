@@ -22,13 +22,9 @@ public:
 
   virtual ~Streamer();
 
-  enum Error : unsigned int {
-    CannotConnect = 1, /*接続不可能*/
-    NetworkError,      /*切断、APIエラー*/
-    BadPointer         /*不正なポインタがあった*/
-  };
+  enum class Error : unsigned int { CannotConnect, NetworkError, BadPointer };
 
-  enum StreamType : unsigned int { UserStream = 0, ListStream };
+  enum class StreamType : unsigned int { UserStream, ListStream };
 
 signals:
   void newToot(TootData *twdata);
@@ -37,12 +33,17 @@ signals:
 
   void newNotification(TootNotificationData *nfdata);
 
-  void abort(unsigned int err);
+  void abort(Error err);
 
 public slots:
   void setMastodonAPI(MastodonAPI *original_mastodon);
 
   void startStream(StreamType stream_type, const QByteArray &id = QByteArray());
+
+  void startStream(const unsigned int stream_type,
+                   const QByteArray &id = QByteArray()) {
+    startStream(static_cast<StreamType>(stream_type), id);
+  }
 
   void stopStream();
 

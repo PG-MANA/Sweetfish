@@ -360,29 +360,23 @@ QString MainWindow::showAuthCodeInputDialog() {
  * 戻値:なし
  * 概要:Streamerでエラーが起きた時に呼ばれる。再接続するか確認する。
  */
-void MainWindow::abortedTimeLine(unsigned int error) {
+void MainWindow::abortedTimeLine(Streamer::Error error) {
   QMessageBox mes_box;
 
   mes_box.setWindowTitle(APP_NAME);
   mes_box.setIcon(QMessageBox::Critical);
   stream_status->setChecked(false);
 
-  switch (static_cast<Streamer::Error>(error)) {
-  case Streamer::CannotConnect:
+  switch (error) {
+  case Streamer::Error::CannotConnect:
+  case Streamer::Error::NetworkError:
     mes_box.setText(
         tr("Failed to connect the timeline. Do you want to retry?"));
     mes_box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     break;
-  case Streamer::NetworkError:
-    mes_box.setText(
-        tr("Failed to connect the timeline. Do you want to retry?"));
-    mes_box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-    break;
-  case Streamer::BadPointer:
+  case Streamer::Error::BadPointer:
     mes_box.setText(tr("Invalid memory access was occurred"));
     break;
-  default:
-    mes_box.setText(tr("Unknown error was occurred"));
   }
   if (mes_box.exec() == QMessageBox::Yes) {
     stream_status->setChecked(true);
@@ -399,7 +393,8 @@ void MainWindow::changeStreamStatus(bool checked) {
   if (checked)
     QMetaObject::invokeMethod(
         timeline_streamer, "startStream", Qt::QueuedConnection,
-        Q_ARG(Streamer::StreamType, stream_type), Q_ARG(QByteArray, stream_id));
+        Q_ARG(unsigned int, static_cast<unsigned int>(stream_type)),
+        Q_ARG(QByteArray, stream_id));
   else
     QMetaObject::invokeMethod(timeline_streamer, &Streamer::stopStream,
                               Qt::QueuedConnection);

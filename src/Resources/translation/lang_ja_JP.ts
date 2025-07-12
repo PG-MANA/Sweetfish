@@ -189,12 +189,12 @@
         <translation>例）</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="656"/>
+        <location filename="../../UI/MainWindow.cpp" line="651"/>
         <source>liked the toot</source>
         <translation>がトゥートをお気に入りにしました</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="664"/>
+        <location filename="../../UI/MainWindow.cpp" line="659"/>
         <source>boosted the toot</source>
         <translation>がトゥートをブーストしました</translation>
     </message>
@@ -209,132 +209,130 @@
         <translation>ユーザ情報の取得に失敗</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="373"/>
-        <location filename="../../UI/MainWindow.cpp" line="378"/>
+        <location filename="../../UI/MainWindow.cpp" line="374"/>
         <source>Failed to connect the timeline. Do you want to retry?</source>
         <translation>タイムラインに接続できませんでした。再接続しますか？</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="382"/>
+        <location filename="../../UI/MainWindow.cpp" line="378"/>
         <source>Invalid memory access was occurred</source>
         <translation>メモリアクセス違反が発生しました</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="385"/>
         <source>Unknown error was occurred</source>
-        <translation>不明なエラーが発生しました</translation>
+        <translation type="vanished">不明なエラーが発生しました</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="518"/>
+        <location filename="../../UI/MainWindow.cpp" line="513"/>
         <source>Attach media</source>
         <translation>メディアの追加</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="519"/>
+        <location filename="../../UI/MainWindow.cpp" line="514"/>
         <source>Media</source>
         <translation>メディア</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="533"/>
+        <location filename="../../UI/MainWindow.cpp" line="528"/>
         <source>Unsupported images</source>
         <translation>サポートしていない画像</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="538"/>
-        <location filename="../../UI/MainWindow.cpp" line="560"/>
+        <location filename="../../UI/MainWindow.cpp" line="533"/>
+        <location filename="../../UI/MainWindow.cpp" line="555"/>
         <source>Cannot post more than 4 images</source>
         <translation>4枚以上の画像は投稿できません</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="658"/>
-        <location filename="../../UI/MainWindow.cpp" line="666"/>
+        <location filename="../../UI/MainWindow.cpp" line="653"/>
+        <location filename="../../UI/MainWindow.cpp" line="661"/>
         <source>Unknown</source>
         <translation>不明</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="672"/>
+        <location filename="../../UI/MainWindow.cpp" line="667"/>
         <source>mentioned you</source>
         <translation>がメンションしました</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="677"/>
+        <location filename="../../UI/MainWindow.cpp" line="672"/>
         <source>followed you</source>
         <translation>がフォローしました</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="833"/>
-        <location filename="../../UI/MainWindow.cpp" line="841"/>
+        <location filename="../../UI/MainWindow.cpp" line="828"/>
+        <location filename="../../UI/MainWindow.cpp" line="836"/>
         <source>Failed to load the image</source>
         <translation>画像の読み込みに失敗</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="852"/>
-        <location filename="../../UI/MainWindow.cpp" line="862"/>
+        <location filename="../../UI/MainWindow.cpp" line="847"/>
+        <location filename="../../UI/MainWindow.cpp" line="857"/>
         <source>Failed to upload images</source>
         <translation>画像のアップロードに失敗しました</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="853"/>
+        <location filename="../../UI/MainWindow.cpp" line="848"/>
         <source>Do you want to retry?</source>
         <translation>再試行しますか？</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="927"/>
+        <location filename="../../UI/MainWindow.cpp" line="922"/>
         <source>The Mastodon Client with Qt</source>
         <translation>Qtを使用したMastodonクライアント</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="930"/>
+        <location filename="../../UI/MainWindow.cpp" line="925"/>
         <source>This software uses Qt licenced under LGPLv3</source>
         <translation>本ソフトウェアはLGPLv3でライセンスされたQtを使用しています</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="936"/>
+        <location filename="../../UI/MainWindow.cpp" line="931"/>
         <source>License</source>
         <translation>ライセンス</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="953"/>
+        <location filename="../../UI/MainWindow.cpp" line="948"/>
         <source>Homepage</source>
         <translation>ホームページ</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="966"/>
+        <location filename="../../UI/MainWindow.cpp" line="961"/>
         <source>This toot was boosted already</source>
         <translation>このトゥートはすでにブーストしています</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="969"/>
+        <location filename="../../UI/MainWindow.cpp" line="964"/>
         <source>You cannot boost this toot because it is private</source>
         <translation>非公開のトゥートのためブーストできません</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="973"/>
+        <location filename="../../UI/MainWindow.cpp" line="968"/>
         <source>You cannot boost this toot because it is a direct message</source>
         <translation>ダイレクトメッセージのためブーストできません</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="989"/>
+        <location filename="../../UI/MainWindow.cpp" line="984"/>
         <source>You liked this toot already</source>
         <translation>このトゥートはすでにお気に入りに登録しています</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="991"/>
+        <location filename="../../UI/MainWindow.cpp" line="986"/>
         <source>Do you want to like this toot?</source>
         <translation>このトゥートをお気に入りに登録しますか？</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="1008"/>
+        <location filename="../../UI/MainWindow.cpp" line="1003"/>
         <source>Do you want to delete this toot?</source>
         <translation>このトゥートを削除しますか？</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="1028"/>
+        <location filename="../../UI/MainWindow.cpp" line="1023"/>
         <source>You cannot quote this toot because it is private</source>
         <translation>非公開のトゥートのため引用できません</translation>
     </message>
     <message>
-        <location filename="../../UI/MainWindow.cpp" line="1032"/>
+        <location filename="../../UI/MainWindow.cpp" line="1027"/>
         <source>You cannot quote this toot because it is a direct message</source>
         <translation>ダイレクトメッセージのため引用できません</translation>
     </message>
@@ -511,27 +509,27 @@
 <context>
     <name>VideoPlayer</name>
     <message>
-        <location filename="../../UI/VideoPlayer.cpp" line="46"/>
+        <location filename="../../UI/VideoPlayer.cpp" line="45"/>
         <source>Video</source>
         <translation>Video</translation>
     </message>
     <message>
-        <location filename="../../UI/VideoPlayer.cpp" line="67"/>
+        <location filename="../../UI/VideoPlayer.cpp" line="66"/>
         <source>Play(&amp;P)</source>
         <translation>再生(&amp;P)</translation>
     </message>
     <message>
-        <location filename="../../UI/VideoPlayer.cpp" line="68"/>
+        <location filename="../../UI/VideoPlayer.cpp" line="67"/>
         <source>Stop(&amp;S)</source>
         <translation>停止(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../../UI/VideoPlayer.cpp" line="69"/>
+        <location filename="../../UI/VideoPlayer.cpp" line="68"/>
         <source>Replay(&amp;R)</source>
         <translation>最初から再生(&amp;R)</translation>
     </message>
     <message>
-        <location filename="../../UI/VideoPlayer.cpp" line="70"/>
+        <location filename="../../UI/VideoPlayer.cpp" line="69"/>
         <source>Close(&amp;C)</source>
         <translation>閉じる(&amp;C)</translation>
     </message>
